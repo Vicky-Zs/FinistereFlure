@@ -11,7 +11,7 @@ package finstereflure;
  */
 public class TokenR extends Token {
   private int nbMove = 1;
-  public static void move(int nbMove) {
+  public void move(int nbMove) {
 
   }
 }

@@ -9,9 +9,6 @@ package finstereflure;
  *
  * @author Cédric DARROU
  */
-public class TokenP extends Token {
-  private boolean recto;
-  private int[] nbMove = new int[2];
-  public static void move() {
-  }
+public class Monster extends Character {
+  private Token token = new TokenM();
 }

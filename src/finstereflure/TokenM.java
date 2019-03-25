@@ -12,7 +12,7 @@ package finstereflure;
 public class TokenM extends Token {
   private int direction;
 
-  public static void move(int nbMove) {
-
+  public void move(int nbMove) {
+      
   }
 }
