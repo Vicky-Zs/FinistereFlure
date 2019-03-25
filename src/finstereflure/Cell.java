@@ -55,7 +55,10 @@ public class Cell {
 		}
 		//Mur uniquement au Nord-Ouest
 		if ((x==0) && (y == 10)) {
-			
+			this.wall[0] = true;
+			this.wall[1] = true;
+			this.wall[2] = false;
+			this.wall[3] = false;
 		}
 	}
 
@@ -72,8 +75,12 @@ public class Cell {
 	* Sets new value of bloodspot
 	* @param
 	*/
-	public void setBloodspot(boolean bloodspot) {
-		this.bloodspot = bloodspot;
+	public void setBloodspot() {
+		this.bloodspot = true;
+	}
+
+	public void setNotBloodspot() {
+		this.bloodspot = false;
 	}
 
 	/**
@@ -85,11 +92,19 @@ public class Cell {
 	}
 
 	/**
-	* Sets new value of tokenHere
+	* Sets true for tokenHere
 	* @param
 	*/
-	public void setTokenHere(boolean tokenHere) {
-		this.tokenHere = tokenHere;
+	public void setTokenHere() {
+		this.tokenHere = true;
+	}
+
+	/**
+	* Sets false for tokenHere
+	* @param
+	*/
+	public void setNotTokenHere() {
+		this.tokenHere = false;
 	}
 
 	/**
