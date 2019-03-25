@@ -33,30 +33,71 @@ public class Cell {
 			this.wall[3] = false;
 		}
 		//Mur uniquement à l'Est
-		if ((x==15) && ((y>0) && (y<6))){
+		else if ((x==15) && ((y>0) && (y<6))){
 			this.wall[0] = false;
 			this.wall[1] = true;
 			this.wall[2] = false;
 			this.wall[3] = false;
 		}
 		//Mur uniquement au Sud
-		if (( ((x==1)||(x==2)) || ((x>4) && (x<15)) ) && (y == 0)){
+		else if (( ((x==1)||(x==2)) || ((x>4) && (x<15)) ) && (y == 0)){
 			this.wall[0] = false;
 			this.wall[1] = false;
 			this.wall[2] = true;
 			this.wall[3] = false;
 		}
 		//Mur uniquement à l'Ouest
-		if ((x == 0) && (((y==1)||(y==2)) || ((x>4) && (x<10))) ){
+		else if ((x == 0) && (((y==1)||(y==2)) || ((x>4) && (x<10))) ){
 			this.wall[0] = false;
 			this.wall[1] = false;
 			this.wall[2] = false;
 			this.wall[3] = true;
 		}
-		//Mur uniquement au Nord-Ouest
-		if ((x==0) && (y == 10)) {
+		//Mur au Nord et à l'Est
+		else if((x+y == 21) || ((x==1) && (y==2)) || ((x==2)&&(y==1))){
 			this.wall[0] = true;
 			this.wall[1] = true;
+			this.wall[2] = false;
+			this.wall[3] = false;
+		}
+		//Mur au Nord et à l'Ouest
+		else if ((x==0) && (y == 10)) {
+			this.wall[0] = true;
+			this.wall[1] = false;
+			this.wall[2] = false;
+			this.wall[3] = true;
+		}
+		//Mur au Sud et à l'Est
+		else if ((x==15)&&(y==0)) {
+			this.wall[0] = false;
+			this.wall[1] = true;
+			this.wall[2] = true;
+			this.wall[3] = false;
+		}
+		//Mur au Sud et à l'Ouest
+		else if ((x==15)&&(y==0)) {
+			this.wall[0] = false;
+			this.wall[1] = false;
+			this.wall[2] = true;
+			this.wall[3] = true;
+		}
+		//Mur à l'Ouest, au Nord et à l'Est
+		else if ((x==0) && (y == 3)) {
+			this.wall[0] = true;
+			this.wall[1] = true;
+			this.wall[2] = false;
+			this.wall[3] = true;
+		}
+		//Mur au Nord, à l'Est et au Sud
+		else if ((x==3) && (y == 0)) {
+			this.wall[0] = true;
+			this.wall[1] = true;
+			this.wall[2] = true;
+			this.wall[3] = false;
+		}
+		else{
+			this.wall[0] = false;
+			this.wall[1] = false;
 			this.wall[2] = false;
 			this.wall[3] = false;
 		}
