@@ -5,10 +5,6 @@
  */
 package finstereflure;
 
-/**
- *
- * @author Cédric DARROU
- */
 public class Cell {
   private boolean bloodspot;
   //Permet de savoir si cette case est une flaque de sang
