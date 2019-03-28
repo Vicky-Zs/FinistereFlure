@@ -10,6 +10,6 @@ public abstract class Character{
 	public Character() {
 	}
         
-        protected abstract void pousser();
-        
+        protected Token[] tabToken = new Token[1];
+
 }

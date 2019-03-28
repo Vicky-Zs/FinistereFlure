@@ -9,10 +9,6 @@ public class Player extends Character {
       return this.token;
   }
 
-    @Override
-    protected void pousser() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
   
   
   

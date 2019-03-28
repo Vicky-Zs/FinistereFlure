@@ -11,5 +11,6 @@ package finstereflure;
  */
 public class Gamer extends Player {
     // le gamer est le joueur IA
+    
 
 }
