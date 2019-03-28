@@ -36,6 +36,6 @@ public class Player extends Character {
   }
   
   public String toString(){
-      return this.pseudo +" tu as encore "+getNbToken()+" tokens à déplacer.";
+      return this.pseudo +" tu as encore "+getNbToken()+" tokens .";
   }
 }
