@@ -5,12 +5,18 @@
  */
 package finstereflure;
 
+import java.util.HashSet;
+
 /**
  *
  * @author Cédric DARROU
  */
 public class Gamer extends Player {
-    // le gamer est le joueur IA
+   
+    public Gamer(HashSet<TokenP> token, String nomPerso) {
+        super(token, nomPerso);
+    }
+   
     
 
 }
