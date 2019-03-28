@@ -23,14 +23,14 @@ public abstract class Token {
     
     public boolean isInside()
     {
-        if( (this.posX >= 0 && this.posX <= 15) && (this.posY >= 0 && this.posY <= 6) )
+        if( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6) )
         {
             return true;
         }
-        else if( ((this.posX >= 0 && this.posX <= 14) && this.posY == 7) ||
-                ((this.posX >= 0 && this.posX <= 13) && this.posY == 8) ||
-                ((this.posX >= 0 && this.posX <= 12) && this.posY == 9) ||
-                ((this.posX >= 0 && this.posX <= 11) && this.posY == 10) ) 
+        else if( ((this.getPosX() >= 0 && this.getPosX() <= 14) && this.getPosY() == 7) ||
+                ((this.getPosX() >= 0 && this.getPosX() <= 13) && this.getPosY() == 8) ||
+                ((this.getPosX() >= 0 && this.getPosX() <= 12) && this.getPosY() == 9) ||
+                ((this.getPosX() >= 0 && this.getPosX() <= 11) && this.getPosY() == 10) ) 
         {
             return true;
         }
@@ -38,6 +38,20 @@ public abstract class Token {
         {
             return false;
         }
+    }
+
+    /**
+     * @return the posX
+     */
+    public int getPosX() {
+        return posX;
+    }
+
+    /**
+     * @return the posY
+     */
+    public int getPosY() {
+        return posY;
     }
    
     
