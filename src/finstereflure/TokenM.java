@@ -15,4 +15,8 @@ public class TokenM extends Token {
   public void move(int nbMove) {
       
   }
+  
+  public int getDirection(){
+      return this.direction;
+  }
 }
