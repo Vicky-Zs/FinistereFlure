@@ -5,10 +5,6 @@
  */
 package finstereflure;
 
-/**
- *
- * @author Cédric DARROU
- */
 public class Game {
   private Cell[][] map = new Cell [16][11];
   //Carte du jeu (Représentation en rectangle)
