@@ -1,12 +1,44 @@
 
 package finstereflure;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class IA extends Player {
   
+    String nameIA;
+    
     public IA(HashSet<TokenP> token, String nomPerso) {
         super(token, nomPerso);
+        for(TokenP p : token){
+            token.add(p);
+        }
+        this.nameIA = nomPerso;
+    }
+    
+    public String defineName(){
+        LinkedList<String> nomIA = new LinkedList<>();
+        String name;
+        nomIA.add("HAL 9000");
+        nomIA.add("Deep Blue");
+        nomIA.add("Erasme");
+        nomIA.add("Skynet");
+        nomIA.add("Omnius");
+        nomIA.add("Multivac");
+        nomIA.add("Marvin");
+        nomIA.add("ED 209");
+        nomIA.add("R2D2");
+        
+        for(int i = 0;i<nomIA.size();i++){
+            Collections.shuffle(nomIA);
+        }
+        name = nomIA.getFirst();
+        return name;
+    }
+    
+    public String toString(){
+        return this.nameIA +", il vous reste"+super.getNbToken()+" encore en vie";
     }
   
 }

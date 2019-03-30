@@ -29,13 +29,14 @@ public class Player extends Character {
   public int getNbToken(){
       // premet de recuperer le nombre de tokens encore en vie
       int cpt = 0;
-      for(Token t : token){
+      for(TokenP p : token){
           cpt++;
       }
       return cpt;
   }
   
+  @Override
   public String toString(){
-      return this.pseudo +" tu as encore "+getNbToken()+" tokens .";
+      return this.pseudo +" tu as encore "+getNbToken()+" tokens.";
   }
 }
