@@ -91,6 +91,7 @@ public class Cell {
 			this.wall[2] = true;
 			this.wall[3] = false;
 		}
+    //Aucun mur
 		else{
 			this.wall[0] = false;
 			this.wall[1] = false;
