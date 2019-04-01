@@ -24,7 +24,11 @@ public class Game {
   public void iniMap(){
     for(int i = 0; i < 15; i++) {
       for (int j = 0; j < 10; j++) {
-        map[i][j] = new Cell(i, j);
+        if (i + j < 22){
+          //On créer les cases seulement si elles existent
+          //(les cases en haut à droite de la carte n'existe pas, ce sont des cases vides)
+          map[i][j] = new Cell(i, j);
+        }
       }
     }
   }
