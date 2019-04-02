@@ -12,15 +12,6 @@ public class Monster extends Character {
       return this.token.posY;
   }
    
-   private void setPosX(int set){
-       this.token.posX = set;
-   }
-
-
-   private void setPosY(int set){
-       this.token.posY = set;
-   }
-   
    
   @Override
    public String toString(){
