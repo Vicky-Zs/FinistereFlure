@@ -26,7 +26,7 @@ public class Player extends Character {
       System.out.println("Voici ton p'tit nom  : " + pseudo);
   }
   
-  public int getNbToken(){
+  private int getNbToken(){
       // premet de recuperer le nombre de tokens encore en vie
       int cpt = 0;
       for(TokenP p : token){
@@ -34,6 +34,7 @@ public class Player extends Character {
       }
       return cpt;
   }
+  
   
   @Override
   public String toString(){
