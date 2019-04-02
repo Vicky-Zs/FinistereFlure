@@ -11,49 +11,11 @@ package Token;
  */
 public class TokenR extends Token {
     
-    // put permet d'intervertir une case Token du plateau à une case vide de la réserve
-    
     public TokenR (Game myGame , int x , int y) {
-        super.myGame = myGame;
-        super.posX = x;
-        super.posY = y;
+        super( myGame , x , y );
     }
     
     
-    // donne le Token recherché
-    private Token find(int x , int y)
-    {
-        // postulat : chaque player a une LISTE de pions
-        
-        if( super.myGame.getPlayer1().isEmpty() == false )
-        {
-            for( Token p : super.myGame.getPlayer1().getPions() )
-            {
-                if( p.getPosX() == x && p.getPosY() == y )
-                    return p;
-            }
-        }
-        
-        if( super.myGame.getPlayer2().isEmpty() == false )
-        {
-            for( Token p : super.myGame.getPlayer2().getPions() )
-            {
-                if( p.getPosX() == x && p.getPosY() == y )
-                    return p;
-            }
-        }
-        
-        if( super.myGame.getListeTokenR().isEmpty() == false )
-        {
-            for( TokenR p : super.myGame.getListeTokenR() )
-            {
-                if( p.getPosX() == x && p.getPosY() == y )
-                    return p;
-            }
-        }
-        
-        return null;
-    }
     
     
     // quand l'acteur du déplacement est le monstre
@@ -72,9 +34,10 @@ public class TokenR extends Token {
                         super.posY += 1;
                     }
                     // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( this.find(super.posX, super.posY + 1) != null )
+                    else if( super.find(super.posX, super.posY + 1) != null )
                     {
-                        this.find(super.posX, super.posY + 1).move(ordre);
+                        super.find(super.posX, super.posY + 1).move(ordre);
+                        super.posY += 1;
                     }
                 } 
                 // Si la case suivante n'est pas dans le tableau...
@@ -83,7 +46,7 @@ public class TokenR extends Token {
                     int i = 0;
                     for( TokenR p : super.myGame.getListeTokenR() )
                     {
-                        if( p.getPosX() == x && p.getPosY() == y )
+                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
                             super.myGame.getListeTokenR().remove(i);
                         i++;
                     }
@@ -92,7 +55,7 @@ public class TokenR extends Token {
                 break;
             }
             
-            case 2:
+            case 1:
             {
                 // Si la case suivante est dans le tableau
                 if( (new TokenR(super.myGame, super.posX + 1, super.posY)).isInside() )
@@ -103,9 +66,10 @@ public class TokenR extends Token {
                         super.posX += 1;
                     }
                     // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( this.find(super.posX + 1, super.posY) != null )
+                    else if( super.find(super.posX + 1, super.posY) != null )
                     {
-                        this.find(super.posX + 1, super.posY).move(ordre);
+                        super.find(super.posX + 1, super.posY).move(ordre);
+                        super.posX += 1;
                     }
                 } 
                 // Si la case suivante n'est pas dans le tableau...
@@ -114,7 +78,39 @@ public class TokenR extends Token {
                     int i = 0;
                     for( TokenR p : super.myGame.getListeTokenR() )
                     {
-                        if( p.getPosX() == x && p.getPosY() == y )
+                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
+                            super.myGame.getListeTokenR().remove(i);
+                        i++;
+                    }
+                }
+                
+                break;
+            }
+            
+            case 2:
+            {
+                // Si la case suivante est dans le tableau
+                if( (new TokenR(super.myGame, super.posX, super.posY - 1)).isInside() )
+                {
+                    // Si la case suivante est vide...
+                    if( super.myGame.getMap()[super.getPosX()][super.getPosY() - 1].isEmpty() )
+                    {
+                        super.posY -= 1;
+                    }
+                    // Si la case suivante est un pion ou un bloc de pierre...
+                    else if( super.find(super.posX, super.posY - 1) != null )
+                    {
+                        super.find(super.posX, super.posY - 1).move(ordre);
+                        super.posY -= 1;
+                    }
+                } 
+                // Si la case suivante n'est pas dans le tableau...
+                else 
+                {
+                    int i = 0;
+                    for( TokenR p : super.myGame.getListeTokenR() )
+                    {
+                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
                             super.myGame.getListeTokenR().remove(i);
                         i++;
                     }
@@ -126,37 +122,6 @@ public class TokenR extends Token {
             case 3:
             {
                 // Si la case suivante est dans le tableau
-                if( (new TokenR(super.myGame, super.posX, super.posY - 1)).isInside() )
-                {
-                    // Si la case suivante est vide...
-                    if( super.myGame.getMap()[super.getPosX()][super.getPosY() - 1].isEmpty() )
-                    {
-                        super.posY -= 1;
-                    }
-                    // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( this.find(super.posX, super.posY - 1) != null )
-                    {
-                        this.find(super.posX, super.posY - 1).move(ordre);
-                    }
-                } 
-                // Si la case suivante n'est pas dans le tableau...
-                else 
-                {
-                    int i = 0;
-                    for( TokenR p : super.myGame.getListeTokenR() )
-                    {
-                        if( p.getPosX() == x && p.getPosY() == y )
-                            super.myGame.getListeTokenR().remove(i);
-                        i++;
-                    }
-                }
-                
-                break;
-            }
-            
-            case 4:
-            {
-                // Si la case suivante est dans le tableau
                 if( (new TokenR(super.myGame, super.posX - 1, super.posY)).isInside() )
                 {
                     // Si la case suivante est vide...
@@ -165,9 +130,10 @@ public class TokenR extends Token {
                         super.posX -= 1;
                     }
                     // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( this.find(super.posX - 1, super.posY) != null )
+                    else if( super.find(super.posX - 1, super.posY) != null )
                     {
-                        this.find(super.posX - 1, super.posY).move(ordre);
+                        super.find(super.posX - 1, super.posY).move(ordre);
+                        super.posX -= 1;
                     }
                 } 
                 // Si la case suivante n'est pas dans le tableau...
@@ -176,7 +142,7 @@ public class TokenR extends Token {
                     int i = 0;
                     for( TokenR p : super.myGame.getListeTokenR() )
                     {
-                        if( p.getPosX() == x && p.getPosY() == y )
+                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
                             super.myGame.getListeTokenR().remove(i);
                         i++;
                     }
@@ -197,12 +163,27 @@ public class TokenR extends Token {
     {
         switch (direction)  {
             
-            case 1:
+            case 0:
             {
                 // Si la case suivante est dans le plateau... si elle est une case vide et/ou s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX, super.posY + 1)).isInside() && ( this.myGame.getMap()[super.posX][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] ) )
+                if( (new TokenR(super.myGame, super.posX, super.posY + 1)).isInside() && ( this.myGame.getMap()[super.posX][super.posY + 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
                 {
                     super.posY += 1;
+                }
+                else
+                {
+                    return false;
+                }
+                
+                break;
+            }
+            
+            case 1:
+            {
+                // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
+                if( (new TokenR(super.myGame, super.posX + 1, super.posY)).isInside() && ( this.myGame.getMap()[super.posX + 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
+                {
+                    super.posX += 1;
                 }
                 else
                 {
@@ -215,9 +196,9 @@ public class TokenR extends Token {
             case 2:
             {
                 // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX + 1, super.posY)).isInside() && ( this.myGame.getMap()[super.posX][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] ) )
+                if( (new TokenR(super.myGame, super.posX, super.posY - 1)).isInside() && ( this.myGame.getMap()[super.posX][super.posY - 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
                 {
-                    super.posX += 1;
+                    super.posY -= 1;
                 }
                 else
                 {
@@ -230,22 +211,7 @@ public class TokenR extends Token {
             case 3:
             {
                 // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX, super.posY - 1)).isInside() && ( this.myGame.getMap()[super.posX][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] ) )
-                {
-                    super.posY -= 1;
-                }
-                else
-                {
-                    return false;
-                }
-                
-                break;
-            }
-            
-            case 4:
-            {
-                // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX - 1, super.posY)).isInside() && ( this.myGame.getMap()[super.posX][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] ) )
+                if( (new TokenR(super.myGame, super.posX - 1, super.posY)).isInside() && ( this.myGame.getMap()[super.posX - 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
                 {
                     super.posX -= 1;
                 }
@@ -259,7 +225,7 @@ public class TokenR extends Token {
             
             default:
             {
-                break;
+                return false;
             }
         }
         
@@ -267,10 +233,17 @@ public class TokenR extends Token {
     }
     
     /**
+     * @param direction
      * @change x and y with the current token
      * parametre is a reference of the direction
-     * 1 = Nord, 2 = Est, 3 = Sud, 4 = Ouest
+     * 0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest
      */
+    @Override
+    public void move(int direction)    {
+        
+        this.move(direction, (new TokenP(super.myGame , super.posX , super.posY)) );
+    }
+    
     public void move(int direction, Token acteur) {
         
         boolean flag = true;
@@ -292,5 +265,34 @@ public class TokenR extends Token {
         }
     }
     
-    
+    public boolean canBePushByPion(int direction)
+    {
+        switch (direction)  {
+            
+            case 0:
+            {
+                return ( this.myGame.getMap()[super.posX][super.posY + 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+            }
+            
+            case 1:
+            {
+                return ( this.myGame.getMap()[super.posX + 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+            }
+            
+            case 2:
+            {
+                return ( this.myGame.getMap()[super.posX][super.posY - 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+            }
+            
+            case 3:
+            {
+                return ( this.myGame.getMap()[super.posX - 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+            }
+            
+            default:
+            {
+                return false;
+            }
+        }
+    }
 }

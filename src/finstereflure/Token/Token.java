@@ -16,10 +16,19 @@ public abstract class Token {
     protected int posY;
     protected Game myGame;
     
+    public Token (Game myGame , int x , int y) {
+        this.myGame = myGame;
+        this.posX = x;
+        this.posY = y;
+    }
+    
+    
     /**
+     * @param direction
      * @change x and y with the current token
      */
-    public abstract void move(int ordre);
+    // Note : pourra être améliorer grâce à l'astuce des diagonales
+    public abstract void move(int direction);
     
     public boolean isInside()
     {
@@ -40,6 +49,44 @@ public abstract class Token {
         }
     }
 
+    // donne le Token recherché ; Renvoie null sinon... 
+    // Note : à améliorer pour être comme IsInside
+    // Ou bien : faire que ce soit Game qui puisse rendre le Token souhaité, en y rentrant que ses coordonnées X et Y (pourrait réduire les "accidents")
+    public Token find(int x , int y)
+    {
+        // postulat : chaque player a une LISTE de pions
+        
+        if( myGame.getPlayer1().isEmpty() == false )
+        {
+            for( Token p : myGame.getPlayer1().getPions() )
+            {
+                if( p.getPosX() == x && p.getPosY() == y )
+                    return p;
+            }
+        }
+        
+        if( myGame.getPlayer2().isEmpty() == false )
+        {
+            for( Token p : myGame.getPlayer2().getPions() )
+            {
+                if( p.getPosX() == x && p.getPosY() == y )
+                    return p;
+            }
+        }
+        
+        if( myGame.getListeTokenR().isEmpty() == false )
+        {
+            for( TokenR p : myGame.getListeTokenR() )
+            {
+                if( p.getPosX() == x && p.getPosY() == y )
+                    return p;
+            }
+        }
+        
+        return null;
+    }
+    
+    
     /**
      * @return the posX
      */
@@ -54,5 +101,6 @@ public abstract class Token {
         return posY;
     }
    
-    
+    // Note : penser à Override equal() et hashcode() afin de rendre les méthodes .get(Object) .contain(Object) des listes opérationnelles 
+    // et éviter les recherches par boucles for
 }
