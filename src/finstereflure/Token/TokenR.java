@@ -43,6 +43,7 @@ public class TokenR extends Token {
                 // Si la case suivante n'est pas dans le tableau...
                 else 
                 {
+                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
                     for( TokenR p : super.myGame.getListeTokenR() )
                     {
@@ -75,6 +76,7 @@ public class TokenR extends Token {
                 // Si la case suivante n'est pas dans le tableau...
                 else 
                 {
+                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
                     for( TokenR p : super.myGame.getListeTokenR() )
                     {
@@ -107,6 +109,7 @@ public class TokenR extends Token {
                 // Si la case suivante n'est pas dans le tableau...
                 else 
                 {
+                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
                     for( TokenR p : super.myGame.getListeTokenR() )
                     {
@@ -139,6 +142,7 @@ public class TokenR extends Token {
                 // Si la case suivante n'est pas dans le tableau...
                 else 
                 {
+                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
                     for( TokenR p : super.myGame.getListeTokenR() )
                     {
@@ -240,12 +244,14 @@ public class TokenR extends Token {
      */
     @Override
     public void move(int direction)    {
-        
+        super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
         this.move(direction, (new TokenP(super.myGame , super.posX , super.posY)) );
+        super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
     }
     
     public void move(int direction, Token acteur) {
         
+        super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
         boolean flag = true;
         if( acteur.getClass().getName().compareTo("TokenM") == 0)
         {
@@ -263,6 +269,7 @@ public class TokenR extends Token {
                 flag = this.moveByPion(direction);
             }
         }
+        super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
     }
     
     public boolean canBePushByPion(int direction)
