@@ -1,14 +1,21 @@
-
-package finstereflure;
+package character;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import finistereflure.*;
+import map.*;
+import token.*;
+
+/**
+ *
+ * @author Nicolas
+ */
 
 public class IA extends Player {
-  
+
     String nameIA;
-    
+
     public IA(HashSet<TokenP> token, String nomPerso) {
         super(token, nomPerso);
         for(TokenP p : token){
@@ -16,7 +23,7 @@ public class IA extends Player {
         }
         this.nameIA = nomPerso;
     }
-    
+
     public String defineName(){
         LinkedList<String> nomIA = new LinkedList<>();
         String name;
@@ -29,16 +36,17 @@ public class IA extends Player {
         nomIA.add("Marvin");
         nomIA.add("ED 209");
         nomIA.add("R2D2");
-        
+
         for(int i = 0;i<nomIA.size();i++){
             Collections.shuffle(nomIA);
         }
         name = nomIA.getFirst();
         return name;
     }
-    
+
+    @Override
     public String toString(){
         return this.nameIA +", il vous reste"+super.getNbToken()+" encore en vie";
     }
-  
+
 }

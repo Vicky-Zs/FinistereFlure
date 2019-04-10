@@ -1,5 +1,13 @@
+package character;
 
-package finstereflure;
+import finistereflure.*;
+import map.*;
+import token.*;
+
+/**
+ *
+ * @author Nicolas
+ */
 
 public abstract class Character{
 
@@ -9,10 +17,4 @@ public abstract class Character{
 	*/
 	public Character() {
 	}
-        
-        /**
-         * 
-         */
-       //public  abstract void push();
-
 }

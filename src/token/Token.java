@@ -1,4 +1,7 @@
-package Token;
+package token;
+import character.*;
+import finistereflure.*;
+import map.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,21 +18,21 @@ public abstract class Token {
     protected int posX;
     protected int posY;
     protected Game myGame;
-    
+
     public Token (Game myGame , int x , int y) {
         this.myGame = myGame;
         this.posX = x;
         this.posY = y;
     }
-    
-    
+
+
     /**
      * @param direction
      * @change x and y with the current token
      */
     // Note : pourra être améliorer grâce à l'astuce des diagonales
     public abstract void move(int direction);
-    
+
     public boolean isInside()
     {
         if( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6) )
@@ -39,7 +42,7 @@ public abstract class Token {
         else if( ((this.getPosX() >= 0 && this.getPosX() <= 14) && this.getPosY() == 7) ||
                 ((this.getPosX() >= 0 && this.getPosX() <= 13) && this.getPosY() == 8) ||
                 ((this.getPosX() >= 0 && this.getPosX() <= 12) && this.getPosY() == 9) ||
-                ((this.getPosX() >= 0 && this.getPosX() <= 11) && this.getPosY() == 10) ) 
+                ((this.getPosX() >= 0 && this.getPosX() <= 11) && this.getPosY() == 10) )
         {
             return true;
         }
@@ -49,13 +52,13 @@ public abstract class Token {
         }
     }
 
-    // donne le Token recherché ; Renvoie null sinon... 
+    // donne le Token recherché ; Renvoie null sinon...
     // Note : à améliorer pour être comme IsInside
     // Ou bien : faire que ce soit Game qui puisse rendre le Token souhaité, en y rentrant que ses coordonnées X et Y (pourrait réduire les "accidents")
     public Token find(int x , int y)
     {
         // postulat : chaque player a une LISTE de pions
-        
+
         if( myGame.getPlayer1().isEmpty() == false )
         {
             for( Token p : myGame.getPlayer1().getPions() )
@@ -64,7 +67,7 @@ public abstract class Token {
                     return p;
             }
         }
-        
+
         if( myGame.getPlayer2().isEmpty() == false )
         {
             for( Token p : myGame.getPlayer2().getPions() )
@@ -73,7 +76,7 @@ public abstract class Token {
                     return p;
             }
         }
-        
+
         if( myGame.getListeTokenR().isEmpty() == false )
         {
             for( TokenR p : myGame.getListeTokenR() )
@@ -82,11 +85,11 @@ public abstract class Token {
                     return p;
             }
         }
-        
+
         return null;
     }
-    
-    
+
+
     /**
      * @return the posX
      */
@@ -100,7 +103,7 @@ public abstract class Token {
     public int getPosY() {
         return posY;
     }
-   
-    // Note : penser à Override equal() et hashcode() afin de rendre les méthodes .get(Object) .contain(Object) des listes opérationnelles 
+
+    // Note : penser à Override equal() et hashcode() afin de rendre les méthodes .get(Object) .contain(Object) des listes opérationnelles
     // et éviter les recherches par boucles for
 }

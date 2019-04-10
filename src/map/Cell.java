@@ -3,7 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package finstereflure;
+package map;
+
+import character.*;
+import finistereflure.*;
+import token.*;
+/**
+ *
+ * @author Cédric
+ */
 
 public class Cell {
   private boolean bloodspot;

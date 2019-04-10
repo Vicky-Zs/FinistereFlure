@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Token;
+ package token;
+ import character.*;
+ import finistereflure.*;
+ import map.*;
 
 /**
  *
@@ -24,7 +27,7 @@ public class TokenP extends Token {
     {
         return victime;
     }
-    
+
     private boolean goToBlood(int direction) {
         int destinationX, destinationY;
 
@@ -258,12 +261,12 @@ public class TokenP extends Token {
     }
 
     public void die() {
-        
+
         // on comptabilise sa mort
         this.victime++;
 
         super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
-        
+
         // dans tous les cas quand à un pion est éliminé, il se retrouve dans une liste qui lui est attribué...
         super.myGame.getListeTokenPisOut().add(this);
 
