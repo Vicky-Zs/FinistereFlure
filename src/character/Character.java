@@ -11,7 +11,7 @@ import token.*;
 
 public abstract class Character{
 
-
+    /*Test*/
 	/**
 	* Default empty Character constructor
 	*/
