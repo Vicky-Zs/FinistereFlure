@@ -1,4 +1,4 @@
-package Token;
+package token;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

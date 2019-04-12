@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package finstereflure;
+import character.*;
+import map.*;
+import token.*;
 
 public class Game {
   private Cell[][] map = new Cell [16][11];
