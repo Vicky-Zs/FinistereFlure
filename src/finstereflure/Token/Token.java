@@ -30,6 +30,9 @@ public abstract class Token {
     // Note : pourra être améliorer grâce à l'astuce des diagonales
     public abstract void move(int direction);
     
+    /**
+     * @return true when the current Token is in the board
+     */
     public boolean isInside()
     {
         if( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6) )
@@ -52,6 +55,11 @@ public abstract class Token {
     // donne le Token recherché ; Renvoie null sinon... 
     // Note : à améliorer pour être comme IsInside
     // Ou bien : faire que ce soit Game qui puisse rendre le Token souhaité, en y rentrant que ses coordonnées X et Y (pourrait réduire les "accidents")
+    /**
+     * @param x
+     * @param y
+     * @return the Token from a given position or null if the search has no done
+     */
     public Token find(int x , int y)
     {
         // postulat : chaque player a une LISTE de pions

@@ -19,6 +19,10 @@ public class TokenR extends Token {
     
     
     // quand l'acteur du déplacement est le monstre
+    /**
+     * @param ordre
+     * @move the current TokenR from the pushing rule of the monster
+     */
     private void moveByMonster(int ordre)
     {
         switch (ordre)  {

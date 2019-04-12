@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class TokenM extends Token {
     
-    int orientation;
-    ArrayList<Integer> nbMove = new ArrayList<>();    // présence de doublons
+    private int orientation;
+    private ArrayList<Integer> nbMoves = new ArrayList<>();    // présence de doublons
     
     public TokenM(Game myGame , int x , int y)
     {
@@ -270,40 +270,45 @@ public class TokenM extends Token {
     
 
     // tire un chiffre, le supprime ; refait nbMove s'il ne reste qu'une tuile
-    private int rollDice() {
+    /**
+     * @configure the current nbMove from the list nbMoves
+     */
+    private void rollDice() {
 
-        if (this.nbMove.size() == 1) {
-            this.nbMove.clear();
-            this.nbMove.add(-2);
-            this.nbMove.add(-1);
-            this.nbMove.add(5);
-            this.nbMove.add(7);
-            this.nbMove.add(7);
-            this.nbMove.add(8);
-            this.nbMove.add(8);
-            this.nbMove.add(10);
+        if (this.nbMoves.size() == 1) {
+            this.nbMoves.clear();
+            this.nbMoves.add(-2);
+            this.nbMoves.add(-1);
+            this.nbMoves.add(5);
+            this.nbMoves.add(7);
+            this.nbMoves.add(7);
+            this.nbMoves.add(8);
+            this.nbMoves.add(8);
+            this.nbMoves.add(10);
         }
 
-        return this.nbMove.remove( (int) (Math.random()*this.nbMove.size()) );
+        this.nbMove = this.nbMoves.remove( (int) (Math.random()*this.nbMoves.size()) );
     }
     
-
+    /**
+     * @controle all of the monster's phase
+     */
     public void tour()  {
         
-        int nb = rollDice();
+        rollDice();
         
-        if ( nb > 0 )
+        if ( this.nbMove > 0 )
         {
-            while( nb > 0 )
+            while( this.nbMove > 0 )
             {
                 this.move(look());
-                nb--;
+                this.nbMove--;
             }
         }
         else
         {
             int maxMove = 0, die1 = TokenP.getVictime();
-            while( nb == die1 - TokenP.getVictime()  && maxMove <= 20)
+            while( this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20)
             {
                 this.move(look());
                 maxMove++;
