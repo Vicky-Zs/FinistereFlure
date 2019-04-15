@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package token;
+import map.*;
+import finstereflure.*;
+import character.*;
 
 import java.util.ArrayList;
 
@@ -21,14 +24,14 @@ public class TokenM extends Token {
         super( myGame , x , y );
         this.orientation = 1;
         
-        this.nbMove.add(-2);
-        this.nbMove.add(-1);
-        this.nbMove.add(5);
-        this.nbMove.add(7);
-        this.nbMove.add(7);
-        this.nbMove.add(8);
-        this.nbMove.add(8);
-        this.nbMove.add(10);
+        this.nbMoves.add(-2);
+        this.nbMoves.add(-1);
+        this.nbMoves.add(5);
+        this.nbMoves.add(7);
+        this.nbMoves.add(7);
+        this.nbMoves.add(8);
+        this.nbMoves.add(8);
+        this.nbMoves.add(10);
     }
     
     

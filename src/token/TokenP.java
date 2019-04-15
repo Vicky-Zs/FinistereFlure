@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package token;
+import map.*;
+import finstereflure.*;
+import character.*;
 
 /**
  *
