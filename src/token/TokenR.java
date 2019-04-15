@@ -3,30 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- package token;
- import character.*;
- import finistereflure.*;
- import map.*;
+package token;
 
 /**
  *
  * @author aurelien
  */
 public class TokenR extends Token {
-
+    
     public TokenR (Game myGame , int x , int y) {
         super( myGame , x , y );
     }
-
-
-
-
+    
+    
+    
+    
     // quand l'acteur du déplacement est le monstre
+    /**
+     * @param ordre
+     * @move the current TokenR from the pushing rule of the monster
+     */
     private void moveByMonster(int ordre)
     {
         switch (ordre)  {
-
-            case 0:
+            
+            case 0: 
             {
                 // Si la case suivante est dans le tableau
                 if( (new TokenR(super.myGame, super.posX, super.posY + 1)).isInside() )
@@ -42,9 +43,9 @@ public class TokenR extends Token {
                         super.find(super.posX, super.posY + 1).move(ordre);
                         super.posY += 1;
                     }
-                }
+                } 
                 // Si la case suivante n'est pas dans le tableau...
-                else
+                else 
                 {
                     super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
@@ -55,10 +56,10 @@ public class TokenR extends Token {
                         i++;
                     }
                 }
-
+                    
                 break;
             }
-
+            
             case 1:
             {
                 // Si la case suivante est dans le tableau
@@ -75,9 +76,9 @@ public class TokenR extends Token {
                         super.find(super.posX + 1, super.posY).move(ordre);
                         super.posX += 1;
                     }
-                }
+                } 
                 // Si la case suivante n'est pas dans le tableau...
-                else
+                else 
                 {
                     super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
@@ -88,10 +89,10 @@ public class TokenR extends Token {
                         i++;
                     }
                 }
-
+                
                 break;
             }
-
+            
             case 2:
             {
                 // Si la case suivante est dans le tableau
@@ -108,9 +109,9 @@ public class TokenR extends Token {
                         super.find(super.posX, super.posY - 1).move(ordre);
                         super.posY -= 1;
                     }
-                }
+                } 
                 // Si la case suivante n'est pas dans le tableau...
-                else
+                else 
                 {
                     super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
@@ -121,10 +122,10 @@ public class TokenR extends Token {
                         i++;
                     }
                 }
-
+                
                 break;
             }
-
+            
             case 3:
             {
                 // Si la case suivante est dans le tableau
@@ -141,9 +142,9 @@ public class TokenR extends Token {
                         super.find(super.posX - 1, super.posY).move(ordre);
                         super.posX -= 1;
                     }
-                }
+                } 
                 // Si la case suivante n'est pas dans le tableau...
-                else
+                else 
                 {
                     super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
                     int i = 0;
@@ -154,22 +155,22 @@ public class TokenR extends Token {
                         i++;
                     }
                 }
-
+                
                 break;
             }
-
+            
             default:
             {
                 break;
             }
         }
     }
-
+    
     // quand l'acteur du déplacement est un pion
     private boolean moveByPion(int direction)
     {
         switch (direction)  {
-
+            
             case 0:
             {
                 // Si la case suivante est dans le plateau... si elle est une case vide et/ou s'il n'y pas de mur qui bloque le déplacement...
@@ -181,10 +182,10 @@ public class TokenR extends Token {
                 {
                     return false;
                 }
-
+                
                 break;
             }
-
+            
             case 1:
             {
                 // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
@@ -196,10 +197,10 @@ public class TokenR extends Token {
                 {
                     return false;
                 }
-
+                
                 break;
             }
-
+            
             case 2:
             {
                 // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
@@ -211,10 +212,10 @@ public class TokenR extends Token {
                 {
                     return false;
                 }
-
+                
                 break;
             }
-
+            
             case 3:
             {
                 // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
@@ -226,19 +227,19 @@ public class TokenR extends Token {
                 {
                     return false;
                 }
-
+                
                 break;
             }
-
+            
             default:
             {
                 return false;
             }
         }
-
+        
         return true;
     }
-
+    
     /**
      * @param direction
      * @change x and y with the current token
@@ -251,9 +252,9 @@ public class TokenR extends Token {
         this.move(direction, (new TokenP(super.myGame , super.posX , super.posY)) );
         super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
     }
-
+    
     public void move(int direction, Token acteur) {
-
+        
         super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
         boolean flag = true;
         if( acteur.getClass().getName().compareTo("TokenM") == 0)
@@ -274,31 +275,31 @@ public class TokenR extends Token {
         }
         super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
     }
-
+    
     public boolean canBePushByPion(int direction)
     {
         switch (direction)  {
-
+            
             case 0:
             {
                 return ( this.myGame.getMap()[super.posX][super.posY + 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
             }
-
+            
             case 1:
             {
                 return ( this.myGame.getMap()[super.posX + 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
             }
-
+            
             case 2:
             {
                 return ( this.myGame.getMap()[super.posX][super.posY - 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
             }
-
+            
             case 3:
             {
                 return ( this.myGame.getMap()[super.posX - 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
             }
-
+            
             default:
             {
                 return false;

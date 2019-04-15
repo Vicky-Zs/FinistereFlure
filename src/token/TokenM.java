@@ -4,9 +4,7 @@
  * and open the template in the editor.
  */
 package token;
-import character.*;
-import finistereflure.*;
-import map.*;
+
 import java.util.ArrayList;
 
 /**
@@ -14,15 +12,15 @@ import java.util.ArrayList;
  * @author aurelien
  */
 public class TokenM extends Token {
-
-    int orientation;
-    ArrayList<Integer> nbMove = new ArrayList<>();    // présence de doublons
-
+    
+    private int orientation;
+    private ArrayList<Integer> nbMoves = new ArrayList<>();    // présence de doublons
+    
     public TokenM(Game myGame , int x , int y)
     {
         super( myGame , x , y );
         this.orientation = 1;
-
+        
         this.nbMove.add(-2);
         this.nbMove.add(-1);
         this.nbMove.add(5);
@@ -32,8 +30,8 @@ public class TokenM extends Token {
         this.nbMove.add(8);
         this.nbMove.add(10);
     }
-
-
+    
+    
     /**
      * @param direction
      * @change x and y with the current token
@@ -75,8 +73,8 @@ public class TokenM extends Token {
                 break;
             }
         }
-
-
+        
+        
         if( (new TokenM(super.myGame, destinationX, destinationY)).isInside() )
         {
             if( super.myGame.getMap()[destinationX][destinationY].isEmpty() )
@@ -86,7 +84,7 @@ public class TokenM extends Token {
                     TokenR t = (TokenR) super.find(destinationX, destinationY);
                     t.move(direction, this);
                 }
-
+            
             }
             // déplacement
             super.posX = destinationX;
@@ -95,10 +93,10 @@ public class TokenM extends Token {
             if (this.myGame.getMap()[super.posX][super.posY].special == 1) {
                 if(super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") == 0)
                     super.find(destinationX, destinationY).move(direction);
-
+                
                 this.move(direction);
             }
-
+            
         }
         else
         {
@@ -106,10 +104,10 @@ public class TokenM extends Token {
                 this.orientation -= 2;
             else
                 this.orientation += 2;
-
+            
             this.move(this.orientation);
         }
-
+        
         // dans tous les cas, s'il y a un pion sur sa case, ce dernier doit être retiré du jeu
         if( super.find(super.posX, super.posY).getClass().getName().compareTo("TokenP") == 0 )
         {
@@ -118,12 +116,12 @@ public class TokenM extends Token {
         }
         super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
     }
-
+    
     private int lookUp() {
         int result = 0;
         int x = super.posX;
         int y = super.posY + 1;
-
+        
         while( (new TokenM(super.myGame, x, y)).isInside())
         {
             if(this.myGame.getMap()[x][y].isEmpty())
@@ -136,15 +134,15 @@ public class TokenM extends Token {
                 return (result);
             }
         }
-
+        
         return 20;
     }
-
+    
     private int lookDown() {
         int result = 0;
         int x = super.posX;
         int y = super.posY - 1;
-
+        
         while( (new TokenM(super.myGame, x, y)).isInside())
         {
             if(this.myGame.getMap()[x][y].isEmpty())
@@ -157,15 +155,15 @@ public class TokenM extends Token {
                 return (result);
             }
         }
-
+        
         return 20;
     }
-
+    
     private int lookLeft() {
         int result = 0;
         int x = super.posX - 1;
         int y = super.posY;
-
+        
         while( (new TokenM(super.myGame, x, y)).isInside())
         {
             if(this.myGame.getMap()[x][y].isEmpty())
@@ -178,15 +176,15 @@ public class TokenM extends Token {
                 return (result);
             }
         }
-
+        
         return 20;
     }
-
+    
     private int lookRight() {
         int result = 0;
         int x = super.posX + 1;
         int y = super.posY;
-
+        
         while( (new TokenM(super.myGame, x, y)).isInside())
         {
             if(this.myGame.getMap()[x][y].isEmpty())
@@ -199,13 +197,13 @@ public class TokenM extends Token {
                 return (result);
             }
         }
-
+        
         return 20;
     }
-
+    
     private int look() {
         int up = 20, down = 20, left = 20, right = 20;
-
+        
         switch(this.orientation) {
             case 0:
             {
@@ -214,7 +212,7 @@ public class TokenM extends Token {
                 right = this.lookRight();
                 break;
             }
-
+            
             case 1:
             {
                 up = this.lookUp();
@@ -222,7 +220,7 @@ public class TokenM extends Token {
                 right = this.lookRight();
                 break;
             }
-
+            
             case 2:
             {
                 down = this.lookDown();
@@ -230,7 +228,7 @@ public class TokenM extends Token {
                 right = this.lookRight();
                 break;
             }
-
+            
             case 3:
             {
                 up = this.lookUp();
@@ -238,26 +236,26 @@ public class TokenM extends Token {
                 left = this.lookLeft();
                 break;
             }
-
+            
             default:
             {
                 break;
             }
         }
-
+        
         // on détermine la distance minimale
         int min = up;
         if( min > down )    min = down;
         if( min > left )    min = left;
         if( min > right )    min = right;
-
+        
         // on vérifie qu'il n'y qu'une seulle distance
         int recurence = 0;
         if( min == up )      recurence++;
         if( min == down )    recurence++;
         if( min == left )    recurence++;
         if( min == right )   recurence++;
-
+        
         // puis on en défini l'orientation
         if( recurence == 1 )
         {
@@ -266,52 +264,57 @@ public class TokenM extends Token {
             if( min == left )    this.orientation = 1;
             if( min == right )   this.orientation = 3;
         }
-
+        
         return this.orientation;
     }
-
+    
 
     // tire un chiffre, le supprime ; refait nbMove s'il ne reste qu'une tuile
-    private int rollDice() {
+    /**
+     * @configure the current nbMove from the list nbMoves
+     */
+    private void rollDice() {
 
-        if (this.nbMove.size() == 1) {
-            this.nbMove.clear();
-            this.nbMove.add(-2);
-            this.nbMove.add(-1);
-            this.nbMove.add(5);
-            this.nbMove.add(7);
-            this.nbMove.add(7);
-            this.nbMove.add(8);
-            this.nbMove.add(8);
-            this.nbMove.add(10);
+        if (this.nbMoves.size() == 1) {
+            this.nbMoves.clear();
+            this.nbMoves.add(-2);
+            this.nbMoves.add(-1);
+            this.nbMoves.add(5);
+            this.nbMoves.add(7);
+            this.nbMoves.add(7);
+            this.nbMoves.add(8);
+            this.nbMoves.add(8);
+            this.nbMoves.add(10);
         }
 
-        return this.nbMove.remove( (int) (Math.random()*this.nbMove.size()) );
+        this.nbMove = this.nbMoves.remove( (int) (Math.random()*this.nbMoves.size()) );
     }
-
-
+    
+    /**
+     * @controle all of the monster's phase
+     */
     public void tour()  {
-
-        int nb = rollDice();
-
-        if ( nb > 0 )
+        
+        rollDice();
+        
+        if ( this.nbMove > 0 )
         {
-            while( nb > 0 )
+            while( this.nbMove > 0 )
             {
                 this.move(look());
-                nb--;
+                this.nbMove--;
             }
         }
         else
         {
             int maxMove = 0, die1 = TokenP.getVictime();
-            while( nb == die1 - TokenP.getVictime()  && maxMove <= 20)
+            while( this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20)
             {
                 this.move(look());
                 maxMove++;
             }
         }
-
+        
         look();
     }
 }

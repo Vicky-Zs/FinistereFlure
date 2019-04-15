@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- package token;
- import character.*;
- import finistereflure.*;
- import map.*;
+package token;
 
 /**
  *
@@ -14,20 +11,23 @@
  */
 public class TokenP extends Token {
 
-    private int patterneA, patterneB, nbMove;
+    private int patterneA, patterneB;
     private static int victime = 0;
+    private String playerId;
 
-    public TokenP(Game myGame, int x, int y, int patterneA) {
+    public TokenP(Game myGame, int x, int y, int patterneA, String playerId) {
         super(myGame, x, y);
+        this.playerId = playerId;
         this.patterneA = patterneA;
         this.patterneB = 7 - patterneA;
+        setNbMove(true);
     }
 
     public static int getVictime()
     {
         return victime;
     }
-
+    
     private boolean goToBlood(int direction) {
         int destinationX, destinationY;
 
@@ -108,6 +108,9 @@ public class TokenP extends Token {
         }
     }
 
+    /**
+     * @move the current TokenP to the list of winner TokenP
+     */
     private void translationWin() {
         super.myGame.getListeTokenPisWin().add(this);
         // ...puis on le retire de la liste des pions en jeu...
@@ -134,6 +137,10 @@ public class TokenP extends Token {
         }
     }
 
+    /**
+     * @param phase
+     * @set the nbMove of the current TokenP from its dual pattern
+     */
     public void setNbMove(boolean phase) {
         if (phase) {
             this.nbMove = patterneA;
@@ -260,13 +267,16 @@ public class TokenP extends Token {
         super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
     }
 
+    /**
+     * @erase or destroy the current TokenP
+     */
     public void die() {
-
+        
         // on comptabilise sa mort
         this.victime++;
 
         super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
-
+        
         // dans tous les cas quand à un pion est éliminé, il se retrouve dans une liste qui lui est attribué...
         super.myGame.getListeTokenPisOut().add(this);
 
@@ -303,5 +313,12 @@ public class TokenP extends Token {
                 i++;
             }
         }
+    }
+
+    /**
+     * @return the playerId
+     */
+    public String getPlayerId() {
+        return playerId;
     }
 }
