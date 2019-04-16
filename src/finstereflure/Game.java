@@ -24,17 +24,17 @@ public class Game {
 	*/
 	public Game() {
 	}
-        
+
         /**
 	* Returns map
 	* @return
 	*/
-        public Cell[][] getMap () {
-            return map;
-        }
+  public Cell[][] getMap () {
+    return map;
+  }
 
 	/**
-	* Returns Players 
+	* Returns Players
 	* @return
 	*/
 	public Player getPlayer(int x) {
@@ -48,8 +48,8 @@ public class Game {
 	public int getNbTurn() {
 		return nbTurn;
 	}
-        
-        
+
+
 
 
 
