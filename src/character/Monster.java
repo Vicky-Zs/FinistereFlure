@@ -1,6 +1,6 @@
-package characters;
+package character;
 
-import finistereflure.*;
+import finstereflure.*;
 import map.*;
 import token.*;
 
@@ -10,14 +10,14 @@ import token.*;
  */
 
 public class Monster extends Character {
-  private Token token = new TokenM();
+  private Token token = new TokenM(Main.g, 0, 0); // Mise à jour du token
 
   private int getPositionX(){
-      return this.token.posX;
+      return this.token.getPosX();
   }
 
    private int getPositionY(){
-      return this.token.posY;
+      return this.token.getPosY();
   }
 
   @Override

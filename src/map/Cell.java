@@ -6,7 +6,7 @@
 package map;
 
 import character.*;
-import finistereflure.*;
+import finstereflure.*;
 import token.*;
 /**
  *

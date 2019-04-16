@@ -3,7 +3,7 @@ package character;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
-import finistereflure.*;
+import finstereflure.*;
 import map.*;
 import token.*;
 
@@ -16,9 +16,9 @@ public class IA extends Player {
 
     String nameIA;
 
-    public IA(HashSet<TokenP> token, String nomPerso) {
+    public IA(HashSet<Token> token, String nomPerso) { //Modifie TokenP -> Token
         super(token, nomPerso);
-        for(TokenP p : token){
+        for(Token p : token){
             token.add(p);
         }
         this.nameIA = nomPerso;

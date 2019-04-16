@@ -1,6 +1,6 @@
 package character;
 
-import finistereflure.*;
+import finstereflure.*;
 import map.*;
 import token.*;
 

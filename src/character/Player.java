@@ -2,7 +2,7 @@ package character;
 
 import java.util.HashSet;
 import java.util.Scanner;
-import finistereflure.*;
+import finstereflure.*;
 import map.*;
 import token.*;
 
@@ -33,7 +33,7 @@ public class Player extends Character {
       System.out.println("Voici ton p'tit nom  : " + pseudo);
   }
 
-  private int getNbToken(){
+  protected int getNbToken(){ // Modif: Private -> Protected
       // premet de recuperer le nombre de tokens encore en vie
       int cpt = 0;
       for(Token p : token){
@@ -41,10 +41,17 @@ public class Player extends Character {
       }
       return cpt;
   }
-
-
+  
   @Override
   public String toString(){
       return this.pseudo +" tu as encore "+getNbToken()+" tokens.";
+  }
+  
+  public boolean isEmpty() {
+      return token.isEmpty();
+  }
+  
+  public HashSet getToken() {
+      return token;
   }
 }

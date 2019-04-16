@@ -9,9 +9,10 @@ import map.*;
 import token.*;
 
 public class Game {
+  public final static int nbPlayers = 2;
   private Cell[][] map = new Cell [16][11];
   //Carte du jeu (Représentation en rectangle)
-  private Player[] p = new Player[2];
+  private Player[] p = new Player[nbPlayers];
   //Tableau de nos deux joueurs
   private Monster m = new Monster();
   //Le montre
@@ -23,6 +24,34 @@ public class Game {
 	*/
 	public Game() {
 	}
+        
+        /**
+	* Returns map
+	* @return
+	*/
+        public Cell[][] getMap () {
+            return map;
+        }
+
+	/**
+	* Returns Players 
+	* @return
+	*/
+	public Player getPlayer(int x) {
+		return p[x];
+	}
+
+	/**
+	* Returns value of nbTurn
+	* @return
+	*/
+	public int getNbTurn() {
+		return nbTurn;
+	}
+        
+        
+
+
 
   public void iniMap(){
     for(int i = 0; i < 15; i++) {

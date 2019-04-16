@@ -39,7 +39,7 @@ public class TokenP extends Token {
             case 0: {
                 destinationX = super.posX;
                 destinationY = super.posY + 1;
-                while (this.myGame.getMap()[destinationX][destinationY].special == 1) {
+                while (this.myGame.getMap()[destinationX][destinationY].isBloodspot()) {
                     if (super.find(destinationX, destinationY).getClass().getName().compareTo("TokenP") == 0) {
                         if (nbMove > 1) {
                             return true;
@@ -57,7 +57,7 @@ public class TokenP extends Token {
             case 1: {
                 destinationX = super.posX + 1;
                 destinationY = super.posY;
-                while (this.myGame.getMap()[destinationX][destinationY].special == 1) {
+                while (this.myGame.getMap()[destinationX][destinationY].isBloodspot()) {
                     if (super.find(destinationX, destinationY).getClass().getName().compareTo("TokenP") == 0) {
                         if (nbMove > 1) {
                             return true;
@@ -74,7 +74,7 @@ public class TokenP extends Token {
             case 2: {
                 destinationX = super.posX;
                 destinationY = super.posY - 1;
-                while (this.myGame.getMap()[destinationX][destinationY].special == 1) {
+                while (this.myGame.getMap()[destinationX][destinationY].isBloodspot()) {
                     if (super.find(destinationX, destinationY).getClass().getName().compareTo("TokenP") == 0) {
                         if (nbMove > 1) {
                             return true;
@@ -91,7 +91,7 @@ public class TokenP extends Token {
             case 3: {
                 destinationX = super.posX - 1;
                 destinationY = super.posY;
-                while (this.myGame.getMap()[destinationX][destinationY].special == 1) {
+                while (this.myGame.getMap()[destinationX][destinationY].isBloodspot()) {
                     if (super.find(destinationX, destinationY).getClass().getName().compareTo("TokenP") == 0) {
                         if (nbMove > 1) {
                             return true;
@@ -120,9 +120,9 @@ public class TokenP extends Token {
         boolean flag = false;
         int i = 0;
         // ...on visite les pions du joueur 1...
-        for (TokenP p : super.myGame.getPlayer1().getPions()) {
+        for (TokenP p : super.myGame.getPlayer(1).getToken()) {
             if (p.getPosX() == super.posX && p.getPosY() == super.posY) {
-                super.myGame.getPlayer1().getPions().remove(i);
+                super.myGame.getPlayer(1).getToken().remove(i);
                 flag = true;
             }
             i++;
@@ -130,9 +130,9 @@ public class TokenP extends Token {
         // ...si on a rien trouvé pour le joueur 1, on visite alors les pions du joueur 2...
         if (flag == false) {
             i = 0;
-            for (TokenP p : super.myGame.getPlayer2().getPions()) {
+            for (TokenP p : super.myGame.getPlayer(2).getToken()) {
                 if (p.getPosX() == super.posX && p.getPosY() == super.posY) {
-                    super.myGame.getPlayer1().getPions().remove(i);
+                    super.myGame.getPlayer(1).getToken().remove(i);
                     flag = true;
                 }
                 i++;
@@ -161,7 +161,7 @@ public class TokenP extends Token {
     @Override
     public void move(int direction) {
 
-        super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
+        super.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
 
         if (nbMove > 0 && goToBlood(direction)) {
             if (direction == 0 && super.posX == 0 && super.posY == 10) {
@@ -206,7 +206,7 @@ public class TokenP extends Token {
                     // si la prochaine case est dans le tableau
                     if ((new TokenR(super.myGame, destinationX, destinationY)).isInside()) {
                         // s'il y a un Token...
-                        if (super.myGame.getMap()[destinationX][destinationY].isEmpty()) {
+                        if (!super.myGame.getMap()[destinationX][destinationY].isTokenHere()) {
                             // si le Token en question est un bloc de pierre...
                             if (super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") == 0) {
                                 TokenR t = (TokenR) super.find(destinationX, destinationY);
@@ -218,7 +218,7 @@ public class TokenP extends Token {
                                     super.posX = destinationX;
                                     super.posY = destinationY;
                                     // flaque de sang
-                                    if (this.myGame.getMap()[super.posX][super.posY].special == 1 && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
+                                    if (this.myGame.getMap()[super.posX][super.posY].isBloodspot() && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
                                         this.move(direction);
                                     }
                                     nbMove--;
@@ -228,7 +228,7 @@ public class TokenP extends Token {
                                 super.posX = destinationX;
                                 super.posY = destinationY;
                                 //flaque de sang
-                                if (this.myGame.getMap()[super.posX][super.posY].special == 1 && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
+                                if (this.myGame.getMap()[super.posX][super.posY].isBloodspot() && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
                                     this.move(direction);
                                 }
                                 nbMove--;
@@ -239,7 +239,7 @@ public class TokenP extends Token {
                             super.posX = destinationX;
                             super.posY = destinationY;
                             // flaque de sang
-                            if (this.myGame.getMap()[super.posX][super.posY].special == 1 && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
+                            if (this.myGame.getMap()[super.posX][super.posY].isBloodspot() && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
                                 this.move(direction);
                             }
                             nbMove--;
@@ -253,7 +253,7 @@ public class TokenP extends Token {
                         super.posX = destinationX;
                         super.posY = destinationY;
                         // flaque de sang
-                        if (this.myGame.getMap()[super.posX][super.posY].special == 1 && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
+                        if (this.myGame.getMap()[super.posX][super.posY].isBloodspot() && super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") != 0) {
                             this.move(direction);
                         }
                         nbMove--;
@@ -267,7 +267,7 @@ public class TokenP extends Token {
             }
 
         }
-        super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
+        super.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
     }
 
     /**
@@ -278,7 +278,7 @@ public class TokenP extends Token {
         // on comptabilise sa mort
         this.victime++;
 
-        super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
+        super.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
         
         // dans tous les cas quand à un pion est éliminé, il se retrouve dans une liste qui lui est attribué...
         super.myGame.getListeTokenPisOut().add(this);
@@ -287,9 +287,9 @@ public class TokenP extends Token {
         boolean flag = false;
         int i = 0;
         // ...on visite les pions du joueur 1...
-        for (TokenP p : super.myGame.getPlayer1().getPions()) {
+        for (TokenP p : super.myGame.getPlayer(1).getToken()) {
             if (p.getPosX() == super.posX && p.getPosY() == super.posY) {
-                super.myGame.getPlayer1().getPions().remove(i);
+                super.myGame.getPlayer(1).getToken().remove(i);
                 flag = true;
             }
             i++;
@@ -297,9 +297,9 @@ public class TokenP extends Token {
         // ...si on a rien trouvé pour le joueur 1, on visite alors les pions du joueur 2...
         if (flag == false) {
             i = 0;
-            for (TokenP p : super.myGame.getPlayer2().getPions()) {
+            for (TokenP p : super.myGame.getPlayer(2).getToken()) {
                 if (p.getPosX() == super.posX && p.getPosY() == super.posY) {
-                    super.myGame.getPlayer1().getPions().remove(i);
+                    super.myGame.getPlayer(1).getToken().remove(i);
                     flag = true;
                 }
                 i++;

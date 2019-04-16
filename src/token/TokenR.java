@@ -37,7 +37,7 @@ public class TokenR extends Token {
                 if( (new TokenR(super.myGame, super.posX, super.posY + 1)).isInside() )
                 {
                     // Si la case suivante est vide...
-                    if( super.myGame.getMap()[super.getPosX()][super.getPosY() + 1].isEmpty() )
+                    if(!super.myGame.getMap()[super.getPosX()][super.getPosY() + 1].isTokenHere() )
                     {
                         super.posY += 1;
                     }
