@@ -5,11 +5,12 @@ import map.*;
 import token.*;
 
 /**
+ * 
  *
  * @author Nicolas
  */
 
-public class Monster extends Character {
+public class Monster {
   private Token token = new TokenM(Main.g, 0, 0); // Mise à jour du token
 
   private int getPositionX(){

@@ -11,7 +11,7 @@ import token.*;
  * @author Nicolas
  */
 
-public class Player extends Character {
+public class Player {
   private HashSet<Token> token = new HashSet<>(); // encapsulation en TokenP apres
   private String pseudo;
 
@@ -26,7 +26,7 @@ public class Player extends Character {
   }
 
                 /*  Méthodes  */
-  private void nomPerso(){
+  private void pseudo(){
       Scanner sc = new Scanner(System.in);
       System.out.println("Veuillez votre pseudo :");
       String pseudo = sc.nextLine();
@@ -41,16 +41,16 @@ public class Player extends Character {
       }
       return cpt;
   }
-  
+
   @Override
   public String toString(){
       return this.pseudo +" tu as encore "+getNbToken()+" tokens.";
   }
-  
+
   public boolean isEmpty() {
       return token.isEmpty();
   }
-  
+
   public HashSet getToken() {
       return token;
   }

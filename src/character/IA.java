@@ -14,17 +14,17 @@ import token.*;
 
 public class IA extends Player {
 
-    String nameIA;
-
-    public IA(HashSet<Token> token, String nomPerso) { //Modifie TokenP -> Token
-        super(token, nomPerso);
+    private String nameIA;
+    // Retrait d'un paramètres
+    public IA(HashSet<Token> token) { //Modifie TokenP -> Token
+        super(token, defineName());
         for(Token p : token){
             token.add(p);
         }
-        this.nameIA = nomPerso;
+        this.nameIA = defineName();
     }
 
-    public String defineName(){
+    public static String defineName(){ // Modification en Static
         LinkedList<String> nomIA = new LinkedList<>();
         String name;
         nomIA.add("HAL 9000");
@@ -37,7 +37,7 @@ public class IA extends Player {
         nomIA.add("ED 209");
         nomIA.add("R2D2");
 
-        for(int i = 0;i<nomIA.size();i++){
+        for(int i = 0;i<nomIA.size();i++){ // Permet de mélanger les noms
             Collections.shuffle(nomIA);
         }
         name = nomIA.getFirst();
