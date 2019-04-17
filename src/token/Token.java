@@ -2,6 +2,7 @@ package token;
 import map.*;
 import finstereflure.*;
 import character.*;
+import java.util.Iterator;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,7 +12,7 @@ import character.*;
 
 /**
  *
- * @author aurelien
+ * @author Aurelien
  */
 public abstract class Token {
     protected static int id = 0;
@@ -45,19 +46,16 @@ public abstract class Token {
      */
     private boolean isInside()
     {
-        if( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6) )
-        {
+        if((this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6)){
             return true;
         }
-        else if( ((this.getPosX() >= 0 && this.getPosX() <= 14) && this.getPosY() == 7) ||
+        else if(((this.getPosX() >= 0 && this.getPosX() <= 14) && this.getPosY() == 7) ||
                 ((this.getPosX() >= 0 && this.getPosX() <= 13) && this.getPosY() == 8) ||
                 ((this.getPosX() >= 0 && this.getPosX() <= 12) && this.getPosY() == 9) ||
-                ((this.getPosX() >= 0 && this.getPosX() <= 11) && this.getPosY() == 10) )
-        {
+                ((this.getPosX() >= 0 && this.getPosX() <= 11) && this.getPosY() == 10)){
             return true;
         }
-        else
-        {
+        else{
             return false;
         }
     }
@@ -70,25 +68,25 @@ public abstract class Token {
      * @param y
      * @return the Token from a given position or null if the search has no done
      */
-    public Token find(int x , int y)
-    {
+    public Token find(int x , int y){
         // postulat : chaque player a une LISTE de pions
-
+        Iterator<Token> iterator;
         for (int i = 0; i < Game.nbPlayers; i++) {
-          if( myGame.getPlayer(i).isEmpty() == false ){
-              for(Token p : myGame.getPlayer(i).getToken() ){
-                  if( p.getPosX() == x && p.getPosY() == y ){
-                    return p;
-                  }
-              }
-          }
+            iterator = myGame.getPlayer(i).getToken().iterator();
+            if(myGame.getPlayer(i).isEmpty() == false ){
+                while (iterator.hasNext()){
+                    Token p = iterator.next();
+                    if((p.getPosX() == x) && (p.getPosY() == y)){
+                        return p;
+                    }
+                }
+            }
         }
-        if( myGame.getListeTokenR().isEmpty() == false )
-        {
-            for( TokenR p : myGame.getListeTokenR() )
-            {
-                if( p.getPosX() == x && p.getPosY() == y )
+        if(myGame.getTokenR().isEmpty() == false){
+            for(TokenR p : myGame.getTokenR()){
+                if( p.getPosX() == x && p.getPosY() == y ){
                     return p;
+                }
             }
         }
         return null;
