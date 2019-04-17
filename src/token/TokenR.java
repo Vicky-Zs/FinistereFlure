@@ -77,45 +77,35 @@ public class TokenR extends Token {
     }
 
     // l'acteur du déplacement est un pion...
-    private boolean moveByPion(int direction)
-    {
+    private boolean moveByPion(int direction){
         // si le bloc de pierre poussé par le pion, recontre un mur : le bloc de Pierre ne peut pas bouger
-        if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) )
-        {
+        if(this.myGame.getMap()[this.posX][this.posY].getWall(direction)){
             return false;
         }
-        else
-        {
+        else{
             // Coordonnées fictives de la prochaine case après le déplacement
             int destinationX = this.posX, destinationY = this.posY;    
-
             switch (direction) {
-
                 case 0: {
                     destinationX = this.posX;
                     destinationY = this.posY + 1;
                     break;
                 }
-
                 case 1: {
                     destinationX = this.posX + 1;
                     destinationY = this.posY;
                     break;
                 }
-
                 case 2: {
                     destinationX = this.posX;
                     destinationY = this.posY - 1;
                     break;
                 }
-
                 case 3: {
                     destinationX = this.posX - 1;
                     destinationY = this.posY;
-
                     break;
                 }
-
                 default: {
                     return false;
                 }
@@ -123,12 +113,10 @@ public class TokenR extends Token {
             
             // si la prochaine case est occupé par un Token : le bloc de pierre ne peut pas bouger
             // sinon le bloc de pierre peut bouger normalement
-            if( this.myGame.getMap()[destinationX][destinationY].isTokenHere() )
-            {
+            if(this.myGame.getMap()[destinationX][destinationY].isTokenHere()){
                 return false;
             }
-            else
-            {
+            else{
                 this.posX = destinationX;
                 this.posY = destinationY;
                 return true;
@@ -151,54 +139,38 @@ public class TokenR extends Token {
     }
     
     public void move(int direction, Token acteur) {
-        
         this.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
         boolean flag;
         
-        if( acteur instanceof TokenM )
-        {
+        if(acteur instanceof TokenM){
             flag = this.moveByMonster(direction);
         }
-        else
-        {
+        else{
             flag = this.moveByPion(direction);
         }
         
         // gestion de la flaque de sang
-        while(this.myGame.getMap()[super.posX][super.posY].isBloodspot() && flag)
-        {
+        while(this.myGame.getMap()[super.posX][super.posY].isBloodspot() && flag){
             flag = this.moveByPion(direction);
         }
-        
         super.myGame.getMap()[super.posX][super.posY].setTokenHere();
     }
     
-    public boolean canBePushByPion(int direction)
-    {
+    public boolean canBePushByPion(int direction){
         switch (direction)  {
-            
-            case 0:
-            {
-                return ( this.myGame.getMap()[this.posX][this.posY + 1].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
+            case 0:{
+                return (this.myGame.getMap()[this.posX][this.posY + 1].isTokenHere() == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false);
             }
-            
-            case 1:
-            {
-                return ( this.myGame.getMap()[super.posX + 1][super.posY].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
+            case 1:{
+                return (this.myGame.getMap()[super.posX + 1][super.posY].isTokenHere() == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false);
             }
-            
-            case 2:
-            {
-                return ( this.myGame.getMap()[super.posX][super.posY - 1].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
+            case 2:{
+                return (this.myGame.getMap()[super.posX][super.posY - 1].isTokenHere() == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false);
             }
-            
-            case 3:
-            {
-                return ( this.myGame.getMap()[super.posX - 1][super.posY].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
+            case 3:{
+                return (this.myGame.getMap()[super.posX - 1][super.posY].isTokenHere() == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false);
             }
-            
-            default:
-            {
+            default:{
                 return false;
             }
         }

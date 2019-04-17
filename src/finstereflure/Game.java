@@ -7,6 +7,7 @@ package finstereflure;
 import character.*;
 import map.*;
 import token.*;
+import java.util.ArrayList;
 
 public class Game {
   public final static int nbPlayers = 2;
@@ -16,31 +17,40 @@ public class Game {
   //Tableau de nos deux joueurs
   private Monster m = new Monster();
   //Le montre
+  private ArrayList<Token> tokenInside = new ArrayList<>();
+  private ArrayList<Token> tokenOutside = new ArrayList<>();
   private int nbTurn = 1;
   //Le nombre de tours
 
   /**
-	* Default empty Game constructor
-	*/
-	public Game() {
-	}
-
-        /**
-	* Returns map
-	* @return
-	*/
+   * Default empty Game constructor
+   */
+  public Game() {
+  }
+  
+  /**
+   * Returns map
+   * @return
+   */
   public Cell[][] getMap () {
     return map;
   }
+  
+  /**
+   * Returns Players
+   * @return
+   */
+  public Player getPlayer(int x) {
+      return p[x];
+  }
 
-	/**
-	* Returns Players
-	* @return
-	*/
-	public Player getPlayer(int x) {
-		return p[x];
-	}
-
+  public ArrayList<Token> getTokenInside() {
+    return tokenInside;
+  }
+  
+  public ArrayList<Token> getTokenOutside() {
+    return tokenOutside;
+  }
 	/**
 	* Returns value of nbTurn
 	* @return
@@ -48,10 +58,6 @@ public class Game {
 	public int getNbTurn() {
 		return nbTurn;
 	}
-
-
-
-
 
   public void iniMap(){
     for(int i = 0; i < 15; i++) {

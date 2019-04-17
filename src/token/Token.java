@@ -43,7 +43,7 @@ public abstract class Token {
     /**
      * @return true when the current Token is in the board
      */
-    public boolean isInside()
+    private boolean isInside()
     {
         if( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6) )
         {

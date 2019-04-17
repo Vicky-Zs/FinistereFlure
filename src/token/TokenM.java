@@ -31,8 +31,7 @@ public class TokenM extends Token {
         this.nbMoves.add(10);
     }
     
-    private boolean isInside()
-    {
+    private boolean isInside(){
         return ( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
     }
 
@@ -120,7 +119,7 @@ public class TokenM extends Token {
         
         rollDice();
         
-        if( this.nbMove < 0 && this.myGame.getNbTour() == 1 )
+        if( this.nbMove < 0 && this.myGame.getNbTurn() == 1 )
         {
             int maxMove = 0, die1 = TokenP.getVictime();
             while( this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20)

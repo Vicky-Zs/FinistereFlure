@@ -59,7 +59,7 @@ public class TokenP extends Token {
     // indique si le TokenP peut passer son tour
     public boolean canStay()
     {
-        return ( this.myGame.getMap()[this.getPosX()][this.getPosY()].isTokenHere() == false );
+        return (this.myGame.getMap()[this.getPosX()][this.getPosY()].isTokenHere() == false);
     }
 
     // indique si le TokenP peut se dépacer d'une case, vers une direction donnée
@@ -67,28 +67,25 @@ public class TokenP extends Token {
         TokenP p = new TokenP( this.myGame , this.posX ,  this.posY );
         boolean flag = p.moveONE(direction);
         
-        if( flag && this.nbMove > 0 )
-        {
-            if( this.myGame.getMap()[p.getPosX()][p.getPosY()].isBloodspot() )
-            {
-                while( this.myGame.getMap()[p.getPosX()][p.getPosY()].isBloodspot() && flag  )
-                {
+        if(flag && this.nbMove > 0){
+            if(this.myGame.getMap()[p.getPosX()][p.getPosY()].isBloodspot()){
+                while(this.myGame.getMap()[p.getPosX()][p.getPosY()].isBloodspot() && flag){
                     flag = p.moveONE(direction);
                 }
 
-                if( this.myGame.getMap()[p.getPosX()][p.getPosY()].isTokenHere() )
+                if(this.myGame.getMap()[p.getPosX()][p.getPosY()].isTokenHere()){
                     return (this.nbMove > 1);
-                else
-                {
+                }
+                else{
                     return true;
                 }
             }
             else
             {
-                if( this.myGame.getMap()[p.getPosX()][p.getPosY()].isTokenHere() )
+                if( this.myGame.getMap()[p.getPosX()][p.getPosY()].isTokenHere()){
                     return (this.nbMove > 1);
-                else
-                {
+                }
+                else{
                     return (this.nbMove > 0);
                 }
             }
@@ -135,31 +132,26 @@ public class TokenP extends Token {
             // Coordonnées fictives de la prochaine case après le déplacement
             int destinationX = this.posX, destinationY = this.posY;
             switch (direction) {
-
                 case 0: {
                     destinationX = this.posX;
                     destinationY = this.posY + 1;
                     break;
                 }
-
                 case 1: {
                     destinationX = this.posX + 1;
                     destinationY = this.posY;
                     break;
                 }
-
                 case 2: {
                     destinationX = this.posX;
                     destinationY = this.posY - 1;
                     break;
                 }
-
                 case 3: {
                     destinationX = this.posX - 1;
                     destinationY = this.posY;
                     break;
                 }
-
                 default: {
                     return false;
                 }
@@ -249,40 +241,30 @@ public class TokenP extends Token {
             this.myGame.getMap()[this.posX][this.posY].setNotTokenHere();
             
             // si c'est le tour des joueurs
-            if (this.myGame.IsPhaseJoueur()) 
-            {
-                if( this.canMove(direction) )
-                {
+            if (this.myGame.IsPhaseJoueur()){
+                if(this.canMove(direction)){
                     boolean flag = this.moveONE(direction);
-                    while( this.myGame.getMap()[this.posX][this.posY].isBloodspot() && flag )
-                    {
+                    while(this.myGame.getMap()[this.posX][this.posY].isBloodspot() && flag ){
                         flag = this.moveONE(direction);
                     }
                     this.nbMove--;
                 }
                 this.myGame.getMap()[this.posX][this.posY].setTokenHere();
-                
             } 
-            else    // si c'est le tour du Monstre, cela veut dire d'après les règles, qu'il est en train de se faire pousser par un bloc de pierre, par le monstre
-            {
+            else{     // si c'est le tour du Monstre, cela veut dire d'après les règles, qu'il est en train de se faire pousser par un bloc de pierre, par le monstre
                 // si le pion n'est pas bloqué par son déplacement : il bouge / sinon : il meurt
-                if( this.moveONE(direction) )
-                {
+                if(this.moveONE(direction)){
                     boolean flag = true;
-                    while( this.myGame.getMap()[this.posX][this.posY].isBloodspot() && flag )
-                    {
+                    while(this.myGame.getMap()[this.posX][this.posY].isBloodspot() && flag){
                         flag = this.moveONE(direction);
                     }
                     this.myGame.getMap()[this.posX][this.posY].setTokenHere();
                 }
-                else
-                {
+                else{
                     this.die();
                 }
-            }
-            
+            }  
         }
-
     }
 
 
