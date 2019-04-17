@@ -14,6 +14,8 @@ import character.*;
  * @author aurelien
  */
 public abstract class Token {
+    protected static int id = 0;
+    protected int reference;
     protected int nbMove;
     protected int posX;
     protected int posY;
@@ -23,8 +25,13 @@ public abstract class Token {
         this.myGame = myGame;
         this.posX = x;
         this.posY = y;
+        this.reference = this.id;
+        this.id++;
     }
-
+    
+    public int getReference(){
+        return this.reference;
+    }
 
     /**
      * @param direction

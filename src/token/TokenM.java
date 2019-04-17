@@ -14,15 +14,13 @@ import java.util.ArrayList;
  * @author aurelien
  */
 public class TokenM extends Token {
-
+    
     private int orientation;
     private ArrayList<Integer> nbMoves = new ArrayList<>();    // présence de doublons
-
-    public TokenM(Game myGame , int x , int y)
-    {
+    
+    public TokenM (Game myGame , int x , int y) {
         super( myGame , x , y );
         this.orientation = 1;
-
         this.nbMoves.add(-2);
         this.nbMoves.add(-1);
         this.nbMoves.add(5);
@@ -32,7 +30,11 @@ public class TokenM extends Token {
         this.nbMoves.add(8);
         this.nbMoves.add(10);
     }
-
+    
+    private boolean isInside()
+    {
+        return ( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
+    }
 
     /**
      * @param direction
@@ -42,63 +44,63 @@ public class TokenM extends Token {
      */
     @Override
     public void move(int direction) {
-        super.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
-        int destinationX = 0, destinationY = 0; // cette déclaration permettra de détecter des problèmes
+        
+        // Coordonnées fictives de la prochaine case après le déplacement
+        int destinationX = this.posX, destinationY = this.posY;    
+
         switch (direction) {
 
-            case 0: {
-                destinationX = super.posX;
-                destinationY = super.posY + 1;
-                break;
-            }
-
-            case 1: {
-                destinationX = super.posX + 1;
-                destinationY = super.posY;
-                break;
-            }
-
-            case 2: {
-                destinationX = super.posX;
-                destinationY = super.posY - 1;
-                break;
-            }
-
-            case 3: {
-                destinationX = super.posX - 1;
-                destinationY = super.posY;
-
-                break;
-            }
-
-            default: {
-                break;
-            }
-        }
-
-
-        if( (new TokenM(super.myGame, destinationX, destinationY)).isInside() )
-        {
-            if(!super.myGame.getMap()[destinationX][destinationY].isTokenHere() ) // Si la case est vide
-            {
-                if (super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") == 0)
-                {
-                    TokenR t = (TokenR) super.find(destinationX, destinationY);
-                    t.move(direction, this);
+                case 0: {
+                    destinationX = this.posX;
+                    destinationY = this.posY + 1;
+                    break;
                 }
 
+                case 1: {
+                    destinationX = this.posX + 1;
+                    destinationY = this.posY;
+                    break;
+                }
+
+                case 2: {
+                    destinationX = this.posX;
+                    destinationY = this.posY - 1;
+                    break;
+                }
+
+                case 3: {
+                    destinationX = this.posX - 1;
+                    destinationY = this.posY;
+                    break;
+                }
+
+                default: {
+                    break;
+                }
             }
+        
+        // Si la case suivante ne dépasse pas les limites du tableau...
+        if( (new TokenM(super.myGame, destinationX, destinationY)).isInside() )
+        {
+            // s'il y a un Token dans la case suivante...
+            if( this.myGame.getMap()[destinationX][destinationY].isTokenHere() )
+            {
+                // si ce Token est un bloc de pierre : ce dernier doit bouger
+                if (this.find(destinationX, destinationY) instanceof TokenR )
+                {
+                    TokenR t = (TokenR) this.find(destinationX, destinationY);
+                    t.move(direction, this);
+                }
+                else
+                {
+                    TokenP p = (TokenP) this.find(destinationX, destinationY);
+                    p.die();
+                }
+            }
+            
             // déplacement
-            super.posX = destinationX;
-            super.posY = destinationY;
-            // flaque de sang
-            if (this.myGame.getMap()[super.posX][super.posY].isBloodspot()) {
-                if(super.find(destinationX, destinationY).getClass().getName().compareTo("TokenR") == 0)
-                    super.find(destinationX, destinationY).move(direction);
-
-                this.move(direction);
-            }
-
+            this.posX = destinationX;
+            this.posY = destinationY;
         }
         else
         {
@@ -106,106 +108,166 @@ public class TokenM extends Token {
                 this.orientation -= 2;
             else
                 this.orientation += 2;
-
+            
             this.move(this.orientation);
         }
-
-        // dans tous les cas, s'il y a un pion sur sa case, ce dernier doit être retiré du jeu
-        if( super.find(super.posX, super.posY).getClass().getName().compareTo("TokenP") == 0 )
-        {
-            TokenP p = (TokenP) super.find(super.posX, super.posY);
-            p.die();
-        }
-        super.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
     }
-
-    private int lookUp() {
-        int result = 0;
-        int x = super.posX;
-        int y = super.posY + 1;
-
-        while( (new TokenM(super.myGame, x, y)).isInside())
+    
+    /**
+     * @controle all of the monster's phase
+     */
+    public void tour()  {
+        
+        rollDice();
+        
+        if( this.nbMove < 0 && this.myGame.getNbTour() == 1 )
         {
-            if(!this.myGame.getMap()[x][y].isTokenHere()) //Si la case est vide
+            int maxMove = 0, die1 = TokenP.getVictime();
+            while( this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20)
+            {
+                this.move(look());
+                
+                // gestion de la flaque de sang
+                while( this.myGame.getMap()[super.posX][super.posY].isBloodspot() )
+                {
+                    this.move(look());
+                }
+                
+                maxMove++;
+            }
+        }
+        else
+        {
+            while( this.nbMove > 0 )
+            {
+                this.move(look());
+                
+                // gestion de la flaque de sang
+                while( this.myGame.getMap()[super.posX][super.posY].isBloodspot() )
+                {
+                    this.move(look());
+                }
+                
+                this.nbMove--;
+            }
+        }
+        
+        look();
+    }
+    
+    
+    private int lookUp() {
+
+        int result = 0;
+        int x = this.posX;
+        int y = this.posY + 1;
+        
+        while( this.myGame.getMap()[x][y - 1].getWall(0) == false )
+        {
+            if(this.myGame.getMap()[x][y].isTokenHere())
+            {
+                if( this.find(x, y) instanceof TokenP )
+                {
+                    return result;
+                }
+                else
+                {
+                    return 50;
+                }
+            }
+            else
             {
                 result++;
                 y++;
             }
-            else
-            {
-                return (result);
-            }
         }
-
-        return 20;
+        return 50;
     }
-
+    
     private int lookDown() {
         int result = 0;
-        int x = super.posX;
-        int y = super.posY - 1;
-
-        while( (new TokenM(super.myGame, x, y)).isInside())
+        int x = this.posX;
+        int y = this.posY - 1;
+        
+        while( this.myGame.getMap()[x][y + 1].getWall(2) == false )
         {
-            if(!this.myGame.getMap()[x][y].isTokenHere())
+            if(this.myGame.getMap()[x][y].isTokenHere())
+            {
+                if( this.find(x, y) instanceof TokenP )
+                {
+                    return result;
+                }
+                else
+                {
+                    return 50;
+                }
+            }
+            else
             {
                 result++;
                 y++;
             }
-            else
-            {
-                return (result);
-            }
         }
-
-        return 20;
+        return 50;
     }
-
+    
     private int lookLeft() {
         int result = 0;
-        int x = super.posX - 1;
-        int y = super.posY;
-
-        while( (new TokenM(super.myGame, x, y)).isInside())
+        int x = this.posX - 1;
+        int y = this.posY;
+        
+        while( this.myGame.getMap()[x + 1][y].getWall(3) == false )
         {
-            if(!this.myGame.getMap()[x][y].isTokenHere())
+            if(this.myGame.getMap()[x][y].isTokenHere())
+            {
+                if( this.find(x, y) instanceof TokenP )
+                {
+                    return result;
+                }
+                else
+                {
+                    return 50;
+                }
+            }
+            else
             {
                 result++;
                 y++;
             }
-            else
-            {
-                return (result);
-            }
         }
-
-        return 20;
+        return 50;
     }
-
+    
     private int lookRight() {
         int result = 0;
-        int x = super.posX + 1;
-        int y = super.posY;
-
-        while( (new TokenM(super.myGame, x, y)).isInside())
+        int x = this.posX + 1;
+        int y = this.posY;
+        
+        while( this.myGame.getMap()[x - 1][y].getWall(1) == false )
         {
-            if(!this.myGame.getMap()[x][y].isTokenHere())
+            if(this.myGame.getMap()[x][y].isTokenHere())
+            {
+                if( this.find(x, y) instanceof TokenP )
+                {
+                    return result;
+                }
+                else
+                {
+                    return 50;
+                }
+            }
+            else
             {
                 result++;
                 y++;
             }
-            else
-            {
-                return (result);
-            }
         }
-
-        return 20;
+        return 50;
     }
-
+    
     private int look() {
-        int up = 20, down = 20, left = 20, right = 20;
-
+        int up = 50, down = 0, left = 50, right = 50;
+        
         switch(this.orientation) {
             case 0:
             {
@@ -214,7 +276,7 @@ public class TokenM extends Token {
                 right = this.lookRight();
                 break;
             }
-
+            
             case 1:
             {
                 up = this.lookUp();
@@ -222,7 +284,7 @@ public class TokenM extends Token {
                 right = this.lookRight();
                 break;
             }
-
+            
             case 2:
             {
                 down = this.lookDown();
@@ -230,7 +292,7 @@ public class TokenM extends Token {
                 right = this.lookRight();
                 break;
             }
-
+            
             case 3:
             {
                 up = this.lookUp();
@@ -238,26 +300,26 @@ public class TokenM extends Token {
                 left = this.lookLeft();
                 break;
             }
-
+            
             default:
             {
                 break;
             }
         }
-
+        
         // on détermine la distance minimale
         int min = up;
         if( min > down )    min = down;
         if( min > left )    min = left;
         if( min > right )    min = right;
-
+        
         // on vérifie qu'il n'y qu'une seulle distance
         int recurence = 0;
         if( min == up )      recurence++;
         if( min == down )    recurence++;
         if( min == left )    recurence++;
         if( min == right )   recurence++;
-
+        
         // puis on en défini l'orientation
         if( recurence == 1 )
         {
@@ -266,12 +328,12 @@ public class TokenM extends Token {
             if( min == left )    this.orientation = 1;
             if( min == right )   this.orientation = 3;
         }
-
+        
         return this.orientation;
     }
+    
 
-
-    // tire un chiffre, le supprime ; refait nbMove s'il ne reste qu'une tuile
+    // tire un chiffre, le supprime ; refait nbMoves s'il ne reste qu'une tuile
     /**
      * @configure the current nbMove from the list nbMoves
      */
@@ -291,32 +353,5 @@ public class TokenM extends Token {
 
         this.nbMove = this.nbMoves.remove( (int) (Math.random()*this.nbMoves.size()) );
     }
-
-    /**
-     * @controle all of the monster's phase
-     */
-    public void tour()  {
-
-        rollDice();
-
-        if ( this.nbMove > 0 )
-        {
-            while( this.nbMove > 0 )
-            {
-                this.move(look());
-                this.nbMove--;
-            }
-        }
-        else
-        {
-            int maxMove = 0, die1 = TokenP.getVictime();
-            while( this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20)
-            {
-                this.move(look());
-                maxMove++;
-            }
-        }
-
-        look();
-    }
+    
 }

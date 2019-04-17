@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package token;
 import map.*;
 import finstereflure.*;
@@ -19,231 +18,125 @@ public class TokenR extends Token {
         super( myGame , x , y );
     }
     
-    
-    
-    
-    // quand l'acteur du déplacement est le monstre
-    /**
-     * @param ordre
-     * @move the current TokenR from the pushing rule of the monster
-     */
-    private void moveByMonster(int ordre)
-    {
-        switch (ordre)  {
-            
-            case 0: 
-            {
-                // Si la case suivante est dans le tableau
-                if( (new TokenR(super.myGame, super.posX, super.posY + 1)).isInside() )
-                {
-                    // Si la case suivante est vide...
-                    if(!super.myGame.getMap()[super.getPosX()][super.getPosY() + 1].isTokenHere() )
-                    {
-                        super.posY += 1;
-                    }
-                    // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( super.find(super.posX, super.posY + 1) != null )
-                    {
-                        super.find(super.posX, super.posY + 1).move(ordre);
-                        super.posY += 1;
-                    }
-                } 
-                // Si la case suivante n'est pas dans le tableau...
-                else 
-                {
-                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
-                    int i = 0;
-                    for( TokenR p : super.myGame.getListeTokenR() )
-                    {
-                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
-                            super.myGame.getListeTokenR().remove(i);
-                        i++;
-                    }
-                }
-                    
-                break;
-            }
-            
-            case 1:
-            {
-                // Si la case suivante est dans le tableau
-                if( (new TokenR(super.myGame, super.posX + 1, super.posY)).isInside() )
-                {
-                    // Si la case suivante est vide...
-                    if( super.myGame.getMap()[super.getPosX() + 1][super.getPosY()].isEmpty() )
-                    {
-                        super.posX += 1;
-                    }
-                    // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( super.find(super.posX + 1, super.posY) != null )
-                    {
-                        super.find(super.posX + 1, super.posY).move(ordre);
-                        super.posX += 1;
-                    }
-                } 
-                // Si la case suivante n'est pas dans le tableau...
-                else 
-                {
-                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
-                    int i = 0;
-                    for( TokenR p : super.myGame.getListeTokenR() )
-                    {
-                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
-                            super.myGame.getListeTokenR().remove(i);
-                        i++;
-                    }
-                }
-                
-                break;
-            }
-            
-            case 2:
-            {
-                // Si la case suivante est dans le tableau
-                if( (new TokenR(super.myGame, super.posX, super.posY - 1)).isInside() )
-                {
-                    // Si la case suivante est vide...
-                    if( super.myGame.getMap()[super.getPosX()][super.getPosY() - 1].isEmpty() )
-                    {
-                        super.posY -= 1;
-                    }
-                    // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( super.find(super.posX, super.posY - 1) != null )
-                    {
-                        super.find(super.posX, super.posY - 1).move(ordre);
-                        super.posY -= 1;
-                    }
-                } 
-                // Si la case suivante n'est pas dans le tableau...
-                else 
-                {
-                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
-                    int i = 0;
-                    for( TokenR p : super.myGame.getListeTokenR() )
-                    {
-                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
-                            super.myGame.getListeTokenR().remove(i);
-                        i++;
-                    }
-                }
-                
-                break;
-            }
-            
-            case 3:
-            {
-                // Si la case suivante est dans le tableau
-                if( (new TokenR(super.myGame, super.posX - 1, super.posY)).isInside() )
-                {
-                    // Si la case suivante est vide...
-                    if( super.myGame.getMap()[super.getPosX() - 1][super.getPosY()].isEmpty() )
-                    {
-                        super.posX -= 1;
-                    }
-                    // Si la case suivante est un pion ou un bloc de pierre...
-                    else if( super.find(super.posX - 1, super.posY) != null )
-                    {
-                        super.find(super.posX - 1, super.posY).move(ordre);
-                        super.posX -= 1;
-                    }
-                } 
-                // Si la case suivante n'est pas dans le tableau...
-                else 
-                {
-                    super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
-                    int i = 0;
-                    for( TokenR p : super.myGame.getListeTokenR() )
-                    {
-                        if( p.getPosX() == super.posX && p.getPosY() == super.posY )
-                            super.myGame.getListeTokenR().remove(i);
-                        i++;
-                    }
-                }
-                
-                break;
-            }
-            
-            default:
-            {
-                break;
-            }
+    // l'acteur du déplacement est un monstre...
+    private boolean moveByMonster(int direction){
+        
+        // si le bloc de pierre poussé par le monstre, recontre un mur : le bloc de Pierre doit être détruit
+        if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) )
+        {
+            this.myGame.getListeTokenR().remove( this.myGame.getListeTokenR().indexOf(this) );
         }
+        else
+        {
+            // Coordonnées fictives de la prochaine case après le déplacement
+            int destinationX = 0, destinationY = 0;    
+
+            switch (direction) {
+
+                case 0: {
+                    destinationX = this.posX;
+                    destinationY = this.posY + 1;
+                    break;
+                }
+
+                case 1: {
+                    destinationX = this.posX + 1;
+                    destinationY = this.posY;
+                    break;
+                }
+
+                case 2: {
+                    destinationX = this.posX;
+                    destinationY = this.posY - 1;
+                    break;
+                }
+
+                case 3: {
+                    destinationX = this.posX - 1;
+                    destinationY = this.posY;
+
+                    break;
+                }
+
+                default: {
+                    return false;
+                }
+            }
+            
+            // si la prochaine case est occupé par un Token : ce dernier doit bouger
+            if( this.myGame.getMap()[destinationX][destinationY].isTokenHere() )
+            {
+                this.find(destinationX, destinationY).move(direction);
+            }
+            
+            // dans tous les cas, le bloc de pierre doit bouger
+            this.posX = destinationX;
+            this.posY = destinationY;
+        }
+        return true;
     }
-    
-    // quand l'acteur du déplacement est un pion
+
+    // l'acteur du déplacement est un pion...
     private boolean moveByPion(int direction)
     {
-        switch (direction)  {
-            
-            case 0:
-            {
-                // Si la case suivante est dans le plateau... si elle est une case vide et/ou s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX, super.posY + 1)).isInside() && ( this.myGame.getMap()[super.posX][super.posY + 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
-                {
-                    super.posY += 1;
+        // si le bloc de pierre poussé par le pion, recontre un mur : le bloc de Pierre ne peut pas bouger
+        if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) )
+        {
+            return false;
+        }
+        else
+        {
+            // Coordonnées fictives de la prochaine case après le déplacement
+            int destinationX = this.posX, destinationY = this.posY;    
+
+            switch (direction) {
+
+                case 0: {
+                    destinationX = this.posX;
+                    destinationY = this.posY + 1;
+                    break;
                 }
-                else
-                {
+
+                case 1: {
+                    destinationX = this.posX + 1;
+                    destinationY = this.posY;
+                    break;
+                }
+
+                case 2: {
+                    destinationX = this.posX;
+                    destinationY = this.posY - 1;
+                    break;
+                }
+
+                case 3: {
+                    destinationX = this.posX - 1;
+                    destinationY = this.posY;
+
+                    break;
+                }
+
+                default: {
                     return false;
                 }
-                
-                break;
             }
             
-            case 1:
-            {
-                // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX + 1, super.posY)).isInside() && ( this.myGame.getMap()[super.posX + 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
-                {
-                    super.posX += 1;
-                }
-                else
-                {
-                    return false;
-                }
-                
-                break;
-            }
-            
-            case 2:
-            {
-                // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX, super.posY - 1)).isInside() && ( this.myGame.getMap()[super.posX][super.posY - 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
-                {
-                    super.posY -= 1;
-                }
-                else
-                {
-                    return false;
-                }
-                
-                break;
-            }
-            
-            case 3:
-            {
-                // Si la case suivante est dans le plateau, si elle est une case vide et s'il n'y pas de mur qui bloque le déplacement...
-                if( (new TokenR(super.myGame, super.posX - 1, super.posY)).isInside() && ( this.myGame.getMap()[super.posX - 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false ) )
-                {
-                    super.posX -= 1;
-                }
-                else
-                {
-                    return false;
-                }
-                
-                break;
-            }
-            
-            default:
+            // si la prochaine case est occupé par un Token : le bloc de pierre ne peut pas bouger
+            // sinon le bloc de pierre peut bouger normalement
+            if( this.myGame.getMap()[destinationX][destinationY].isTokenHere() )
             {
                 return false;
             }
+            else
+            {
+                this.posX = destinationX;
+                this.posY = destinationY;
+                return true;
+            }
         }
-        
-        return true;
     }
     
+        
     /**
      * @param direction
      * @change x and y with the current token
@@ -251,33 +144,33 @@ public class TokenR extends Token {
      * 0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest
      */
     @Override
-    public void move(int direction)    {
-        super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
+    public void move(int direction) {
+        this.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
         this.move(direction, (new TokenP(super.myGame , super.posX , super.posY)) );
-        super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
+        this.myGame.getMap()[super.posX][super.posY].setTokenHere();
     }
     
     public void move(int direction, Token acteur) {
         
-        super.myGame.getMap()[super.posX][super.posY].setEmpty(false);
-        boolean flag = true;
-        if( acteur.getClass().getName().compareTo("TokenM") == 0)
+        this.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
+        boolean flag;
+        
+        if( acteur instanceof TokenM )
         {
-            this.moveByMonster(direction);
-            while(this.myGame.getMap()[super.posX][super.posY].special == 1 && flag)
-            {
-                flag = this.moveByPion(direction);
-            }
+            flag = this.moveByMonster(direction);
         }
         else
         {
-            this.moveByPion(direction);
-            while(this.myGame.getMap()[super.posX][super.posY].special == 1 && flag)
-            {
-                flag = this.moveByPion(direction);
-            }
+            flag = this.moveByPion(direction);
         }
-        super.myGame.getMap()[super.posX][super.posY].setEmpty(true);
+        
+        // gestion de la flaque de sang
+        while(this.myGame.getMap()[super.posX][super.posY].isBloodspot() && flag)
+        {
+            flag = this.moveByPion(direction);
+        }
+        
+        super.myGame.getMap()[super.posX][super.posY].setTokenHere();
     }
     
     public boolean canBePushByPion(int direction)
@@ -286,22 +179,22 @@ public class TokenR extends Token {
             
             case 0:
             {
-                return ( this.myGame.getMap()[super.posX][super.posY + 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+                return ( this.myGame.getMap()[this.posX][this.posY + 1].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
             }
             
             case 1:
             {
-                return ( this.myGame.getMap()[super.posX + 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+                return ( this.myGame.getMap()[super.posX + 1][super.posY].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
             }
             
             case 2:
             {
-                return ( this.myGame.getMap()[super.posX][super.posY - 1].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+                return ( this.myGame.getMap()[super.posX][super.posY - 1].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
             }
             
             case 3:
             {
-                return ( this.myGame.getMap()[super.posX - 1][super.posY].isEmpty() || this.myGame.getMap()[super.posX][super.posY].getWalls()[direction] == false );
+                return ( this.myGame.getMap()[super.posX - 1][super.posY].isTokenHere == false || this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false );
             }
             
             default:
@@ -310,4 +203,5 @@ public class TokenR extends Token {
             }
         }
     }
+    
 }
