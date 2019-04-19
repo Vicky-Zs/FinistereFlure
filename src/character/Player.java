@@ -67,8 +67,4 @@ public class Player {
   public HashSet getToken() {
       return token;
   }
-
-  public String getPseudo() {
-    return pseudo;
-  }
 }

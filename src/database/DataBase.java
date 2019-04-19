@@ -1,4 +1,4 @@
-package DataBase;
+package database;
 import character.Player;
 import java.sql.*;
 import java.util.HashSet;
