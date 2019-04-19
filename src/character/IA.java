@@ -14,14 +14,17 @@ import token.*;
 
 public class IA extends Player {
 
-    private String nameIA;
+    //private String nameIA;
     // Retrait d'un paramètres
-    public IA(HashSet<Token> token) { //Modifie TokenP -> Token
-        super(token, defineName());
+    /*public IA(HashSet<Token> token) { //Modifie TokenP -> Token
+        super(defineName());
         for(Token p : token){
             token.add(p);
         }
         this.nameIA = defineName();
+    }*/
+    public IA(int playerId, Game g) {
+        super(defineName(), playerId, g);
     }
 
     public static String defineName(){ // Modification en Static
@@ -46,7 +49,7 @@ public class IA extends Player {
 
     @Override
     public String toString(){
-        return this.nameIA +", il vous reste"+super.getNbToken()+" encore en vie";
+        return super.pseudo +", il vous reste"+super.getNbToken()+" encore en vie";
     }
 
 }

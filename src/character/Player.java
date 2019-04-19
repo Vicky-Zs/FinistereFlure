@@ -13,24 +13,33 @@ import token.*;
 
 public class Player {
   private HashSet<Token> token = new HashSet<>(); // encapsulation en TokenP apres
-  private String pseudo;
+  protected String pseudo;
 
 
                 /*Constructeur de la class player*/
 
-  public Player(HashSet<Token> token, String nomPerso){
+  /*public Player(HashSet<Token> token, String nomPerso){
       for(Token p : token){
           this.token.add(p);
       }
       this.pseudo = nomPerso;
+  }*/
+
+  public Player(String pseudo, int playerId, Game g){
+    this.pseudo = pseudo;
+    this.token.add(new TokenP(g, 6, playerId));
+    this.token.add(new TokenP(g, 4, playerId));
+    this.token.add(new TokenP(g, 3, playerId));
+    this.token.add(new TokenP(g, 2, playerId));
   }
 
                 /*  Méthodes  */
-  private void pseudo(){
+  private String pseudo(){
       Scanner sc = new Scanner(System.in);
       System.out.println("Veuillez votre pseudo :");
       String pseudo = sc.nextLine();
       System.out.println("Voici ton p'tit nom  : " + pseudo);
+      return pseudo;
   }
 
   protected int getNbToken(){ // Modif: Private -> Protected
@@ -53,5 +62,9 @@ public class Player {
 
   public HashSet getToken() {
       return token;
+  }
+
+  public String getPseudo() {
+    return pseudo;
   }
 }

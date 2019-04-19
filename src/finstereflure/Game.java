@@ -11,20 +11,21 @@ import java.util.ArrayList;
 
 public class Game {
   public final static int nbPlayers = 2;
-  private Cell[][] map = new Cell [16][11];
+  protected Cell[][] map = new Cell [16][11];
   //Carte du jeu (Représentation en rectangle)
-  private Player[] p = new Player[nbPlayers];
+  protected Player[] p = new Player[nbPlayers];
   //Tableau de nos deux joueurs
-  private Monster m = new Monster();
+  protected Monster m = new Monster();
   //Le montre
-  private ArrayList<Token> tokenOutside = new ArrayList<>();
+  protected ArrayList<Token> tokenOutside = new ArrayList<>();
   //Liste de token à l'extérieur
-  private ArrayList<TokenR> tokenR = new ArrayList<>();
+  protected ArrayList<TokenR> tokenR = new ArrayList<>();
   //Liste de bloc de pierre
-  private ArrayList<TokenP> tokenPWin = new ArrayList<>();
-  private boolean turnPlayers = true;
+  protected ArrayList<TokenP> tokenPWin = new ArrayList<>();
+  //Liste des token ayant gagné la partie
+  protected boolean turnPlayers = true;
   //Permet de savoir si c'est au joueur
-  private int nbTurn = 1;
+  protected int nbTurn = 1;
   //Le nombre de tours
 
   /**
@@ -32,7 +33,7 @@ public class Game {
    */
   public Game() {
   }
-  
+
   /**
    * Returns map
    * @return
@@ -40,7 +41,7 @@ public class Game {
   public Cell[][] getMap () {
     return map;
   }
-  
+
   /**
    * Returns Players
    * @return
@@ -48,31 +49,27 @@ public class Game {
   public Player getPlayer(int x) {
       return p[x];
   }
-  
+
   public ArrayList<Token> getTokenOutside() {
     return tokenOutside;
   }
-  
+
   public ArrayList<TokenR> getTokenR() {
     return tokenR;
   }
-  
+
   public ArrayList<TokenP> getTokenPWin() {
     return tokenPWin;
   }
-  
-  public void addTokenPWin(TokenP t) {
-      this.tokenPWin.add(t);
-  }
-  
+
   public boolean isTurnPlayers() {
       return turnPlayers;
   }
-  
+
   public void setTurnPlayers(boolean b) {
       this.turnPlayers = b;
   }
-  
+
   /**
    * Returns value of nbTurn
    * @return
@@ -80,7 +77,7 @@ public class Game {
   public int getNbTurn() {
       return nbTurn;
   }
-  
+
   public void newTurn() {
       nbTurn ++;
   }
@@ -91,5 +88,62 @@ public class Game {
         map[i][j] = new Cell(i, j);
       }
     }
+
+    System.out.println("La map a été initialisé");
+  }
+
+  public void iniDecorations(){
+    //Initialisation de la première flaque de sang
+    map[4][2].setBloodspot();
+    map[5][2].setBloodspot();
+    map[6][2].setBloodspot();
+    map[7][2].setBloodspot();
+    //Initialisation de la deuxième flaque de sang
+    map[8][8].setBloodspot();
+    map[9][8].setBloodspot();
+    map[8][7].setBloodspot();
+    map[9][7].setBloodspot();
+    //Initialisation des 11 blocks de pierre
+    tokenR.add(new TokenR(this, 2, 8));
+    tokenR.add(new TokenR(this, 4, 3));
+    tokenR.add(new TokenR(this, 5, 1));
+    tokenR.add(new TokenR(this, 6, 4));
+    tokenR.add(new TokenR(this, 7, 6));
+    tokenR.add(new TokenR(this, 8, 1));
+    tokenR.add(new TokenR(this, 8, 5));
+    tokenR.add(new TokenR(this, 12, 3));
+    tokenR.add(new TokenR(this, 12, 7));
+    tokenR.add(new TokenR(this, 13, 5));
+    tokenR.add(new TokenR(this, 14, 2));
+    for(Token t : tokenR) {
+      map[t.getPosX()][t.getPosY()].isTokenHere();
+      System.out.println("Il y a un bloc de pierre en ["+t.getPosX()+";"+t.getPosY()+"]");
+    }
+    System.out.println("Les flaques de sang et les blocs de pierre ont été disposé");
+  }
+
+  public boolean win(){
+    int[] temp = new int[nbPlayers];
+    boolean itsWin = false;
+    for (int i = 0; i < nbPlayers; i++) {
+      for (TokenP t : tokenPWin) {
+        if (t.isWin()) {
+          temp[t.getPlayerId()] ++;
+        }
+      }
+      if (temp[i] == 3) {
+        itsWin = true;
+        System.out.println(winner(i) +"a gagné la partie !");
+      }
+    }
+    return itsWin;
+  }
+
+  public String winner(int playerId){
+    return p[playerId].getPseudo();
+  }
+  
+  public void turn(){
+
   }
 }

@@ -29,7 +29,7 @@ public abstract class Token {
         this.reference = this.id;
         this.id++;
     }
-    
+
     public int getReference(){
         return this.reference;
     }
@@ -82,10 +82,10 @@ public abstract class Token {
                 }
             }
         }
-        if(myGame.getTokenR().isEmpty() == false){
-            for(TokenR p : myGame.getTokenR()){
-                if( p.getPosX() == x && p.getPosY() == y ){
-                    return p;
+        if(!myGame.getTokenR().isEmpty()){
+            for(TokenR t : myGame.getTokenR()){
+                if( t.getPosX() == x && t.getPosY() == y ){
+                    return t;
                 }
             }
         }
