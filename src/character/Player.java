@@ -42,13 +42,17 @@ public class Player {
       return pseudo;
   }
 
-  protected int getNbToken(){ // Modif: Private -> Protected
+  public int getNbToken(){ // Modif: Private -> Protected
       // premet de recuperer le nombre de tokens encore en vie
       int cpt = 0;
       for(Token p : token){
           cpt++;
       }
       return cpt;
+  }
+  
+  public String getPseudo(){
+      return pseudo;
   }
 
   @Override
