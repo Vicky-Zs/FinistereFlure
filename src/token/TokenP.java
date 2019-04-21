@@ -51,8 +51,9 @@ public class TokenP extends Token {
     public void setNbMove(boolean phase) {
         if (phase) {
             this.nbMove = patternA;
-        } else {
-            this.nbMove = patternA;
+        }
+        else {
+            this.nbMove = patternB;
         }
     }
 

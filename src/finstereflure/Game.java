@@ -9,6 +9,11 @@ import map.*;
 import token.*;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Cédric
+ */
+
 public class Game {
   public final static int nbPlayers = 2;
   protected Cell[][] map = new Cell [16][11];
@@ -23,16 +28,10 @@ public class Game {
   //Liste de bloc de pierre
   protected ArrayList<TokenP> tokenPWin = new ArrayList<>();
   //Liste des token ayant gagné la partie
-  protected boolean turnPlayers = true;
-  //Permet de savoir si c'est au joueur
+  protected boolean turnPlayers = true; // Variable à retirer (inutile)
+  //Permet de savoir si c'est au joueur ou non
   protected int nbTurn = 1;
   //Le nombre de tours
-
-  /**
-   * Default empty Game constructor
-   */
-  public Game() {
-  }
 
   /**
    * Returns map
@@ -115,17 +114,22 @@ public class Game {
     tokenR.add(new TokenR(this, 12, 7));
     tokenR.add(new TokenR(this, 13, 5));
     tokenR.add(new TokenR(this, 14, 2));
-    for(Token t : tokenR) {
-      map[t.getPosX()][t.getPosY()].isTokenHere();
-      System.out.println("Il y a un bloc de pierre en ["+t.getPosX()+";"+t.getPosY()+"]");
-    }
     System.out.println("Les flaques de sang et les blocs de pierre ont été disposé");
+  }
+
+  public void iniDecorations(int i){
+    System.out.println("Initialisation des décors pour la partie test.");
+    map[0][9].setBloodspot();
+    map[0][8].setBloodspot();
+    map[0][7].setBloodspot();
+    map[0][6].setBloodspot();
+    tokenR.add(new TokenR(this, 1, 10));
   }
 
   public boolean win(){
     int[] temp = new int[nbPlayers];
     boolean itsWin = false;
-    for (int i = 0; i < nbPlayers; i++) {
+    for (int i = 0; i < p.length; i++) {
       for (TokenP t : tokenPWin) {
         if (t.isWin()) {
           temp[t.getPlayerId()] ++;
@@ -142,8 +146,12 @@ public class Game {
   public String winner(int playerId){
     return p[playerId].getPseudo();
   }
-  
-  public void turn(){
 
+  public void turn(){
+    while(!win()){
+      for (int i = 0; i < p.length; i++) {
+
+      }
+    }
   }
 }

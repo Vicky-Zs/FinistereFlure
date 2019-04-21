@@ -13,14 +13,15 @@ import character.*;
  * @author Aurelien
  */
 public class TokenR extends Token {
-    
+
     public TokenR (Game myGame , int x , int y) {
         super( myGame , x , y );
+        myGame.getMap()[x][y].isTokenHere();
     }
-    
+
     // l'acteur du déplacement est un monstre...
     private boolean moveByMonster(int direction){
-        
+
         // si le bloc de pierre poussé par le monstre, recontre un mur : le bloc de Pierre doit être détruit
         if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) )
         {
@@ -29,7 +30,7 @@ public class TokenR extends Token {
         else
         {
             // Coordonnées fictives de la prochaine case après le déplacement
-            int destinationX = 0, destinationY = 0;    
+            int destinationX = 0, destinationY = 0;
 
             switch (direction) {
 
@@ -62,13 +63,13 @@ public class TokenR extends Token {
                     return false;
                 }
             }
-            
+
             // si la prochaine case est occupé par un Token : ce dernier doit bouger
             if( this.myGame.getMap()[destinationX][destinationY].isTokenHere() )
             {
                 this.find(destinationX, destinationY).move(direction);
             }
-            
+
             // dans tous les cas, le bloc de pierre doit bouger
             this.posX = destinationX;
             this.posY = destinationY;
@@ -84,7 +85,7 @@ public class TokenR extends Token {
         }
         else{
             // Coordonnées fictives de la prochaine case après le déplacement
-            int destinationX = this.posX, destinationY = this.posY;    
+            int destinationX = this.posX, destinationY = this.posY;
             switch (direction) {
                 case 0: {
                     destinationX = this.posX;
@@ -110,7 +111,7 @@ public class TokenR extends Token {
                     return false;
                 }
             }
-            
+
             // si la prochaine case est occupé par un Token : le bloc de pierre ne peut pas bouger
             // sinon le bloc de pierre peut bouger normalement
             if(this.myGame.getMap()[destinationX][destinationY].isTokenHere()){
@@ -123,8 +124,8 @@ public class TokenR extends Token {
             }
         }
     }
-    
-        
+
+
     /**
      * @param direction
      * @change x and y with the current token
@@ -137,25 +138,25 @@ public class TokenR extends Token {
         this.move(direction, (new TokenP(super.myGame , super.posX , super.posY)) );
         this.myGame.getMap()[super.posX][super.posY].setTokenHere();
     }
-    
+
     public void move(int direction, Token acteur) {
         this.myGame.getMap()[super.posX][super.posY].setNotTokenHere();
         boolean flag;
-        
+
         if(acteur instanceof TokenM){
             flag = this.moveByMonster(direction);
         }
         else{
             flag = this.moveByPion(direction);
         }
-        
+
         // gestion de la flaque de sang
         while(this.myGame.getMap()[super.posX][super.posY].isBloodspot() && flag){
             flag = this.moveByPion(direction);
         }
         super.myGame.getMap()[super.posX][super.posY].setTokenHere();
     }
-    
+
     public boolean canBePushByPion(int direction){
         switch (direction)  {
             case 0:{
@@ -175,5 +176,5 @@ public class TokenR extends Token {
             }
         }
     }
-    
+
 }

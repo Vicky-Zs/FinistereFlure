@@ -10,6 +10,11 @@ import map.*;
 import token.*;
 import static finstereflure.Main.g;
 
+/**
+ *
+ * @author Cédric
+ */
+
 public class Test extends Game {
   public static void main() {
     g.iniMap();
@@ -18,6 +23,7 @@ public class Test extends Game {
     }
     System.out.println("Deux joueurs ont été créé avec des noms aléatoires");
     System.out.println("Ceci est une test automatique du jeu");
-    g.iniDecorations();
+    g.iniDecorations(0); // Décoration pour le test
   }
+
 }
