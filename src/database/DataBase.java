@@ -30,13 +30,12 @@ public class DataBase implements Parametre {
         demande = "INSERT INTO player(Pseudo,TokenAlive,TokenDead) VALUES("+pseudo+tokenVivant+tokenMort+")";
     }
     
-    public void closeDataBase(){
-        if(con!=null){
-                try{
-                    con.close();
-                    System.out.println("DataBase connection terminated");
-                }catch(Exception e){
-            }
+    private void closeConnexion() {
+        if (con != null) {
+            try {
+                con.close();
+                System.out.println("Database connection terminated.");
+            } catch (Exception e) {}
         }
     }
 }
