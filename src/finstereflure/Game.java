@@ -123,11 +123,11 @@ public class Game {
 
   public void iniDecorations(int i){
     System.out.println("Initialisation des décors pour la partie test.");
-    map[0][9].setBloodspot();
-    map[0][8].setBloodspot();
-    map[0][7].setBloodspot();
-    map[0][6].setBloodspot();
-    tokenR.add(new TokenR(this, 1, 10));
+    map[14][0].setBloodspot();
+    map[13][0].setBloodspot();
+    map[12][0].setBloodspot();
+    map[11][0].setBloodspot();
+    tokenR.add(new TokenR(this, 14, 2));
   }
 
   public boolean win(){

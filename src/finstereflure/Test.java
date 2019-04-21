@@ -26,9 +26,15 @@ public class Test extends Game {
     System.out.println("Ceci est une test automatique du jeu");
     g.iniDecorations(0); // Décoration pour le test
     temp = g.p[0].getToken(5);
-    temp.move(0);
-    System.out.println("Le token s'est déplacé au Nord, nouvelle position [" + temp.getPosX() + ";" + temp.getPosY() + "]");
-    System.out.println();
+    System.out.println(temp);
+    if (temp instanceof TokenP){
+        TokenP tP = (TokenP) temp;
+        System.out.println(tP);
+        tP.move(0);
+        System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
+        tP.move(0);
+        //System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
+    }
   }
 
 }
