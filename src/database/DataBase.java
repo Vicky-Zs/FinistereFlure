@@ -12,14 +12,21 @@ public class DataBase implements Parametre {
 
         Player p = new Player(HashSet<Token> token , String pseudo);
         
-    public void openDataBase(){
-        try{
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        System.out.println("Database Connected ");
-        Statement stmt = con.createStatement();
+    private void openConnexion() {
+        String connectUrl = "jdbc:mysql://mysql-finstereflure.alwaysdata.net:3306";
+        if (con != null) {
+            this.closeConnexion();
         }
-        catch(Exception e){
-            System.out.println("Error Database");
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(connectUrl, username, password);
+            System.out.println("Database connection established.");
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("Cannot load db driver: com.mysql.jdbc.Driver");
+            cnfe.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Erreur inattendue");
+            e.printStackTrace();
         }
     }
     
@@ -27,15 +34,18 @@ public class DataBase implements Parametre {
         String pseudo = p.getPseudo();
         int tokenMort = 4 - p.getNbToken();
         int tokenVivant = p.getNbToken();
-        demande = "INSERT INTO player(Pseudo,TokenAlive,TokenDead) VALUES("+pseudo+tokenVivant+tokenMort+")";
+        demande = "INSERT INTO player(Pseudo,TokenAlive,TokenDead) VALUES("+pseudo+","+tokenVivant+","+tokenMort+")";
+        Statement state = conn.createStatement();
+        state.execute(demande);
     }
+    
     
     private void closeConnexion() {
         if (con != null) {
             try {
                 con.close();
                 System.out.println("Database connection terminated.");
-            } catch (Exception e) {}
+            } catch (Exception e) {/*De toute façon il doit se fermer*/}
         }
     }
 }
