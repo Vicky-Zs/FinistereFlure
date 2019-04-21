@@ -24,12 +24,13 @@ public class TokenP extends Token {
         this.playerId = playerId;
         this.patternA = patterneA;
         this.patternB = Math.abs(7 - patterneA); //Retourne la valeur absolue
-        this.out = true;
+        this.out = true; // Peut-être inutile puisque l'on a la liste Outside
         this.win = false;
         setNbMove(true);
+        myGame.getTokenOutside().add(this);
     }
 
-    public TokenP(Game myGame) {
+    /*public TokenP(Game myGame) {
         super(myGame, -1, -1);
         this.playerId = playerId;
         this.patternA = 7;
@@ -37,7 +38,7 @@ public class TokenP extends Token {
         this.out = false;
         this.win = false;
         setNbMove(true);
-    }
+    }*/
 
     public static int getVictime() {
         return victime;
@@ -51,8 +52,9 @@ public class TokenP extends Token {
     public void setNbMove(boolean phase) {
         if (phase) {
             this.nbMove = patternA;
-        } else {
-            this.nbMove = patternA;
+        }
+        else {
+            this.nbMove = patternB;
         }
     }
 
@@ -101,7 +103,7 @@ public class TokenP extends Token {
         if (this.myGame.getTokenOutside().contains(this)) {
             this.myGame.getPlayer(this.playerId).getToken().add(this.myGame.getTokenOutside().remove(this.myGame.getTokenOutside().indexOf(this)));
             this.out = false;
-            this.posX = 0;
+            this.posX = 15;
             this.posY = 0;
             this.myGame.getMap()[this.posX][this.posY].setTokenHere();
         }
@@ -238,10 +240,9 @@ public class TokenP extends Token {
     public void move(int direction) {
         if (this.isOut()) {
             this.inGame();
-        } else if (this.hasWin() == false) {
-
+        } 
+        else if (!this.hasWin()) {
             this.myGame.getMap()[this.posX][this.posY].setNotTokenHere();
-
             // si c'est le tour des joueurs
             if (this.myGame.isTurnPlayers()){
                 if(this.canMove(direction)){
@@ -309,5 +310,13 @@ public class TokenP extends Token {
 
     public int getPlayerId(){
         return playerId;
+    }
+
+    public int getPatternA(){
+        return patternA;
+    }
+
+    public int getPatternB(){
+        return patternB;
     }
 }

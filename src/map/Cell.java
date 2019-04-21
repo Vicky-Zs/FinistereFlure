@@ -26,7 +26,7 @@ public class Cell {
 	/**
 	* Default empty Cell constructor
 	*/
-	public Cell(int x, int y) {
+	public Cell(int x, int y) { //TODO: Ne pas créer les 6 cases en dehors de la map
 		this.bloodspot = false;
 		this.tokenHere = false;
 		//Mur uniquement au Nord
