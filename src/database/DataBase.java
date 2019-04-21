@@ -25,6 +25,7 @@ public class DataBase implements Parametre {
             System.out.println("Cannot load db driver: com.mysql.jdbc.Driver");
             cnfe.printStackTrace();
         } catch (Exception e) {
+            // il ne reconnait pas l'adresse : UnknownHostException
             System.out.println("Erreur inattendue");
             e.printStackTrace();
         }
