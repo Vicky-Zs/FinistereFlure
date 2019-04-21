@@ -16,7 +16,7 @@ public class TokenR extends Token {
 
     public TokenR (Game myGame , int x , int y) {
         super( myGame , x , y );
-        myGame.getMap()[x][y].isTokenHere();
+        myGame.getMap(x, y).isTokenHere();
     }
 
     // l'acteur du déplacement est un monstre...

@@ -37,8 +37,12 @@ public class Game {
    * Returns map
    * @return
    */
-  public Cell[][] getMap () {
-    return map;
+  public Cell[][] getMap() {
+      return map;
+  }
+
+  public Cell getMap(int x, int y) {
+      return map[x][y];
   }
 
   /**
@@ -82,8 +86,8 @@ public class Game {
   }
 
   public void iniMap(){
-    for(int i = 0; i < 15; i++) {
-      for (int j = 0; j < 10; j++) {
+    for(int i = 0; i < 16; i++) {
+      for (int j = 0; j < 11; j++) {
         map[i][j] = new Cell(i, j);
       }
     }

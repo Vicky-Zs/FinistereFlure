@@ -103,7 +103,7 @@ public class TokenP extends Token {
             this.myGame.getPlayer(this.playerId).getToken().add(this.myGame.getTokenOutside().remove(this.myGame.getTokenOutside().indexOf(this)));
             this.out = false;
             this.posX = 0;
-            this.posY = 0;
+            this.posY = 10;
             this.myGame.getMap()[this.posX][this.posY].setTokenHere();
         }
     }
@@ -239,7 +239,8 @@ public class TokenP extends Token {
     public void move(int direction) {
         if (this.isOut()) {
             this.inGame();
-        } else if (this.hasWin() == false) {
+        } 
+        else if (this.hasWin() == false) {
 
             this.myGame.getMap()[this.posX][this.posY].setNotTokenHere();
 
@@ -310,5 +311,13 @@ public class TokenP extends Token {
 
     public int getPlayerId(){
         return playerId;
+    }
+
+    public int getPatternA(){
+        return patternA;
+    }
+
+    public int getPatternB(){
+        return patternB;
     }
 }

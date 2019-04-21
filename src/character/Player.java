@@ -73,13 +73,17 @@ public class Player {
   }
 
   public Token getToken(int pattern) {
+      
       for (Token t : token) {
-        if (t.getPatternA() == pattern) {
-          return t;
-        }
-        else if (t.getPatternB() == pattern) {
-          return t;
-        }
+          if (t instanceof TokenP) {
+              TokenP tP = (TokenP) t;
+              if (tP.getPatternA() == pattern) {
+                  return t;
+              }
+              else if (tP.getPatternB() == pattern) {
+                  return t;
+              }
+          }
       }
       return null;
   }
