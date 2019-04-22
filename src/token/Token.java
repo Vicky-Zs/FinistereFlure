@@ -57,8 +57,7 @@ public abstract class Token {
     /**
      * @return true when the current Token is in the board
      */
-    /*
-    private boolean isInside()
+    /*private boolean isInside()
     {
         if((this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6)){
             return true;
@@ -72,8 +71,7 @@ public abstract class Token {
         else{
             return false;
         }
-    }
-    */
+    }*/
     // donne le Token recherché ; Renvoie null sinon...
     // Note : à améliorer pour être comme IsInside
     // Ou bien : faire que ce soit Game qui puisse rendre le Token souhaité, en y rentrant que ses coordonnées X et Y (pourrait réduire les "accidents")

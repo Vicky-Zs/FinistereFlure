@@ -39,7 +39,6 @@ public class IA extends Player {
         nomIA.add("Marvin");
         nomIA.add("ED 209");
         nomIA.add("R2D2");
-
         for(int i = 0;i<nomIA.size();i++){ // Permet de mélanger les noms
             Collections.shuffle(nomIA);
         }

@@ -157,6 +157,7 @@ public class Cell {
 	* @return
 	*/
 	public boolean getWall(int i) {
+            System.out.println("Test Wall");
 		if ((i>-1) && (i<5)){
 			return wall[i];
 		}
