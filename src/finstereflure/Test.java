@@ -32,8 +32,9 @@ public class Test extends Game {
         System.out.println(tP);
         tP.move(0);
         System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
-        tP.move(0);
-        //System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
+        System.out.println(temp.getM());
+        tP.move(3);
+        System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
     }
   }
 

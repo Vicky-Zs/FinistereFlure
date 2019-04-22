@@ -11,7 +11,7 @@ import character.*;
 
 /**
  *
- * @author aurelien
+ * @author Aurélien
  */
 public class TokenP extends Token {
 
@@ -64,18 +64,17 @@ public class TokenP extends Token {
         return (this.myGame.getMap()[this.getPosX()][this.getPosY()].isTokenHere() == false);
     }
 
-    // indique si le TokenP peut se dépacer d'une case, vers une direction donnée
-    public boolean canMove(int direction) {
-        TokenP p = new TokenP( this.myGame , this.posX ,  this.posY );
-        boolean flag = p.moveONE(direction);
-
+    // Indique si le TokenP peut se dépacer d'une case, vers une direction donnée
+    public boolean canMove(int direction){
+        TokenP t = new TokenP(this.myGame, this.posX,  this.posY);
+        boolean flag = t.moveONE(direction);
         if(flag && this.nbMove > 0){
-            if(this.myGame.getMap()[p.getPosX()][p.getPosY()].isBloodspot()){
-                while(this.myGame.getMap()[p.getPosX()][p.getPosY()].isBloodspot() && flag){
-                    flag = p.moveONE(direction);
+            if(this.myGame.getMap()[t.getPosX()][t.getPosY()].isBloodspot()){
+                while(this.myGame.getMap()[t.getPosX()][t.getPosY()].isBloodspot() && flag){
+                    flag = t.moveONE(direction);
                 }
 
-                if(this.myGame.getMap()[p.getPosX()][p.getPosY()].isTokenHere()){
+                if(this.myGame.getMap()[t.getPosX()][t.getPosY()].isTokenHere()){
                     return (this.nbMove > 1);
                 }
                 else{
@@ -84,7 +83,7 @@ public class TokenP extends Token {
             }
             else
             {
-                if( this.myGame.getMap()[p.getPosX()][p.getPosY()].isTokenHere()){
+                if( this.myGame.getMap()[t.getPosX()][t.getPosY()].isTokenHere()){
                     return (this.nbMove > 1);
                 }
                 else{
@@ -129,10 +128,8 @@ public class TokenP extends Token {
     }
 
     // déplace le TokenP de 1 case vers une direction donnée : indique s'il a réussit à se déplacer ou non
-    private boolean moveONE(int direction)
-    {
-        if (this.nbMove >= 1)
-        {
+    private boolean moveONE(int direction){
+        if (this.nbMove > 0){
             // Coordonnées fictives de la prochaine case après le déplacement
             int destinationX = this.posX, destinationY = this.posY;
             switch (direction) {
@@ -162,71 +159,58 @@ public class TokenP extends Token {
             }
 
             // Gestion des colisions : s'il y a un Token...
-            if (this.myGame.getMap()[destinationX][destinationY].isTokenHere())
-            {
+            if (this.myGame.getMap(destinationX, destinationY).isTokenHere()){
                 // ...si ce Token est un bloc de pierre...
-                if (this.find(destinationX, destinationY) instanceof TokenR)
-                {
+                if (this.find(destinationX, destinationY) instanceof TokenR){
                     TokenR t = (TokenR) super.find(destinationX, destinationY);
-
                     // ...si ce TokenR peut être poussé par un pion : ce TokenR doit bouger
                     if (t.canBePushByPion(direction)) {
                         // Token R poussé
                         t.move(direction, this);
 
-                        // déplacement
+                        // Déplacement
                         this.posX = destinationX;
                         this.posY = destinationY;
 
                         return true;
                     }
-                    else
-                    {
+                    else{
                         return false;
                     }
                 }
-                else
-                {
+                else{
                     // ...si ce Token est un pion et qu'il reste plus de 1 point de mouvement : le pion peut se déplacer
-                    if(this.find(destinationX, destinationY) instanceof TokenP)
-                    {
-                        if( this.nbMove > 1)
-                        {
-                            // déplacement
+                    if(this.find(destinationX, destinationY) instanceof TokenP){
+                        if( this.nbMove > 1){
+                            // Déplacement
                             this.posX = destinationX;
                             this.posY = destinationY;
 
                             return true;
                         }
-                        else
-                        {
+                        else{
                             return false;
                         }
                     }
-                    else    // ...si ce Token est un monstre : le pion ne peut pas se déplacer
-                    {
+                    else{    // ...si ce Token est un monstre : le pion ne peut pas se déplacer
                         return false;
                     }
                 }
             }
-            else
-            {
+            else{
                 // S'il n'y a pas de mur : le pion peut se déplacer (exception pour les murs d'enceinte)
-                if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false || destinationX + destinationY == 4 )
-                {
-                    // déplacement
+                if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false || destinationX + destinationY == 4 ){
+                    // Déplacement
                     this.posX = destinationX;
                     this.posY = destinationY;
                     return true;
                 }
-                else
-                {
+                else{
                     return false;
                 }
             }
         }
-        else
-        {
+        else{
             return false;
         }
     }
@@ -243,7 +227,7 @@ public class TokenP extends Token {
         } 
         else if (!this.hasWin()) {
             this.myGame.getMap()[this.posX][this.posY].setNotTokenHere();
-            // si c'est le tour des joueurs
+            // Si c'est le tour des joueurs
             if (this.myGame.isTurnPlayers()){
                 if(this.canMove(direction)){
                     boolean flag = this.moveONE(direction);
@@ -254,7 +238,7 @@ public class TokenP extends Token {
                 }
                 this.myGame.getMap()[this.posX][this.posY].setTokenHere();
             }
-            else{     // si c'est le tour du Monstre, cela veut dire d'après les règles, qu'il est en train de se faire pousser par un bloc de pierre, par le monstre
+            else {     // si c'est le tour du Monstre, cela veut dire d'après les règles, qu'il est en train de se faire pousser par un bloc de pierre, par le monstre
                 // si le pion n'est pas bloqué par son déplacement : il bouge / sinon : il meurt
                 if(this.moveONE(direction)){
                     boolean flag = true;

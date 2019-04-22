@@ -28,7 +28,7 @@ public class Game {
   //Liste de bloc de pierre
   protected ArrayList<TokenP> tokenPWin = new ArrayList<>();
   //Liste des token ayant gagné la partie
-  protected boolean turnPlayers = true; // Variable à retirer (inutile)
+  protected boolean turnPlayers = true;
   //Permet de savoir si c'est au joueur ou non
   protected int nbTurn = 1;
   //Le nombre de tours

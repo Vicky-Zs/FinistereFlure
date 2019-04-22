@@ -106,6 +106,10 @@ public abstract class Token {
     public int getPosY() {
         return posY;
     }
+    
+    public int getM(){
+        return nbMove;
+    }
 
     // Note : penser à Override equal() et hashcode() afin de rendre les méthodes .get(Object) .contain(Object) des listes opérationnelles
     // et éviter les recherches par boucles for
