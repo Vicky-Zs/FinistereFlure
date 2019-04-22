@@ -126,7 +126,8 @@ public class TokenP extends Token {
     // déplace le TokenP de 1 case vers une direction donnée : indique s'il a réussit à se déplacer ou non
     private boolean moveONE(int direction) {
 
-        if (this.nbMove > 0) {
+        if (this.nbMove > 0) 
+        {
             // Coordonnées fictives de la prochaine case après le déplacement
             int destinationX = this.posX, destinationY = this.posY;
             switch (direction) {
@@ -155,55 +156,75 @@ public class TokenP extends Token {
                 }
             }
 
-            // Gestion des colisions : s'il y a un Token...
-            if (this.myGame.getMap(destinationX, destinationY).isTokenHere()) {
-                // ...si ce Token est un bloc de pierre...
-                if (this.find(destinationX, destinationY) instanceof TokenR) {
-                    TokenR t = (TokenR) super.find(destinationX, destinationY);
-                    // ...si ce TokenR peut être poussé par un pion : ce TokenR doit bouger
-                    if (t.canBePushByPion(direction)) {
-                        // Token R poussé
-                        t.move(direction, this);
+            // Gestion des murs : s'il y a un mur, le mouvement est impossible.
+            if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false || destinationX + destinationY == 4)
+            {
+                // Gestion des colisions : s'il y a un Token...
+                if (this.myGame.getMap(destinationX, destinationY).isTokenHere()) 
+                {
+                    // ...si ce Token est un bloc de pierre...
+                    if (this.find(destinationX, destinationY) instanceof TokenR) 
+                    {
+                        TokenR t = (TokenR) super.find(destinationX, destinationY);
+                        // ...si ce TokenR peut être poussé par un pion : ce TokenR doit bouger
+                        if (t.canBePushByPion(direction)) 
+                        {
+                            // Token R poussé
+                            t.move(direction, this);
 
-                        // Déplacement
-                        this.posX = destinationX;
-                        this.posY = destinationY;
-
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    // ...si ce Token est un pion et qu'il reste plus de 1 point de mouvement : le pion peut se déplacer
-                    if (this.find(destinationX, destinationY) instanceof TokenP) {
-                        if (this.nbMove > 1) {
                             // Déplacement
                             this.posX = destinationX;
                             this.posY = destinationY;
 
                             return true;
-                        } else {
+                        } 
+                        else 
+                        {
                             return false;
                         }
-                    } else {    // ...si ce Token est un monstre : le pion ne peut pas se déplacer
-                        return false;
+                    } 
+                    else 
+                    {
+                        // ...si ce Token est un pion
+                        if (this.find(destinationX, destinationY) instanceof TokenP) 
+                        {
+                            // ...s'il reste plus de 1 point de mouvement : le pion peut se déplacer
+                            if (this.nbMove > 1) {
+                                // Déplacement
+                                this.posX = destinationX;
+                                this.posY = destinationY;
+
+                                return true;
+                            } 
+                            else 
+                            {
+                                return false;
+                            }
+                        } 
+                        else 
+                        {    // ...si ce Token est alors un monstre : le pion ne peut pas se déplacer
+                            return false;
+                        }
                     }
                 }
-            } else {
-                // S'il n'y a pas de mur : le pion peut se déplacer (exception pour les murs d'enceinte)
-                if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false || destinationX + destinationY == 4) {
+                else    // s'il n'y a ni mur, ni Token : le pion se déplace librement
+                {
                     // Déplacement
                     this.posX = destinationX;
                     this.posY = destinationY;
                     return true;
-                } else {
-                    return false;
                 }
             }
-
-        } else {
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
             return false;
         }
+        
     }
 
     /**
