@@ -11,7 +11,7 @@ import token.*;
  */
 
 public class Monster {
-  private Token token = new TokenM(Main.g, 0, 0); // Mise à jour du token
+  private Token token = new TokenM(Main.g); // Mise à jour du token
 
   private int getPositionX(){
       return this.token.getPosX();
