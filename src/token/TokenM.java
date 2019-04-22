@@ -44,9 +44,6 @@ public class TokenM extends Token {
         this.nbMoves.add(10);
     }
 
-    private boolean isInside(){
-        return ( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
-    }
 
     /**
      * @param direction
