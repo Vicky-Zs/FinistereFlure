@@ -46,6 +46,10 @@ public class TokenM extends Token {
     }
 
 
+    private boolean isInside(){
+        return ( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
+    }
+    
     /**
      * @param direction
      * @change x and y with the current token
@@ -121,7 +125,7 @@ public class TokenM extends Token {
      */
     public void tour()  {
         rollDice();
-        System.out.println("Move : "+nbMove);
+        // System.out.println("Move : "+nbMove);
         if(this.nbMove < 0 && this.myGame.getNbTurn() == 1){
             int maxMove = 0, die1 = TokenP.getVictime();
             while(this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20){
@@ -135,9 +139,9 @@ public class TokenM extends Token {
         }
         else{
             while(this.nbMove > 0){
-                System.out.println("Test 3");
+                // System.out.println("Test 3");
                 this.move(look());
-                System.out.println("Test 4");
+                // System.out.println("Test 4");
                 // gestion de la flaque de sang
                 while(this.myGame.getMap()[super.posX][super.posY].isBloodspot()){
                     this.move(look());
@@ -153,21 +157,22 @@ public class TokenM extends Token {
         int result = 0;
         int x = this.posX;
         int y = this.posY + 1;
-        System.out.println("Test4");
-        System.out.println(myGame.getMap(x, y-1).getWall(0)+" Test");
-        while(!this.myGame.getMap(x, y-1).getWall(0)){    
-        System.out.println("Test");
-            if(this.myGame.getMap(x, y).isTokenHere()){
-                if(this.find(x, y) instanceof TokenP){
-                    return result;
+        // System.out.println("Test4");
+        // System.out.println(myGame.getMap(x, y-1).getWall(0)+" Test");
+        if( (new TokenM(this.myGame, x, y)).isInside() )
+        {
+            while (!this.myGame.getMap(x, y - 1).getWall(0)) {
+                // System.out.println("Test");
+                if (this.myGame.getMap(x, y).isTokenHere()) {
+                    if (this.find(x, y) instanceof TokenP) {
+                        return result;
+                    } else {
+                        return 50;
+                    }
+                } else {
+                    result++;
+                    y++;
                 }
-                else{
-                    return 50;
-                }
-            }
-            else{
-                result++;
-                y++;
             }
         }
         return 50;
@@ -177,18 +182,20 @@ public class TokenM extends Token {
         int result = 0;
         int x = this.posX;
         int y = this.posY - 1;
-        while( this.myGame.getMap()[x][y + 1].getWall(2) == false ){
-            if(this.myGame.getMap()[x][y].isTokenHere()){
-                if( this.find(x, y) instanceof TokenP ){
-                    return result;
+        
+        if( (new TokenM(this.myGame, x, y)).isInside() )
+        {
+            while (!this.myGame.getMap()[x][y + 1].getWall(2)) {
+                if (this.myGame.getMap()[x][y].isTokenHere()) {
+                    if (this.find(x, y) instanceof TokenP) {
+                        return result;
+                    } else {
+                        return 50;
+                    }
+                } else {
+                    result++;
+                    y++;
                 }
-                else{
-                    return 50;
-                }
-            }
-            else{
-                result++;
-                y++;
             }
         }
         return 50;
@@ -199,18 +206,19 @@ public class TokenM extends Token {
         int x = this.posX - 1;
         int y = this.posY;
 
-        while(this.myGame.getMap()[x + 1][y].getWall(3) == false){
-            if(this.myGame.getMap()[x][y].isTokenHere()){
-                if(this.find(x, y) instanceof TokenP){
-                    return result;
+        if( (new TokenM(this.myGame, x, y)).isInside() )
+        {
+            while (!this.myGame.getMap()[x + 1][y].getWall(3)) {
+                if (this.myGame.getMap()[x][y].isTokenHere()) {
+                    if (this.find(x, y) instanceof TokenP) {
+                        return result;
+                    } else {
+                        return 50;
+                    }
+                } else {
+                    result++;
+                    y++;
                 }
-                else{
-                    return 50;
-                }
-            }
-            else{
-                result++;
-                y++;
             }
         }
         return 50;
@@ -221,27 +229,28 @@ public class TokenM extends Token {
         int x = this.posX + 1;
         int y = this.posY;
 
-        while(this.myGame.getMap()[x - 1][y].getWall(1) == false){
-            if(this.myGame.getMap()[x][y].isTokenHere()){
-                if(this.find(x, y) instanceof TokenP){
-                    return result;
+        if( (new TokenM(this.myGame, x, y)).isInside() )
+        {
+            while (!this.myGame.getMap()[x - 1][y].getWall(1)) {
+                if (this.myGame.getMap()[x][y].isTokenHere()) {
+                    if (this.find(x, y) instanceof TokenP) {
+                        return result;
+                    } else {
+                        return 50;
+                    }
+                } else {
+                    result++;
+                    y++;
                 }
-                else{
-                    return 50;
-                }
-            }
-            else{
-                result++;
-                y++;
             }
         }
         return 50;
     }
 
     private int look() {
-        int up = 50, down = 0, left = 50, right = 50;
+        int up = 50, down = 50, left = 50, right = 50;
         
-        System.out.println("Orientation : " + orientation);
+        // System.out.println("Orientation : " + orientation);
         switch(this.orientation) {
             case 0:{
                 up = this.lookUp();
@@ -251,11 +260,11 @@ public class TokenM extends Token {
             }
             case 1:{
                 up = this.lookUp();
-                System.out.println("Test 1.1");
+                // System.out.println("Test 1.1");
                 down = this.lookDown();
-                System.out.println("Test 1.2");
+                // System.out.println("Test 1.2");
                 right = this.lookRight();
-                System.out.println("Test 1.3");
+                // System.out.println("Test 1.3");
                 break;
             }
             case 2:{
@@ -315,7 +324,7 @@ public class TokenM extends Token {
             this.nbMoves.add(8);
             this.nbMoves.add(10);
         }
-        this.nbMove = this.nbMoves.remove((int) (Math.random()*this.nbMoves.size()));
+        this.nbMove = (int) this.nbMoves.remove((int) (Math.random()*this.nbMoves.size()));
     }
 
 }

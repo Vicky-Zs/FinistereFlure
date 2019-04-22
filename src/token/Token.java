@@ -48,11 +48,6 @@ public abstract class Token {
      */
     // Note : pourra être améliorer grâce à l'astuce des diagonales
     public abstract void move(int direction);
-
-    protected boolean isInside(){
-        return ( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
-    }
-    
     
     /**
      * @return true when the current Token is in the board
