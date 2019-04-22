@@ -159,6 +159,7 @@ public class TokenP extends Token {
             }
 
             // Gestion des colisions : s'il y a un Token...
+            System.out.println(destinationX +"  "+ destinationY);
             if (this.myGame.getMap(destinationX, destinationY).isTokenHere()){
                 // ...si ce Token est un bloc de pierre...
                 if (this.find(destinationX, destinationY) instanceof TokenR){
@@ -199,7 +200,7 @@ public class TokenP extends Token {
             }
             else{
                 // S'il n'y a pas de mur : le pion peut se déplacer (exception pour les murs d'enceinte)
-                if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false || destinationX + destinationY == 4 ){
+                if(this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false || destinationX + destinationY == 4){
                     // Déplacement
                     this.posX = destinationX;
                     this.posY = destinationY;
@@ -226,7 +227,7 @@ public class TokenP extends Token {
             this.inGame();
         } 
         else if (!this.hasWin()) {
-            this.myGame.getMap()[this.posX][this.posY].setNotTokenHere();
+            this.myGame.getMap(this.posX, this.posY).setNotTokenHere();
             // Si c'est le tour des joueurs
             if (this.myGame.isTurnPlayers()){
                 if(this.canMove(direction)){
