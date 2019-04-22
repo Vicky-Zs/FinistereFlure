@@ -33,9 +33,15 @@ public class Test extends Game {
         tP.move(0);
         System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
         System.out.println(tP.getNbMove());
-        tP.move(3);
+        tP.move(1);
         System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
         System.out.println(tP.getNbMove());
+        g.setTurnPlayers(false);
+    }
+    temp = g.getMonster().getToken();
+    if (temp instanceof TokenM){
+      TokenM tM = (TokenM) temp;
+      tM.tour();
     }
   }
 

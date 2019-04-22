@@ -52,6 +52,10 @@ public class Game {
   public Player getPlayer(int x) {
       return p[x];
   }
+  
+  public Monster getMonster() {
+      return m;
+  }
 
   public ArrayList<Token> getTokenOutside() {
     return tokenOutside;

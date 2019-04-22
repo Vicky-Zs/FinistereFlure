@@ -20,6 +20,10 @@ public class Monster {
    private int getPositionY(){
       return this.token.getPosY();
   }
+   
+   public Token getToken(){
+       return token;
+   }
 
   @Override
    public String toString(){
