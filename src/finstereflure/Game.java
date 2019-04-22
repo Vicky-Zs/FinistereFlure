@@ -9,6 +9,11 @@ import map.*;
 import token.*;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Cédric
+ */
+
 public class Game {
   public final static int nbPlayers = 2;
   protected Cell[][] map = new Cell [16][11];
@@ -24,22 +29,20 @@ public class Game {
   protected ArrayList<TokenP> tokenPWin = new ArrayList<>();
   //Liste des token ayant gagné la partie
   protected boolean turnPlayers = true;
-  //Permet de savoir si c'est au joueur
+  //Permet de savoir si c'est au joueur ou non
   protected int nbTurn = 1;
   //Le nombre de tours
-
-  /**
-   * Default empty Game constructor
-   */
-  public Game() {
-  }
 
   /**
    * Returns map
    * @return
    */
-  public Cell[][] getMap () {
-    return map;
+  public Cell[][] getMap() {
+      return map;
+  }
+
+  public Cell getMap(int x, int y) {
+      return map[x][y];
   }
 
   /**
@@ -83,8 +86,8 @@ public class Game {
   }
 
   public void iniMap(){
-    for(int i = 0; i < 15; i++) {
-      for (int j = 0; j < 10; j++) {
+    for(int i = 0; i < 16; i++) {
+      for (int j = 0; j < 11; j++) {
         map[i][j] = new Cell(i, j);
       }
     }
@@ -115,17 +118,22 @@ public class Game {
     tokenR.add(new TokenR(this, 12, 7));
     tokenR.add(new TokenR(this, 13, 5));
     tokenR.add(new TokenR(this, 14, 2));
-    for(Token t : tokenR) {
-      map[t.getPosX()][t.getPosY()].isTokenHere();
-      System.out.println("Il y a un bloc de pierre en ["+t.getPosX()+";"+t.getPosY()+"]");
-    }
     System.out.println("Les flaques de sang et les blocs de pierre ont été disposé");
+  }
+
+  public void iniDecorations(int i){
+    System.out.println("Initialisation des décors pour la partie test.");
+    map[14][0].setBloodspot();
+    map[13][0].setBloodspot();
+    map[12][0].setBloodspot();
+    map[11][0].setBloodspot();
+    tokenR.add(new TokenR(this, 14, 2));
   }
 
   public boolean win(){
     int[] temp = new int[nbPlayers];
     boolean itsWin = false;
-    for (int i = 0; i < nbPlayers; i++) {
+    for (int i = 0; i < p.length; i++) {
       for (TokenP t : tokenPWin) {
         if (t.isWin()) {
           temp[t.getPlayerId()] ++;
@@ -142,8 +150,12 @@ public class Game {
   public String winner(int playerId){
     return p[playerId].getPseudo();
   }
-  
-  public void turn(){
 
+  public void turn(){
+    while(!win()){
+      for (int i = 0; i < p.length; i++) {
+
+      }
+    }
   }
 }
