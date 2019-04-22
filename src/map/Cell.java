@@ -133,7 +133,6 @@ public class Cell {
 	* @return
 	*/
 	public boolean isTokenHere() {
-            System.out.println("1 Test");
             return tokenHere;
 	}
 

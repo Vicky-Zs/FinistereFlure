@@ -29,6 +29,14 @@ public abstract class Token {
         this.reference = this.id;
         this.id++;
     }
+    
+    public Token (Game myGame , int x , int y, int nbMove) { //Création d'un token temporaire
+        this.myGame = myGame;
+        this.posX = x;
+        this.posY = y;
+        this.nbMove = nbMove;
+        this.reference = -1;
+    }
 
     public int getReference(){
         return this.reference;
@@ -107,7 +115,7 @@ public abstract class Token {
         return posY;
     }
     
-    public int getM(){
+    public int getNbMove(){
         return nbMove;
     }
 

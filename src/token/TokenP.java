@@ -29,6 +29,15 @@ public class TokenP extends Token {
         setNbMove(true);
         myGame.getTokenOutside().add(this);
     }
+    
+    public TokenP(Game myGame, int posX, int posY, int nbMove) {
+        super(myGame, posX, posY, nbMove); //Constructeur pour tester les cases
+        this.playerId = -1;
+        this.out = false;
+        this.win = false;
+        setNbMove(true);
+        myGame.getTokenOutside().add(this);
+    }
 
     /*public TokenP(Game myGame) {
         super(myGame, -1, -1);
@@ -65,25 +74,23 @@ public class TokenP extends Token {
     }
 
     // Indique si le TokenP peut se dépacer d'une case, vers une direction donnée
-    public boolean canMove(int direction){
-        TokenP t = new TokenP(this.myGame, this.posX,  this.posY);
+    public boolean canMove(int direction, TokenP p){
+        TokenP t = new TokenP(p.myGame, p.posX, p.posY, p.getNbMove());
         boolean flag = t.moveONE(direction);
-        if(flag && this.nbMove > 0){
-            if(this.myGame.getMap()[t.getPosX()][t.getPosY()].isBloodspot()){
-                while(this.myGame.getMap()[t.getPosX()][t.getPosY()].isBloodspot() && flag){
+        if((flag) && (this.nbMove > 0)){
+            if(this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()){
+                while((this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) && (flag)){
                     flag = t.moveONE(direction);
                 }
-
-                if(this.myGame.getMap()[t.getPosX()][t.getPosY()].isTokenHere()){
+                if(this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()){
                     return (this.nbMove > 1);
                 }
                 else{
                     return true;
                 }
             }
-            else
-            {
-                if( this.myGame.getMap()[t.getPosX()][t.getPosY()].isTokenHere()){
+            else{
+                if(this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()){
                     return (this.nbMove > 1);
                 }
                 else{
@@ -157,9 +164,7 @@ public class TokenP extends Token {
                     return false;
                 }
             }
-
             // Gestion des colisions : s'il y a un Token...
-            System.out.println(destinationX +"  "+ destinationY);
             if (this.myGame.getMap(destinationX, destinationY).isTokenHere()){
                 // ...si ce Token est un bloc de pierre...
                 if (this.find(destinationX, destinationY) instanceof TokenR){
@@ -230,17 +235,18 @@ public class TokenP extends Token {
             this.myGame.getMap(this.posX, this.posY).setNotTokenHere();
             // Si c'est le tour des joueurs
             if (this.myGame.isTurnPlayers()){
-                if(this.canMove(direction)){
+                if(this.canMove(direction, this)){
                     boolean flag = this.moveONE(direction);
-                    while(this.myGame.getMap()[this.posX][this.posY].isBloodspot() && flag ){
+                    while((this.myGame.getMap(this.posX, this.posY).isBloodspot()) && (flag)){
                         flag = this.moveONE(direction);
                     }
                     this.nbMove--;
                 }
-                this.myGame.getMap()[this.posX][this.posY].setTokenHere();
+                this.myGame.getMap(this.posX, this.posY).setTokenHere();
             }
-            else {     // si c'est le tour du Monstre, cela veut dire d'après les règles, qu'il est en train de se faire pousser par un bloc de pierre, par le monstre
-                // si le pion n'est pas bloqué par son déplacement : il bouge / sinon : il meurt
+            else { // Si c'est le tour du Monstre, cela veut dire d'après les règles, qu'il est en train de se faire pousser par un bloc de pierre, par le monstre
+                // Si le pion n'est pas bloqué par son déplacement : il bouge 
+                // Sinon : il meurt
                 if(this.moveONE(direction)){
                     boolean flag = true;
                     while(this.myGame.getMap()[this.posX][this.posY].isBloodspot() && flag){
