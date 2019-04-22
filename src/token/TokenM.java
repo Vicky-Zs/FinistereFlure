@@ -126,41 +126,33 @@ public class TokenM extends Token {
      * @controle all of the monster's phase
      */
     public void tour()  {
-
         rollDice();
-
-        if( this.nbMove < 0 && this.myGame.getNbTurn() == 1 )
-        {
+        System.out.println(nbMove);
+        System.out.println("Test");
+        if(this.nbMove < 0 && this.myGame.getNbTurn() == 1){
             int maxMove = 0, die1 = TokenP.getVictime();
             while( this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20)
             {
                 this.move(look());
 
                 // gestion de la flaque de sang
-                while( this.myGame.getMap()[super.posX][super.posY].isBloodspot() )
-                {
+                while(this.myGame.getMap()[super.posX][super.posY].isBloodspot()){
                     this.move(look());
                 }
 
                 maxMove++;
             }
         }
-        else
-        {
-            while( this.nbMove > 0 )
-            {
+        else{
+            while( this.nbMove > 0 ){
                 this.move(look());
-
                 // gestion de la flaque de sang
-                while( this.myGame.getMap()[super.posX][super.posY].isBloodspot() )
-                {
+                while(this.myGame.getMap()[super.posX][super.posY].isBloodspot()){
                     this.move(look());
                 }
-
                 this.nbMove--;
             }
         }
-
         look();
     }
 
@@ -170,9 +162,8 @@ public class TokenM extends Token {
         int result = 0;
         int x = this.posX;
         int y = this.posY + 1;
-
-        while( this.myGame.getMap()[x][y - 1].getWall(0) == false )
-        {
+        System.out.println(x+" "+y);
+        while(!this.myGame.getMap(x, y-1).getWall(0)){
             if(this.myGame.getMap()[x][y].isTokenHere())
             {
                 if(this.find(x, y) instanceof TokenP)
