@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.HashSet;
 import token.Token;
 import java.lang.String;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataBase implements Parametre {       
         Connection con = null;
@@ -35,10 +37,14 @@ public class DataBase implements Parametre {
         String pseudo = p.getPseudo();
         int tokenMort = 4 - p.getNbToken();
         int tokenVivant = p.getNbToken();
-        demande = "INSERT INTO player(Pseudo,TokenAlive,TokenDead) VALUES("+pseudo+","+tokenVivant+","+tokenMort+")";
-        Statement state = conn.createStatement();
-        state.execute(demande);
+        Statement statement;
+            try {
+                statement = con.createStatement();
+                statement.executeUpdate("INSERT INTO player"+" VALUES ("+pseudo+","+tokenVivant+","+tokenMort+")");
     }
+            } catch (Exception e) {
+                System.out.println("Erreur");
+            }
     
     
     private void closeConnexion() {
