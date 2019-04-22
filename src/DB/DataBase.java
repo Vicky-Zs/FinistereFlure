@@ -1,4 +1,4 @@
-package database;
+package DB;
 import character.Player;
 import java.sql.*;
 import java.util.HashSet;
@@ -13,13 +13,13 @@ public class DataBase implements Parametre {
         Player p = new Player(HashSet<Token> token , String pseudo);
         
     private void openConnexion() {
-        String connectUrl = "jdbc:mysql://mysql-finstereflure.alwaysdata.net:3306";
+        String connectUrl = "jdbc:mysql://localhost/finstereflure";
         if (con != null) {
             this.closeConnexion();
         }
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(connectUrl, username, password);
+            con = DriverManager.getConnection(connectUrl, user, password);
             System.out.println("Database connection established.");
         } catch (ClassNotFoundException cnfe) {
             System.out.println("Cannot load db driver: com.mysql.jdbc.Driver");

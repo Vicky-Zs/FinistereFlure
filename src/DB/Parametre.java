@@ -1,4 +1,4 @@
-package database;
+package DB;
 
 public interface Parametre {
     /*  Permet d'avoir variables fixes*/
