@@ -125,7 +125,7 @@ public class TokenM extends Token {
      */
     public void tour()  {
         rollDice();
-        // System.out.println("Move : "+nbMove);
+        System.out.println("Move : "+nbMove);
         if(this.nbMove < 0 && this.myGame.getNbTurn() == 1){
             int maxMove = 0, die1 = TokenP.getVictime();
             while(this.nbMove == die1 - TokenP.getVictime() && maxMove <= 20){
@@ -157,8 +157,6 @@ public class TokenM extends Token {
         int result = 0;
         int x = this.posX;
         int y = this.posY + 1;
-        // System.out.println("Test4");
-        // System.out.println(myGame.getMap(x, y-1).getWall(0)+" Test");
         if( (new TokenM(this.myGame, x, y)).isInside() )
         {
             while (!this.myGame.getMap(x, y - 1).getWall(0)) {
@@ -182,17 +180,19 @@ public class TokenM extends Token {
         int result = 0;
         int x = this.posX;
         int y = this.posY - 1;
-        
-        if( (new TokenM(this.myGame, x, y)).isInside() )
-        {
-            while (!this.myGame.getMap()[x][y + 1].getWall(2)) {
-                if (this.myGame.getMap()[x][y].isTokenHere()) {
+        if((new TokenM(this.myGame, x, y)).isInside() ){
+            System.out.println(x+" "+y);
+            while (!this.myGame.getMap(x, y+1).getWall(2)) {
+                System.out.println("Test");
+                if (this.myGame.getMap(x, y).isTokenHere()) {
                     if (this.find(x, y) instanceof TokenP) {
                         return result;
-                    } else {
+                    } 
+                    else {
                         return 50;
                     }
-                } else {
+                } 
+                else {
                     result++;
                     y++;
                 }
@@ -249,8 +249,7 @@ public class TokenM extends Token {
 
     private int look() {
         int up = 50, down = 50, left = 50, right = 50;
-        
-        // System.out.println("Orientation : " + orientation);
+        System.out.println("Orientation : " + orientation);
         switch(this.orientation) {
             case 0:{
                 up = this.lookUp();

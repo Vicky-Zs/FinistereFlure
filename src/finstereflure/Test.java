@@ -27,6 +27,34 @@ public class Test extends Game {
     g.iniDecorations(0); // Décoration pour le test
     temp = g.p[0].getToken(5);
     System.out.println(temp);
+    //Test décors
+    for (int i = 0; i < 16; i++){
+        for (int j = 0; j < 11; j++){
+            for (int k = 0; k < 4; k++){
+                if (g.getMap(i, j).getWall(k)){
+                    System.out.print("La case ["+i+";"+j+"] un mur au ");
+                    switch (k) {
+                        case 0:
+                            System.out.print("Nord");
+                        break;
+                        case 1:
+                            System.out.print("Est");
+                        break;
+                        case 2:
+                            System.out.print("Sud");
+                        break;
+                        case 3:
+                            System.out.print("Ouest");
+                        break;
+                        case 4:
+                            System.out.println("Problème");
+                        break;
+                    }
+                    System.out.println("");
+                }
+            }
+        }
+    }
     if (temp instanceof TokenP){
         TokenP tP = (TokenP) temp;
         System.out.println(tP);
