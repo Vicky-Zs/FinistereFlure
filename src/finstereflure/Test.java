@@ -52,7 +52,10 @@ public class Test extends Game {
                     }
                     System.out.println("");
                 }
+                
             }
+            System.out.println("La case ["+i+";"+j+"] : Sang = " + g.getMap(i, j).isBloodspot());
+            System.out.println("");
         }
     }
     if (temp instanceof TokenP){
@@ -70,7 +73,9 @@ public class Test extends Game {
     temp = g.getMonster().getToken();
     if (temp instanceof TokenM){
       TokenM tM = (TokenM) temp;
+      System.out.println("Début du tour !!!");
       tM.tour();
+      System.out.println("Fin du tour !!!");
     }
   }
 
