@@ -157,19 +157,27 @@ public class TokenM extends Token {
         int result = 0;
         int x = this.posX;
         int y = this.posY + 1;
-        if( (new TokenM(this.myGame, x, y)).isInside() )
+        
+        if( (new TokenM(this.myGame, x, y - 1)).isInside() )
         {
             while (!this.myGame.getMap(x, y - 1).getWall(0)) {
                 // System.out.println("Test");
-                if (this.myGame.getMap(x, y).isTokenHere()) {
-                    if (this.find(x, y) instanceof TokenP) {
-                        return result;
+                if( (new TokenM(this.myGame, x, y)).isInside() )
+                {
+                    if (this.myGame.getMap(x, y).isTokenHere()) {
+                        if (this.find(x, y) instanceof TokenP) {
+                            return result;
+                        } else {
+                            return 50;
+                        }
                     } else {
-                        return 50;
+                        result++;
+                        y++;
                     }
-                } else {
-                    result++;
-                    y++;
+                }
+                else
+                {
+                    return 50;
                 }
             }
         }
@@ -180,21 +188,35 @@ public class TokenM extends Token {
         int result = 0;
         int x = this.posX;
         int y = this.posY - 1;
-        if((new TokenM(this.myGame, x, y)).isInside() ){
-            System.out.println(x+" "+y);
-            while (!this.myGame.getMap(x, y+1).getWall(2)) {
-                System.out.println("Test");
-                if (this.myGame.getMap(x, y).isTokenHere()) {
-                    if (this.find(x, y) instanceof TokenP) {
-                        return result;
+        
+        if((new TokenM(this.myGame, x, y + 1)).isInside() )
+        {
+            // System.out.println(x+" "+y);
+            while (!this.myGame.getMap(x, y + 1).getWall(2))    // la syntaxe de getMap a changé ?
+            {
+                // System.out.println("Test");
+                if( (new TokenM(this.myGame, x, y)).isInside() )
+                {
+                    if (this.myGame.getMap(x, y).isTokenHere()) 
+                    {
+                        if (this.find(x, y) instanceof TokenP) 
+                        {
+                            return result;
+                        } 
+                        else 
+                        {
+                            return 50;
+                        }
                     } 
-                    else {
-                        return 50;
+                    else 
+                    {
+                        result++;
+                        y++;
                     }
-                } 
-                else {
-                    result++;
-                    y++;
+                }
+                else
+                {
+                    return 50;
                 }
             }
         }
@@ -206,18 +228,30 @@ public class TokenM extends Token {
         int x = this.posX - 1;
         int y = this.posY;
 
-        if( (new TokenM(this.myGame, x, y)).isInside() )
+        if( (new TokenM(this.myGame, x + 1, y)).isInside() )
         {
-            while (!this.myGame.getMap()[x + 1][y].getWall(3)) {
-                if (this.myGame.getMap()[x][y].isTokenHere()) {
-                    if (this.find(x, y) instanceof TokenP) {
-                        return result;
-                    } else {
-                        return 50;
+            while (!this.myGame.getMap()[x + 1][y].getWall(3)) // c'était pas this.myGame.getMap(x + 1, y ).getWall(3) ?
+            {
+                if( (new TokenM(this.myGame, x, y)).isInside() )
+                {
+                    if (this.myGame.getMap()[x][y].isTokenHere()) 
+                    {
+                        if (this.find(x, y) instanceof TokenP) 
+                        {
+                            return result;
+                        } else 
+                        {
+                            return 50;
+                        }
+                    } else 
+                    {
+                        result++;
+                        y++;
                     }
-                } else {
-                    result++;
-                    y++;
+                }
+                else
+                {
+                    return 50;
                 }
             }
         }
@@ -229,18 +263,30 @@ public class TokenM extends Token {
         int x = this.posX + 1;
         int y = this.posY;
 
-        if( (new TokenM(this.myGame, x, y)).isInside() )
+        if( (new TokenM(this.myGame, x - 1, y)).isInside() )
         {
-            while (!this.myGame.getMap()[x - 1][y].getWall(1)) {
-                if (this.myGame.getMap()[x][y].isTokenHere()) {
-                    if (this.find(x, y) instanceof TokenP) {
-                        return result;
+            while (!this.myGame.getMap()[x - 1][y].getWall(1)) 
+            {
+                if( (new TokenM(this.myGame, x, y)).isInside() )
+                {
+                    if (this.myGame.getMap()[x][y].isTokenHere()) 
+                    {
+                        if (this.find(x, y) instanceof TokenP) 
+                        {
+                            return result;
+                        } 
+                        else 
+                        {
+                            return 50;
+                        }
                     } else {
-                        return 50;
+                        result++;
+                        y++;
                     }
-                } else {
-                    result++;
-                    y++;
+                }
+                else
+                {
+                    return 50;
                 }
             }
         }
