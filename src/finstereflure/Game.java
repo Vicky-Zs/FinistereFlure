@@ -16,12 +16,12 @@ import java.util.ArrayList;
 
 public class Game {
   public final static int nbPlayers = 2;
-  protected Cell[][] map = new Cell [16][11];
+  protected Cell[][] map = new Cell[16][11];
   //Carte du jeu (Représentation en rectangle)
   protected Player[] p = new Player[nbPlayers];
   //Tableau de nos deux joueurs
   protected Monster m = new Monster();
-  //Le montre
+  //Le monstre
   protected ArrayList<Token> tokenOutside = new ArrayList<>();
   //Liste de token à l'extérieur
   protected ArrayList<TokenR> tokenR = new ArrayList<>();
@@ -38,11 +38,11 @@ public class Game {
    * @return
    */
   public Cell[][] getMap() {
-      return map;
+      return this.map;
   }
 
   public Cell getMap(int x, int y) {
-      return map[x][y];
+      return this.map[x][y];
   }
 
   /**
@@ -82,7 +82,7 @@ public class Game {
    * @return
    */
   public int getNbTurn() {
-      return nbTurn;
+      return this.nbTurn;
   }
 
   public void newTurn() {

@@ -29,82 +29,36 @@ public class Cell {
 	public Cell(int x, int y) { //TODO: Ne pas créer les 6 cases en dehors de la map
 		this.bloodspot = false;
 		this.tokenHere = false;
-		//Mur uniquement au Nord
-		if (((x > 0) && (x<11)) && (y==10)){
-			this.wall[0] = true;
-			this.wall[1] = false;
-			this.wall[2] = false;
-			this.wall[3] = false;
-		}
-		//Mur uniquement à l'Est
-		else if ((x==15) && ((y>0) && (y<6))){
-			this.wall[0] = false;
-			this.wall[1] = true;
-			this.wall[2] = false;
-			this.wall[3] = false;
-		}
-		//Mur uniquement au Sud
-		else if (( ((x==1)||(x==2)) || ((x>4) && (x<15)) ) && (y == 0)){
-			this.wall[0] = false;
-			this.wall[1] = false;
-			this.wall[2] = true;
-			this.wall[3] = false;
-		}
-		//Mur uniquement à l'Ouest
-		else if ((x == 0) && (((y==1)||(y==2)) || ((x>4) && (x<10))) ){
-			this.wall[0] = false;
-			this.wall[1] = false;
-			this.wall[2] = false;
-			this.wall[3] = true;
-		}
-		//Mur au Nord et à l'Est
-		else if((x+y == 21) || ((x==1) && (y==2)) || ((x==2)&&(y==1))){
-			this.wall[0] = true;
-			this.wall[1] = true;
-			this.wall[2] = false;
-			this.wall[3] = false;
-		}
-		//Mur au Nord et à l'Ouest
-		else if ((x==0) && (y == 10)) {
-			this.wall[0] = true;
-			this.wall[1] = false;
-			this.wall[2] = false;
-			this.wall[3] = true;
-		}
-		//Mur au Sud et à l'Est
-		else if ((x==15)&&(y==0)) {
-			this.wall[0] = false;
-			this.wall[1] = true;
-			this.wall[2] = true;
-			this.wall[3] = false;
-		}
-		//Mur au Sud et à l'Ouest
-		else if ((x==15)&&(y==0)) {
-			this.wall[0] = false;
-			this.wall[1] = false;
-			this.wall[2] = true;
-			this.wall[3] = true;
-		}
-		//Mur à l'Ouest, au Nord et à l'Est
-		else if ((x==0) && (y == 3)) {
-			this.wall[0] = true;
-			this.wall[1] = true;
-			this.wall[2] = false;
-			this.wall[3] = true;
-		}
-		//Mur au Nord, à l'Est et au Sud
-		else if ((x==3) && (y == 0)) {
-			this.wall[0] = true;
-			this.wall[1] = true;
-			this.wall[2] = true;
-			this.wall[3] = false;
-		}
-		else{
-			this.wall[0] = false;
-			this.wall[1] = false;
-			this.wall[2] = false;
-			this.wall[3] = false;
-		}
+		this.wall[0] = false;
+                this.wall[1] = false;
+                this.wall[2] = false;
+                this.wall[3] = false;
+                //Mur en ligne droite
+                if (y == 0) {
+                    this.wall[2] = true;
+                }
+                if (x == 0) {
+                    this.wall[3] = true;
+                }
+                if ((x==15) && (y<7)){
+                    this.wall[1] = true;
+                }
+                if ((x<12) && (y==10)){
+                    this.wall[0] = true;
+                }
+                //Mur en Diagonal
+                if (x+y == 3){
+                    this.wall[0] = true;
+                    this.wall[1] = true;
+                }
+                if (x+y == 4) {
+                    this.wall[2] = true;
+                    this.wall[3] = true;                    
+                }
+                if (x+y == 21) {
+                    this.wall[0] = true;
+                    this.wall[1] = true;
+                }
 	}
 
 
@@ -113,7 +67,7 @@ public class Cell {
 	* @return
 	*/
 	public boolean isBloodspot() {
-		return bloodspot;
+		return this.bloodspot;
 	}
 
 	/**
@@ -161,8 +115,7 @@ public class Cell {
 			return wall[i];
 		}
 		else {
-			System.out.println("Erreur");
-			System.exit(1);
+			System.out.println("Erreur sur la gestion des murs");
 			return false;
 		}
 	}

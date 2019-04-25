@@ -2,6 +2,22 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/map/Cell.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/character/Player.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/token/TokenR.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/finstereflure/Main.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/character/Monster.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/finstereflure/Game.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/finstereflure/Menu.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/token/TokenM.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/token/TokenP.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/token/Token.java</file>
+            <file>file:/Users/aurelien/Documents/GitHub/FinstereFlure/src/finstereflure/Test.java</file>
+        </group>
+>>>>>>> 10f832bbb6d3dbb2d395693ccb4a0d5a4414473b
     </open-files>
 </project-private>
