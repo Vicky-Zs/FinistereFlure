@@ -21,7 +21,7 @@ public class TokenP extends Token {
 
     public TokenP(Game myGame, int patterneA, int playerId) {
         super(myGame, -1, -1); //Covention: -1/-1 = en dehors de la carte
-        this.playerId = playerId;
+        this.playerId = playerId;   // permet de savoir si le pion appartient au Joueur 1 ou 2
         this.patternA = patterneA;
         this.patternB = Math.abs(7 - patterneA); //Retourne la valeur absolue
         this.out = true; // Peut-être inutile puisque l'on a la liste Outside
@@ -310,5 +310,10 @@ public class TokenP extends Token {
 
     public int getPatternB() {
         return patternB;
+    }
+    
+    @Override
+    public String toString(){
+        return "Le pion " + "{" + this.patternA + "/" + this.patternB + "}" +" est à la position ["+this.posX+";"+this.posY+"]";
     }
 }

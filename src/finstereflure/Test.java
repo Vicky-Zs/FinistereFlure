@@ -8,7 +8,7 @@ package finstereflure;
 import character.*;
 import map.*;
 import token.*;
-import static finstereflure.Main.g;
+// import static finstereflure.Main.g;
 
 /**
  *
@@ -18,11 +18,14 @@ import static finstereflure.Main.g;
 public class Test extends Game {
   public static void main() {
     Token temp;
+    Game g = new Game();
     g.iniMap();
+    /*
     for (int i = 0; i < nbPlayers; i++) {
       g.p[i] = new Player(IA.defineName(), i, g);
     }
-    System.out.println("Deux joueurs ont été créé avec des noms aléatoires");
+    */
+    System.out.println("\nDeux joueurs ont été créé avec des noms aléatoires");
     System.out.println("Ceci est une test automatique du jeu");
     g.iniDecorations(0); // Décoration pour le test
     temp = g.p[0].getToken(5);
@@ -30,34 +33,49 @@ public class Test extends Game {
     //Test décors
     for (int i = 0; i < 16; i++){
         for (int j = 0; j < 11; j++){
-            for (int k = 0; k < 4; k++){
-                if (g.getMap(i, j).getWall(k)){
-                    System.out.print("La case ["+i+";"+j+"] un mur au ");
-                    switch (k) {
-                        case 0:
-                            System.out.print("Nord");
-                        break;
-                        case 1:
-                            System.out.print("Est");
-                        break;
-                        case 2:
-                            System.out.print("Sud");
-                        break;
-                        case 3:
-                            System.out.print("Ouest");
-                        break;
-                        case 4:
-                            System.out.println("Problème");
-                        break;
+            System.out.println("___________________________________________");
+            System.out.print("\nLa case ["+i+";"+j+"]\tMur :");
+            boolean flag = true;
+            for (int k = 0; k < 4; k++)
+            {
+                if (g.getMap(i, j).getWall(k))
+                {
+                    flag = false;
+                    switch (k) 
+                    {
+                        case 0: {
+                            System.out.print(" Nord");
+                            break;
+                        }
+                        case 1: {
+                            System.out.print(" Est");
+                            break;
+                        }
+                        case 2: {
+                            System.out.print(" Sud");
+                            break;
+                        }
+                        case 3: {
+                            System.out.print(" Ouest");
+                            break;
+                        }
+                        case 4: {
+                            System.out.print(" Erreur '4'");
+                            break;
+                        }
+                        default: {
+                            System.out.print(" Probleme");
+                            break;
+                        }
                     }
-                    System.out.println("");
                 }
-                
             }
-            System.out.println("La case ["+i+";"+j+"] : Sang = " + g.getMap(i, j).isBloodspot());
-            System.out.println("");
+            if( flag ) System.out.print(" X");
+            System.out.println("\n\t\tSang = " + g.getMap(i, j).isBloodspot());
         }
     }
+    System.out.println("___________________________________________");
+    
     if (temp instanceof TokenP){
         TokenP tP = (TokenP) temp;
         System.out.println(tP);
@@ -72,7 +90,7 @@ public class Test extends Game {
     }
     temp = g.getMonster().getToken();
     if (temp instanceof TokenM){
-      TokenM tM = (TokenM) temp;
+      TokenM tM = g.getMonster().getToken();
       System.out.println("Début du tour !!!");
       tM.tour();
       System.out.println("Fin du tour !!!");

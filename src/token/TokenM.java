@@ -9,7 +9,7 @@ import finstereflure.*;
 import character.*;
 //import java.util.Collections;
 import java.util.ArrayList;
-import static finstereflure.Main.g;
+// import static finstereflure.Main.g;
 
 /**
  *
@@ -49,14 +49,14 @@ public class TokenM extends Token {
 
 
     private boolean isInside(){
-        if( (this.getPosX() >= 0 && this.getPosX() <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 6) )
+        if( (this.posX >= 0 && this.posX <= 15) && (this.posY >= 0 && this.posY <= 6) )
         {
             return true;
         }
-        else if( ((this.getPosX() >= 0 && this.getPosX() <= 14) && this.getPosY() == 7) ||
-                ((this.getPosX() >= 0 && this.getPosX() <= 13) && this.getPosY() == 8) ||
-                ((this.getPosX() >= 0 && this.getPosX() <= 12) && this.getPosY() == 9) ||
-                ((this.getPosX() >= 0 && this.getPosX() <= 11) && this.getPosY() == 10) ) 
+        else if( ((this.posX >= 0 && this.posX <= 14) && this.posY == 7) ||
+                ((this.posX >= 0 && this.posX <= 13) && this.posY == 8) ||
+                ((this.posX >= 0 && this.posX <= 12) && this.posY == 9) ||
+                ((this.posX >= 0 && this.posX <= 11) && this.posY == 10) ) 
         {
             return true;
         }
@@ -76,7 +76,7 @@ public class TokenM extends Token {
      */
     @Override
     public void move(int direction) {
-        System.out.println("Avant : posX = " + this.posX + " posY = " + this.posY);
+        System.out.println("Avant :\t\tposX = " + this.posX + " posY = " + this.posY);
         // try
         // {
         // Coordonnées fictives de la prochaine case après le déplacement
@@ -106,12 +106,12 @@ public class TokenM extends Token {
                     break;
                 }
             }
-        System.out.println("Destination : posX = " + destinationX + " posY = " + destinationY);
+        System.out.println("Destination :\tposX = " + destinationX + " posY = " + destinationY);
         // Si la case suivante ne dépasse pas les limites du tableau...
         if( (new TokenM(this.myGame, destinationX, destinationY, direction)).isInside() )
         {
             // s'il y a un Token dans la case suivante...
-            if( g.getMap(destinationX, destinationY).isTokenHere() )
+            if( this.myGame.getMap(destinationX, destinationY).isTokenHere() )
             {
                 // si ce Token est un bloc de pierre : ce dernier doit bouger
                 if (this.find(destinationX, destinationY) instanceof TokenR )
@@ -132,12 +132,12 @@ public class TokenM extends Token {
         }
         else
         {
-            if( this.orientation >= 2 )
+            if( this.getOrientation() >= 2 )
                 this.orientation -= 2;
             else
                 this.orientation += 2;
 
-            this.move(this.orientation);
+            this.move(this.getOrientation());
         }
         
         /*}
@@ -146,14 +146,16 @@ public class TokenM extends Token {
             System.out.println("Mouvement impossible");
         }
         */
-        System.out.println("Après : posX = " + this.posX + " posY = " + this.posY );
+        System.out.println("Après :\t\tposX = " + this.posX + " posY = " + this.posY);
+        System.out.println("--------------------------------------------");
     }
 
     /**
      * @controle all of the monster's phase
      */
     public void tour()  {
-        g.getMap(this.posX, this.posY).setNotTokenHere();
+        System.out.println("--------------------------------------------");
+        this.myGame.getMap(this.posX, this.posY).setNotTokenHere();
         rollDice();
         
         if(this.nbMove < 0)
@@ -177,7 +179,7 @@ public class TokenM extends Token {
                 // System.out.println("Test 4");
                 // gestion de la flaque de sang
                 
-                while(g.getMap(this.posX, this.posY).isBloodspot())
+                while(this.myGame.getMap(this.posX, this.posY).isBloodspot())
                 {
                     this.move(look());
                 }
@@ -186,7 +188,8 @@ public class TokenM extends Token {
         }
         look();
         this.firstTurn = false;
-        g.getMap(this.posX, this.posY).setTokenHere();
+        this.myGame.getMap(this.posX, this.posY).setTokenHere();
+        System.out.println("--------------------------------------------");
     }
 
 
@@ -333,7 +336,7 @@ public class TokenM extends Token {
     private int look() {
         int up = 50, down = 50, left = 50, right = 50;
         
-        switch(this.orientation) {
+        switch(this.getOrientation()) {
             case 0:{
                 up = this.lookUp();
                 left = this.lookLeft();
@@ -392,8 +395,8 @@ public class TokenM extends Token {
             }
         }
         // System.out.println("up : " + up + " ; right : " + right + " ; down : " + down + " ; left : " + left);
-        System.out.println("Orientation : " + orientation);
-        return this.orientation;
+        System.out.println("Orientation :\t" + getOrientation());
+        return this.getOrientation();
     }
 
 
@@ -427,6 +430,13 @@ public class TokenM extends Token {
         }
         
         this.nbMove = (int) this.nbMoves.remove(id);
+    }
+
+    /**
+     * @return the orientation
+     */
+    public int getOrientation() {
+        return orientation;
     }
 
 }
