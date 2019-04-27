@@ -78,10 +78,14 @@ public abstract class Token {
     public Token find(int x , int y){
         // postulat : chaque player a une LISTE de pions
         Iterator<Token> iterator;
-        for (int i = 0; i < Game.nbPlayers; i++) {
+        
+        // fouille dans la liste des pions de chaque joueur
+        for (int i = 0; i < this.myGame.nbPlayers; i++) {
             iterator = myGame.getPlayer(i).getToken().iterator();
-            if(myGame.getPlayer(i).isEmpty() == false ){
-                while (iterator.hasNext()){
+            if( !myGame.getPlayer(i).isEmpty() )
+            {
+                while (iterator.hasNext())
+                {
                     Token p = iterator.next();
                     if((p.getPosX() == x) && (p.getPosY() == y)){
                         return p;
@@ -89,6 +93,8 @@ public abstract class Token {
                 }
             }
         }
+        
+        // fouille dans la liste des TokenR
         if(!myGame.getTokenR().isEmpty()){
             for(TokenR t : myGame.getTokenR()){
                 if( t.getPosX() == x && t.getPosY() == y ){
@@ -96,6 +102,11 @@ public abstract class Token {
                 }
             }
         }
+        
+        // fouille pour le monstre
+        TokenM m = this.myGame.getMonster().getToken();
+        if( m.getPosX() == x &&  m.getPosY() == y ) return m;
+        
         return null;
     }
 
