@@ -104,8 +104,8 @@ public class TokenP extends Token {
         if (this.myGame.getTokenOutside().contains(this)) {
             this.myGame.getPlayer(this.playerId).getToken().add(this.myGame.getTokenOutside().remove(this.myGame.getTokenOutside().indexOf(this)));
             this.out = false;
-            this.posX = 15;
-            this.posY = 0;
+            this.setPosX(15);
+            this.setPosY(0);
             this.myGame.getMap()[this.posX][this.posY].setTokenHere();
         }
     }
@@ -119,8 +119,8 @@ public class TokenP extends Token {
         this.myGame.getPlayer(this.playerId).getToken().remove(this);
         this.out = false;
         this.win = true;
-        this.posX = -1;
-        this.posY = -1;
+        this.setPosX(-1);
+        this.setPosY(-1);
     }
 
     // déplace le TokenP de 1 case vers une direction donnée : indique s'il a réussit à se déplacer ou non
@@ -173,8 +173,8 @@ public class TokenP extends Token {
                             t.move(direction, this);
 
                             // Déplacement
-                            this.posX = destinationX;
-                            this.posY = destinationY;
+                            this.setPosX(destinationX);
+                            this.setPosY(destinationY);
 
                             return true;
                         } 
@@ -191,8 +191,8 @@ public class TokenP extends Token {
                             // ...s'il reste plus de 1 point de mouvement : le pion peut se déplacer
                             if (this.nbMove > 1) {
                                 // Déplacement
-                                this.posX = destinationX;
-                                this.posY = destinationY;
+                                this.setPosX(destinationX);
+                                this.setPosY(destinationY);
 
                                 return true;
                             } 
@@ -210,8 +210,8 @@ public class TokenP extends Token {
                 else    // s'il n'y a ni mur, ni Token : le pion se déplace librement
                 {
                     // Déplacement
-                    this.posX = destinationX;
-                    this.posY = destinationY;
+                    this.setPosX(destinationX);
+                    this.setPosY(destinationY);
                     return true;
                 }
             }
@@ -281,8 +281,8 @@ public class TokenP extends Token {
             this.myGame.getTokenOutside().clear();
         } else {
             this.out = true;
-            this.posX = -1;
-            this.posY = -1;
+            this.setPosX(-1);
+            this.setPosY(-1);
         }
     }
 

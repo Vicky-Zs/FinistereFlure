@@ -127,8 +127,8 @@ public class TokenM extends Token {
             }
 
             // déplacement
-            this.posX = destinationX;
-            this.posY = destinationY;
+            this.setPosX(destinationX);
+            this.setPosY(destinationY);
         }
         else
         {
@@ -388,10 +388,10 @@ public class TokenM extends Token {
             // puis on en défini l'orientation
             if(recurence == 1)
             {
-                if(min == up)      this.orientation = 0;
-                if(min == down)    this.orientation = 2;
-                if(min == left)    this.orientation = 1;
-                if(min == right)   this.orientation = 3;
+                if(min == up)      this.orientation = 0;    // Nord
+                if(min == right)   this.orientation = 1;    // Est
+                if(min == down)    this.orientation = 2;    // Sud
+                if(min == left)    this.orientation = 3;    // Ouest
             }
         }
         // System.out.println("up : " + up + " ; right : " + right + " ; down : " + down + " ; left : " + left);

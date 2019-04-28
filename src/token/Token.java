@@ -131,4 +131,21 @@ public abstract class Token {
 
     // Note : penser à Override equal() et hashcode() afin de rendre les méthodes .get(Object) .contain(Object) des listes opérationnelles
     // et éviter les recherches par boucles for
+
+    
+    // Uniquement pour le test
+    /**
+     * @param posX the posX to set
+     */
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    // Uniquement pour le test
+    /**
+     * @param posY the posY to set
+     */
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
 }

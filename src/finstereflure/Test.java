@@ -27,8 +27,8 @@ public class Test extends Game {
     */
     System.out.println("\nDeux joueurs ont été créé avec des noms aléatoires");
     System.out.println("Ceci est une test automatique du jeu");
-    g.iniDecorations(0); // Décoration pour le test
-    temp = g.p[0].getToken(5);
+    g.iniDecorations(0);        // Décoration pour le test
+    temp = g.p[0].getToken(5);  // pion au pattern 5 - 2
     System.out.println(temp);
     //Test décors
     for (int i = 0; i < 16; i++){
@@ -84,16 +84,34 @@ public class Test extends Game {
         System.out.println(tP.getNbMove());
         tP.move(0);
         tP.move(0);
+        
+        // TEST DESTRUCTION DU PION PATTERN_5
+        g.getMap(tP.getPosX(), tP.getPosY()).setNotTokenHere();
+        temp.setPosX(3); temp.setPosY(10);
+        g.getMap(tP.getPosX(), tP.getPosY()).setTokenHere();
+        System.out.println("Nombre de Tokens : " + g.p[0].getNbToken());
+        System.out.println("Nombre de victimes : " + TokenP.getVictime());
+        // TEST DESTRUCTION DU PION PATTERN_5
+        
         System.out.println("Le token s'est déplacé, nouvelle position [" + tP.getPosX() + ";" + tP.getPosY() + "]");
         System.out.println(tP.getNbMove());
         g.setTurnPlayers(false);
     }
+    
+    
+    
     temp = g.getMonster().getToken();
     if (temp instanceof TokenM){
       TokenM tM = g.getMonster().getToken();
       System.out.println("Début du tour !!!");
       tM.tour();
       System.out.println("Fin du tour !!!");
+      // TEST DESTRUCTION DU PION PATTERN_5
+      System.out.println("Nombre de victimes : " + TokenP.getVictime());
+      System.out.println("Nombre de Tokens : " + g.p[0].getNbToken());
+      System.out.println("Pattern 5 ? " + g.p[0].getToken(5));
+      System.out.println("Out ? " + !g.getTokenOutside().isEmpty() );
+      // TEST DESTRUCTION DU PION PATTERN_5
     }
   }
 
