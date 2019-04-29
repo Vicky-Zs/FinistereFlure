@@ -12,6 +12,7 @@ public class DataBase implements Parametre {
         ResultSet res;
         String demande;
         
+        
     public static Connection openBDD(){
          Connection con = null;
          ResultSet res;
@@ -31,7 +32,7 @@ public class DataBase implements Parametre {
      }
 
      public static Connection closeConnexion(Connection co) {
-
+         // permet de se connecter à la DB
          if (co != null) {
              try {
                  co.close();
@@ -41,7 +42,8 @@ public class DataBase implements Parametre {
          return co;
      }
 
-     public void supprimerLigne(Player p,Connection co){
+     public void supprimerLigneScore(Player p,Connection co){
+         // permet de supprimer une ligne dans le tableau de score
              try {
                  Statement sup = co.createStatement();
                  String pseudo = "'"+p.getPseudo()+"'";
@@ -50,21 +52,38 @@ public class DataBase implements Parametre {
      }
 
      public void insererLigne(Player p, Connection co){
+         // permet d'inserer dans la table de score une nouvelle ligne
              try {
                  int dead = 4 - p.getNbToken();
-                 Statement statement = co.createStatement();
-                 statement.executeUpdate("INSERT INTO game"+" VALUES ("+p.getPseudo()+","+p.getNbToken()+","+dead+")");
+                 Statement insert = co.createStatement();
+                 insert.executeUpdate("INSERT INTO game"+" VALUES ("+p.getPseudo()+","+p.getNbToken()+","+dead+")");
              } catch (Exception e) {}
          }
 
      public ResultSet lireScore(Connection co) throws SQLException{
                  /*Fonction pour pouvoir lire une info*/
-             Statement st = co.createStatement();
-             ResultSet res = st.executeQuery("SELECT * FROM game ");
+             Statement readScore = co.createStatement();
+             ResultSet res = readScore.executeQuery("SELECT * FROM game ");
 
              while (res.next()) {
                  System.out.println(res.getString("Pseudo")+" avec "+res.getInt("ScoreTokenAlive")+" token(s) vivant(s) et "+res.getInt("ScoreTokenDead")+" token(s) mort(s)");
                 }
              return res;
      }
+     
+     public void creerCompte(Player p,Connection co){
+            try {
+                 Statement create = co.createStatement();
+                 create.executeUpdate("INSERT INTO compte"+" VALUES ("+p.getPseudo()+","+p.getMail()+","+p.getPassword()+")");
+             } catch (Exception e) {}
+     }
+     
+    private boolean verifCompte(String pseudo,Connection co){
+        boolean exist = false;
+        try{
+            Statement verif = co.createStatement();
+            ResultSet res = verif.executeQuery("SELECT COUNT(*) FROM compte WHERE Pseudo = "+pseudo);
+        }catch(Exception e){}
+        return exist;
+    }
 }
