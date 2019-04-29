@@ -47,7 +47,7 @@ public class Player {
   }
 
   public int getNbToken(){ // Modif: Private -> Protected
-      // premet de recuperer le nombre de tokens encore en vie
+      // permet de recuperer le nombre de tokens encore en vie
       int cpt = 0;
       for(Token t : token){
           cpt++;

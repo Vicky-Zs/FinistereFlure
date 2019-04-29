@@ -11,22 +11,54 @@ import token.*;
  */
 
 public class Monster {
-  private Token token = new TokenM(Main.g); // Mise à jour du token
+    private TokenM myTokenM;
+    
+    // Mise à jour du token (en espérant que ça marche)
+    public Monster(Game g)
+    {
+        this.myTokenM = new TokenM(g);
+    }
+    
 
   private int getPositionX(){
-      return this.token.getPosX();
+      return this.myTokenM.getPosX();
   }
 
    private int getPositionY(){
-      return this.token.getPosY();
+      return this.myTokenM.getPosY();
   }
    
-   public Token getToken(){
-       return token;
+   public TokenM getToken(){
+       return this.myTokenM;
    }
 
-  @Override
+   @Override
    public String toString(){
-       return "Le montre est à la position "+getPositionX()+","+getPositionY();
+       String orientation;
+       switch (this.myTokenM.getOrientation()) 
+                    {
+                        case 0: {
+                            orientation = "Nord";
+                            break;
+                        }
+                        case 1: {
+                            orientation = "Est";
+                            break;
+                        }
+                        case 2: {
+                            orientation = "Sud";
+                            break;
+                        }
+                        case 3: {
+                            orientation = "Ouest";
+                            break;
+                        }
+                        default: {
+                            orientation = "Probleme !";
+                            break;
+                        }
+                    }
+               
+       return "Le monstre est à la position ["+getPositionX()+";"+getPositionY()+"] ; Orientation : " + orientation;
    }
 }

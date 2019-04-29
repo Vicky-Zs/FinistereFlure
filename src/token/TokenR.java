@@ -71,8 +71,8 @@ public class TokenR extends Token {
             }
 
             // dans tous les cas, le bloc de pierre doit bouger
-            this.posX = destinationX;
-            this.posY = destinationY;
+            this.setPosX(destinationX);
+            this.setPosY(destinationY);
         }
         return true;
     }
@@ -118,8 +118,8 @@ public class TokenR extends Token {
                 return false;
             }
             else{
-                this.posX = destinationX;
-                this.posY = destinationY;
+                this.setPosX(destinationX);
+                this.setPosY(destinationY);
                 return true;
             }
         }
