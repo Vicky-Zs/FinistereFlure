@@ -8,6 +8,7 @@ import character.*;
 import map.*;
 import token.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -16,12 +17,12 @@ import java.util.ArrayList;
 
 public class Game {
   public final static int nbPlayers = 2;
-  protected Cell[][] map = new Cell [16][11];
+  protected Cell[][] map = new Cell[16][11];
   //Carte du jeu (Représentation en rectangle)
   protected Player[] p = new Player[nbPlayers];
   //Tableau de nos deux joueurs
-  protected Monster m = new Monster();
-  //Le montre
+  protected Monster m;
+  //Le monstre
   protected ArrayList<Token> tokenOutside = new ArrayList<>();
   //Liste de token à l'extérieur
   protected ArrayList<TokenR> tokenR = new ArrayList<>();
@@ -33,16 +34,40 @@ public class Game {
   protected int nbTurn = 1;
   //Le nombre de tours
 
+  // TENTATIVE DE CORRECTION
+  public Game()
+  {
+      // initialisation des joueurs
+      Scanner input = new Scanner(System.in);
+      for(int i = 0 ; i < nbPlayers ; i++)
+      {
+          System.out.println("\nVeuillez rentrer le pseudo n°" + (i+1) + " :");
+          String pseudo = input.nextLine();
+          this.p[i] = new Player(pseudo,i,this);
+      }
+      // initialisation du monstre
+      this.m = new Monster(this);
+      
+      // vérification de l'initialisation
+      System.out.println("\nListe des joueurs :");
+      for(int i = 0 ; i < nbPlayers ; i++)
+      {
+          System.out.println("Joueur "+ (i+1) + "\t" + this.p[i].getPseudo());
+      }
+      
+      System.out.println(this.m + "\n");
+  }
+  
   /**
    * Returns map
    * @return
    */
   public Cell[][] getMap() {
-      return map;
+      return this.map;
   }
 
   public Cell getMap(int x, int y) {
-      return map[x][y];
+      return this.map[x][y];
   }
 
   /**
@@ -82,7 +107,7 @@ public class Game {
    * @return
    */
   public int getNbTurn() {
-      return nbTurn;
+      return this.nbTurn;
   }
 
   public void newTurn() {
@@ -155,6 +180,7 @@ public class Game {
     return p[playerId].getPseudo();
   }
 
+  // Je suppose que c'est en travaux ^^'
   public void turn(){
     while(!win()){
       for (int i = 0; i < p.length; i++) {

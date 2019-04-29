@@ -67,7 +67,7 @@ public class Cell {
 	* @return
 	*/
 	public boolean isBloodspot() {
-		return bloodspot;
+		return this.bloodspot;
 	}
 
 	/**
