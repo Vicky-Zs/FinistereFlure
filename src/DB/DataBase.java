@@ -11,48 +11,60 @@ public class DataBase implements Parametre {
         Connection con = null;
         ResultSet res;
         String demande;
-
-        Player p = new Player(HashSet<Token> token , String pseudo);
         
-    private void openConnexion() {
-        String connectUrl = "jdbc:mysql://localhost/finstereflure";
-        if (con != null) {
-            this.closeConnexion();
-        }
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(connectUrl, user, password);
-            System.out.println("Database connection established.");
-        } catch (ClassNotFoundException cnfe) {
-            System.out.println("Cannot load db driver: com.mysql.jdbc.Driver");
-            cnfe.printStackTrace();
-        } catch (Exception e) {
-            // il ne reconnait pas l'adresse : UnknownHostException
-            System.out.println("Erreur inattendue");
-            e.printStackTrace();
-        }
-    }
-    
-    public void addPlayer(){
-        String pseudo = p.getPseudo();
-        int tokenMort = 4 - p.getNbToken();
-        int tokenVivant = p.getNbToken();
-        Statement statement;
-            try {
-                statement = con.createStatement();
-                statement.executeUpdate("INSERT INTO player"+" VALUES ("+pseudo+","+tokenVivant+","+tokenMort+")");
-    }
-            } catch (Exception e) {
-                System.out.println("Erreur");
-            }
-    
-    
-    private void closeConnexion() {
-        if (con != null) {
-            try {
-                con.close();
-                System.out.println("Database connection terminated.");
-            } catch (Exception e) {/*De toute façon il doit se fermer*/}
-        }
-    }
+    public static Connection openBDD(){
+         Connection con = null;
+         ResultSet res;
+         String demande;
+
+         try{
+             Class.forName("com.mysql.jdbc.Driver").newInstance();
+
+             con = DriverManager.getConnection(chemin, user, password );
+             System.out.println("Database Connected ");
+             System.out.println(con); 
+         }
+         catch(Exception e){
+                 System.out.println("Erreur");
+             }
+         return con;
+     }
+
+     public static Connection closeConnexion(Connection co) {
+
+         if (co != null) {
+             try {
+                 co.close();
+                 System.out.println("Database connection terminated.");
+             } catch (Exception e) {/*De toute façon il doit se fermer*/}
+         }
+         return co;
+     }
+
+     public void supprimerLigne(Player p,Connection co){
+             try {
+                 Statement sup = co.createStatement();
+                 String pseudo = "'"+p.getPseudo()+"'";
+                 sup.executeUpdate("DELETE FROM game"+" WHERE Pseudo = "+pseudo);
+             } catch (Exception e) {}
+     }
+
+     public void insererLigne(Player p, Connection co){
+             try {
+                 int dead = 4 - p.getNbToken();
+                 Statement statement = co.createStatement();
+                 statement.executeUpdate("INSERT INTO game"+" VALUES ("+p.getPseudo()+","+p.getNbToken()+","+dead+")");
+             } catch (Exception e) {}
+         }
+
+     public ResultSet lireScore(Connection co) throws SQLException{
+                 /*Fonction pour pouvoir lire une info*/
+             Statement st = co.createStatement();
+             ResultSet res = st.executeQuery("SELECT * FROM game ");
+
+             while (res.next()) {
+                 System.out.println(res.getString("Pseudo")+" avec "+res.getInt("ScoreTokenAlive")+" token(s) vivant(s) et "+res.getInt("ScoreTokenDead")+" token(s) mort(s)");
+                }
+             return res;
+     }
 }
