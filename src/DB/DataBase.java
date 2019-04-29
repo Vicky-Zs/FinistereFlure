@@ -71,12 +71,29 @@ public class DataBase implements Parametre {
              return res;
      }
      
-     public void creerCompte(Player p,Connection co){
+        public void creerCompte(Player p,Connection co){
             try {
+                 boolean verif = false; // variables permettant de gerer le cas ou 2 personnes ont le meme pseudo
+                 String pseudo = p.getPseudo();
+                 String mail = p.getMail();
+                 String mdp = p.getPassword();
+                 
+                 verif = verifCompte(p.getPseudo(),co);
+                 if(verif == true){
                  Statement create = co.createStatement();
-                 create.executeUpdate("INSERT INTO compte"+" VALUES ("+p.getPseudo()+","+p.getMail()+","+p.getPassword()+")");
+                 create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
+                 }else{
+                    Statement create = co.createStatement();
+                   pseudo = pseudo+"1";
+                    create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
+                 }
              } catch (Exception e) {}
-     }
+        }
+        
+        public void changerPseudo(Player p,Connection co){}
+        public void changerMdp(Player p,Connection co){}
+        public void changerMail(Player p,Connection co){}
+        
      
     private boolean verifCompte(String pseudo,Connection co){
         boolean exist = false;
