@@ -110,11 +110,11 @@ public class DataBase implements Parametre {
         
     public void changerMdp(String mdp,Player p,Connection co) throws SQLException{
         Statement changeMDP = co.createStatement();
-        changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+p.getPassword());
+        changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+p.getPseudo());
     }
         
     public void changerMail(String mail,Player p,Connection co)throws SQLException{
         Statement changeEmail = co.createStatement();
-        changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getMail());   
+        changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getPseudo());   
     }
 }
