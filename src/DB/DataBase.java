@@ -102,9 +102,19 @@ public class DataBase implements Parametre {
             return exist;
     }
     
-    public void changerPseudo(Player p,Connection co){}
+    public void changerPseudo(String pseudo,Player p,Connection co)throws SQLException{
+        Statement changePseudo = co.createStatement();
+        changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());
+        changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());
+    }
         
-    public void changerMdp(Player p,Connection co){}
+    public void changerMdp(String mdp,Player p,Connection co) throws SQLException{
+        Statement changeMDP = co.createStatement();
+        changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+p.getPassword());
+    }
         
-    public void changerMail(Player p,Connection co){}
+    public void changerMail(String mail,Player p,Connection co)throws SQLException{
+        Statement changeEmail = co.createStatement();
+        changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getMail());   
+    }
 }
