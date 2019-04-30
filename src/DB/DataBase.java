@@ -91,7 +91,9 @@ public class DataBase implements Parametre {
         }
         
         public void changerPseudo(Player p,Connection co){}
+        
         public void changerMdp(Player p,Connection co){}
+        
         public void changerMail(Player p,Connection co){}
         
      
