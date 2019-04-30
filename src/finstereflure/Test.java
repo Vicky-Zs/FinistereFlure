@@ -20,15 +20,13 @@ public class Test extends Game {
     Token temp;
     Game g = new Game();
     g.iniMap();
-    /*
     for (int i = 0; i < nbPlayers; i++) {
       g.p[i] = new Player(IA.defineName(), i, g);
     }
-    */
     System.out.println("\nDeux joueurs ont été créé avec des noms aléatoires");
     System.out.println("Ceci est une test automatique du jeu");
     g.iniDecorations(0);        // Décoration pour le test
-    temp = g.p[0].getToken(5);  // pion au pattern 5 - 2
+    temp = g.p[0].getToken(5);  // Pion au pattern 5 - 2
     System.out.println(temp);
     //Test décors
     for (int i = 0; i < 16; i++){
