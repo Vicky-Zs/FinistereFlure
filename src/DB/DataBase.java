@@ -31,7 +31,7 @@ public class DataBase implements Parametre {
          return con;
      }
 
-     public static Connection closeConnexion(Connection co) {
+    public static Connection closeConnexion(Connection co) {
          // permet de se connecter à la DB
          if (co != null) {
              try {
@@ -42,7 +42,7 @@ public class DataBase implements Parametre {
          return co;
      }
 
-     public void supprimerLigneScore(Player p,Connection co){
+    public void supprimerLigneScore(Player p,Connection co){
          // permet de supprimer une ligne dans le tableau de score
              try {
                  Statement sup = co.createStatement();
@@ -51,7 +51,7 @@ public class DataBase implements Parametre {
              } catch (Exception e) {}
      }
 
-     public void insererLigne(Player p, Connection co){
+    public void insererLigne(Player p, Connection co){
          // permet d'inserer dans la table de score une nouvelle ligne
              try {
                  int dead = 4 - p.getNbToken();
@@ -60,7 +60,7 @@ public class DataBase implements Parametre {
              } catch (Exception e) {}
          }
 
-     public ResultSet lireScore(Connection co) throws SQLException{
+    public ResultSet lireScore(Connection co) throws SQLException{
                  /*Fonction pour pouvoir lire une info*/
              Statement readScore = co.createStatement();
              ResultSet res = readScore.executeQuery("SELECT * FROM game ");
@@ -71,38 +71,40 @@ public class DataBase implements Parametre {
              return res;
      }
      
-        public void creerCompte(Player p,Connection co){
+    public void creerCompte(Player p,Connection co){
             try {
                  boolean verif = false; // variables permettant de gerer le cas ou 2 personnes ont le meme pseudo
                  String pseudo = p.getPseudo();
                  String mail = p.getMail();
                  String mdp = p.getPassword();
                  
-                 verif = verifCompte(p.getPseudo(),co);
+                 verif = verifCompte(pseudo,co);
                  if(verif == true){
                  Statement create = co.createStatement();
                  create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
                  }else{
                     Statement create = co.createStatement();
-                   pseudo = pseudo+"1";
+                   pseudo = pseudo+"'1'";
                     create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
                  }
              } catch (Exception e) {}
         }
-        
-        public void changerPseudo(Player p,Connection co){}
-        
-        public void changerMdp(Player p,Connection co){}
-        
-        public void changerMail(Player p,Connection co){}
-        
-     
-    private boolean verifCompte(String pseudo,Connection co){
-        boolean exist = false;
-        try{
+             
+    public boolean verifCompte(String pseudo,Connection co)throws SQLException{
+            boolean exist = false;
             Statement verif = co.createStatement();
             ResultSet res = verif.executeQuery("SELECT COUNT(*) FROM compte WHERE Pseudo = "+pseudo);
-        }catch(Exception e){}
-        return exist;
+            while(res.next()){
+                if(res.getInt("COUNT(*)") >=1){
+                    exist = true;
+                }
+            }
+            return exist;
     }
+    
+    public void changerPseudo(Player p,Connection co){}
+        
+    public void changerMdp(Player p,Connection co){}
+        
+    public void changerMail(Player p,Connection co){}
 }
