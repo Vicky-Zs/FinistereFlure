@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.HashSet;
 import token.Token;
 import java.lang.String;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,48 +12,164 @@ public class DataBase implements Parametre {
         Connection con = null;
         ResultSet res;
         String demande;
-
-        Player p = new Player(HashSet<Token> token , String pseudo);
         
-    private void openConnexion() {
-        String connectUrl = "jdbc:mysql://localhost/finstereflure";
-        if (con != null) {
-            this.closeConnexion();
-        }
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(connectUrl, user, password);
-            System.out.println("Database connection established.");
-        } catch (ClassNotFoundException cnfe) {
-            System.out.println("Cannot load db driver: com.mysql.jdbc.Driver");
-            cnfe.printStackTrace();
-        } catch (Exception e) {
-            // il ne reconnait pas l'adresse : UnknownHostException
-            System.out.println("Erreur inattendue");
-            e.printStackTrace();
-        }
-    }
-    
-    public void addPlayer(){
-        String pseudo = p.getPseudo();
-        int tokenMort = 4 - p.getNbToken();
-        int tokenVivant = p.getNbToken();
-        Statement statement;
+        
+    public static Connection openBDD(){
+         Connection con = null;
+         ResultSet res;
+         String demande;
+
+         try{
+             Class.forName("com.mysql.jdbc.Driver").newInstance();
+
+             con = DriverManager.getConnection(chemin, user, password );
+             System.out.println("Database Connected ");
+             System.out.println(con); 
+         }
+         catch(Exception e){
+                 System.out.println("Erreur");
+             }
+         return con;
+     }
+
+    public static Connection closeConnexion(Connection co) {
+         // permet de se connecter à la DB
+         if (co != null) {
+             try {
+                 co.close();
+                 System.out.println("Database connection terminated.");
+             } catch (Exception e) {/*De toute façon il doit se fermer*/}
+         }
+         return co;
+     }
+
+    public void supprimerLigneScore(Player p,Connection co){
+         // permet de supprimer une ligne dans le tableau de score
+             try {
+                 Statement sup = co.createStatement();
+                 String pseudo = "'"+p.getPseudo()+"'";
+                 sup.executeUpdate("DELETE FROM game"+" WHERE Pseudo = "+pseudo);
+             } catch (Exception e) {}
+     }
+
+    public void insererLigne(Player p, Connection co){
+         // permet d'inserer dans la table de score une nouvelle ligne
+             try {
+                 int dead = 4 - p.getNbToken();
+                 Statement insert = co.createStatement();
+                 insert.executeUpdate("INSERT INTO game"+" VALUES ("+p.getPseudo()+","+p.getNbToken()+","+dead+")");
+             } catch (Exception e) {}
+         }
+
+    public ResultSet lireScore(Connection co) throws SQLException{
+                 /*Fonction pour pouvoir lire une info*/
+             Statement readScore = co.createStatement();
+             ResultSet res = readScore.executeQuery("SELECT * FROM game ");
+
+             while (res.next()) {
+                 System.out.println(res.getString("Pseudo")+" avec "+res.getInt("ScoreTokenAlive")+" token(s) vivant(s) et "+res.getInt("ScoreTokenDead")+" token(s) mort(s)");
+                }
+             return res;
+     }
+     
+    public void creerCompte(Player p,Connection co){
             try {
-                statement = con.createStatement();
-                statement.executeUpdate("INSERT INTO player"+" VALUES ("+pseudo+","+tokenVivant+","+tokenMort+")");
-    }
-            } catch (Exception e) {
-                System.out.println("Erreur");
+                 boolean verif = false; // variables permettant de gerer le cas ou 2 personnes ont le meme pseudo
+                 String pseudo = p.getPseudo();
+                 String mail = p.getMail();
+                 String mdp = p.getPassword();
+                 
+                 verif = verifCompte(pseudo,co);
+                 if(verif == true){
+                 Statement create = co.createStatement();
+                 create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
+                 }else{
+                    Statement create = co.createStatement();
+                   pseudo = pseudo+"'1'";
+                    create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
+                 }
+             } catch (Exception e) {}
+        }
+             
+    private boolean verifCompte(String pseudo,Connection co)throws SQLException{
+            boolean exist = false;
+            Statement verif = co.createStatement();
+            ResultSet res = verif.executeQuery("SELECT COUNT(*) FROM compte WHERE Pseudo = "+pseudo);
+            while(res.next()){
+                if(res.getInt("COUNT(*)") >=1){
+                    exist = true;
+                }
             }
+            return exist;
+    }
     
-    
-    private void closeConnexion() {
-        if (con != null) {
-            try {
-                con.close();
-                System.out.println("Database connection terminated.");
-            } catch (Exception e) {/*De toute façon il doit se fermer*/}
+    public void changerPseudo(Player p,Connection co)throws SQLException{
+        if(p.getConnected() == true){
+                Scanner sc = new Scanner(System.in);
+                String pseudo = new String();
+                pseudo = sc.nextLine();
+            Statement changePseudo = co.createStatement();
+            changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());
+            changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());}
+        else{
+            System.out.println("Vous devez être connecté pour changer de pseudo");
         }
     }
+        
+    public void changerMdp(Player p,Connection co) throws SQLException{
+        if(p.getConnected() == true){
+            Scanner sc = new Scanner(System.in);
+            String mdp = new String();
+            mdp = sc.nextLine();
+            Statement changeMDP = co.createStatement();
+            changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+p.getPseudo());        
+        }else{
+            System.out.println("Vous devez être connecté pour pouvoir changer de mot de passe");
+        }
+    }
+        
+    public void changerMail(Player p,Connection co)throws SQLException{
+        if(p.getConnected() == true){
+            Scanner sc = new Scanner(System.in);
+            String mail = new String();
+            mail = sc.nextLine();
+            Statement changeEmail = co.createStatement();
+            changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getPseudo()); 
+        }else{
+            System.out.println("Vous n'êtes pas connecté pour acceder à ces infos");
+        }
+    }
+    
+        public boolean coUser(Player p,Connection co)throws SQLException{
+        // déjà regarder si le compte exist
+        //boolean exist = this.verifCompte(pseudo, co);
+        boolean exist = true;
+        boolean connect = false;
+        String keyWord = null;
+        //si inexistant boolean reste à faux
+        
+        if(exist == true){
+            //si existant regarder si il a selectionné le bon mot de passe 
+            Statement isCo = co.createStatement();
+            ResultSet res = isCo.executeQuery("SELECT Password FROM `compte` WHERE Pseudo = "+p.getPseudo());
+            while (res.next()) {
+                String em = res.getString("Password");
+                keyWord = em.replace("\n", ",");
+            }
+            keyWord = "'"+keyWord+"'";
+            System.out.println(keyWord+" = "+p.getPassword());
+            if(p.getPassword() == null ? keyWord == null : p.getPassword().equals(keyWord)){
+                connect = true;
+            }
+        }else{
+                System.out.println("\nAucun compte existant\n");
+            }
+        return connect;
+    }
+    
+    //SELECT Password FROM `compte` WHERE Pseudo = 'nico' 
+    public boolean decoUser(boolean connected){
+        return !connected;
+    }
+
 }

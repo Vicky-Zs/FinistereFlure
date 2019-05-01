@@ -18,6 +18,10 @@ import map.*;
 public class Player {
   private HashSet<Token> token = new HashSet<>(); // encapsulation en TokenP apres
   protected String pseudo;
+  private String adresseMail;
+  private String password;
+  private boolean connected = false;
+  private int partieJouee = 0;
 
 
                 /*Constructeur de la class player*/
@@ -45,7 +49,22 @@ public class Player {
       System.out.println("Voici ton p'tit nom  : " + pseudo);
       return pseudo;
   }
-
+  
+    private String mail(){
+      Scanner sc = new Scanner(System.in);
+      System.out.println("Veuillez votre adressse mail :");
+      String pseudo = sc.nextLine();
+      System.out.println("Voici votre adresse mail  : " + adresseMail);
+      return pseudo;
+  }
+    
+    private String password(){
+      Scanner sc = new Scanner(System.in);
+      System.out.println("Veuillez votre mot de passe :");
+      String pseudo = sc.nextLine();
+      return pseudo;
+  }
+   
   public int getNbToken(){ // Modif: Private -> Protected
       // permet de recuperer le nombre de tokens encore en vie
       int cpt = 0;
@@ -55,10 +74,30 @@ public class Player {
       return cpt;
   }
 
+  public String getMail(){
+      return adresseMail;
+  }
+  
+    public int getGame(){
+      return partieJouee=0;
+  }
+  
+  
   public String getPseudo(){
       return pseudo;
   }
+  
+  public String getPassword(){
+      return password;
+  }
+  
+  public boolean getConnected(){
+      return connected;
+  }
 
+  public void setConnected(boolean isCo){
+      this.connected = isCo;
+  }
   @Override
   public String toString(){
       return this.pseudo +" tu as encore "+getNbToken()+" tokens.";
