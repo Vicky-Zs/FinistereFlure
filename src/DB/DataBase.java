@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.HashSet;
 import token.Token;
 import java.lang.String;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,21 +103,73 @@ public class DataBase implements Parametre {
             return exist;
     }
     
-    public void changerPseudo(String pseudo,Player p,Connection co)throws SQLException{
-        Statement changePseudo = co.createStatement();
-        changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());
-        changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());
+    public void changerPseudo(Player p,Connection co)throws SQLException{
+        if(p.getConnected() == true){
+                Scanner sc = new Scanner(System.in);
+                String pseudo = new String();
+                pseudo = sc.nextLine();
+            Statement changePseudo = co.createStatement();
+            changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());
+            changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());}
+        else{
+            System.out.println("Vous devez être connecté pour changer de pseudo");
+        }
     }
         
-    public void changerMdp(String mdp,Player p,Connection co) throws SQLException{
-        Statement changeMDP = co.createStatement();
-        changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+p.getPseudo());
+    public void changerMdp(Player p,Connection co) throws SQLException{
+        if(p.getConnected() == true){
+            Scanner sc = new Scanner(System.in);
+            String mdp = new String();
+            mdp = sc.nextLine();
+            Statement changeMDP = co.createStatement();
+            changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+p.getPseudo());        
+        }else{
+            System.out.println("Vous devez être connecté pour pouvoir changer de mot de passe");
+        }
     }
         
-    public void changerMail(String mail,Player p,Connection co)throws SQLException{
-        Statement changeEmail = co.createStatement();
-        changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getPseudo());   
+    public void changerMail(Player p,Connection co)throws SQLException{
+        if(p.getConnected() == true){
+            Scanner sc = new Scanner(System.in);
+            String mail = new String();
+            mail = sc.nextLine();
+            Statement changeEmail = co.createStatement();
+            changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getPseudo()); 
+        }else{
+            System.out.println("Vous n'êtes pas connecté pour acceder à ces infos");
+        }
     }
-
+    
+        public boolean coUser(Player p,Connection co)throws SQLException{
+        // déjà regarder si le compte exist
+        //boolean exist = this.verifCompte(pseudo, co);
+        boolean exist = true;
+        boolean connect = false;
+        String keyWord = null;
+        //si inexistant boolean reste à faux
+        
+        if(exist == true){
+            //si existant regarder si il a selectionné le bon mot de passe 
+            Statement isCo = co.createStatement();
+            ResultSet res = isCo.executeQuery("SELECT Password FROM `compte` WHERE Pseudo = "+p.getPseudo());
+            while (res.next()) {
+                String em = res.getString("Password");
+                keyWord = em.replace("\n", ",");
+            }
+            keyWord = "'"+keyWord+"'";
+            System.out.println(keyWord+" = "+p.getPassword());
+            if(p.getPassword() == null ? keyWord == null : p.getPassword().equals(keyWord)){
+                connect = true;
+            }
+        }else{
+                System.out.println("\nAucun compte existant\n");
+            }
+        return connect;
+    }
+    
+    //SELECT Password FROM `compte` WHERE Pseudo = 'nico' 
+    public boolean decoUser(boolean connected){
+        return !connected;
+    }
 
 }
