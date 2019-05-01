@@ -58,7 +58,7 @@ public class TokenP extends Token {
      * @set the nbMove of the current TokenP from its dual pattern true for
      * patternA , false for patternB ,
      */
-    public void setNbMove(boolean phase) {
+    public void setNbMove(boolean phase) { // doit se mettre après le tour du joueur !
         if (phase) {
             this.nbMove = patternA;
         } else {
