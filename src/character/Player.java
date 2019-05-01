@@ -20,6 +20,7 @@ public class Player {
   protected String pseudo;
   private String adresseMail;
   private String password;
+  private boolean connected = false;
   private int partieJouee = 0;
 
 
@@ -89,7 +90,14 @@ public class Player {
   public String getPassword(){
       return password;
   }
+  
+  public boolean getConnected(){
+      return connected;
+  }
 
+  public void setConnected(boolean isCo){
+      this.connected = isCo;
+  }
   @Override
   public String toString(){
       return this.pseudo +" tu as encore "+getNbToken()+" tokens.";

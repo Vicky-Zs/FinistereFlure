@@ -90,7 +90,7 @@ public class DataBase implements Parametre {
              } catch (Exception e) {}
         }
              
-    public boolean verifCompte(String pseudo,Connection co)throws SQLException{
+    private boolean verifCompte(String pseudo,Connection co)throws SQLException{
             boolean exist = false;
             Statement verif = co.createStatement();
             ResultSet res = verif.executeQuery("SELECT COUNT(*) FROM compte WHERE Pseudo = "+pseudo);
@@ -117,4 +117,6 @@ public class DataBase implements Parametre {
         Statement changeEmail = co.createStatement();
         changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getPseudo());   
     }
+
+
 }
