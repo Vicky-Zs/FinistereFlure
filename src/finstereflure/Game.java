@@ -47,17 +47,17 @@ public class Game {
       }
       // initialisation du monstre
       this.m = new Monster(this);
-      
+
       // vérification de l'initialisation
       System.out.println("\nListe des joueurs :");
       for(int i = 0 ; i < nbPlayers ; i++)
       {
           System.out.println("Joueur "+ (i+1) + "\t" + this.p[i].getPseudo());
       }
-      
+
       System.out.println(this.m + "\n");
   }
-  
+
   /**
    * Returns map
    * @return
@@ -77,7 +77,7 @@ public class Game {
   public Player getPlayer(int x) {
       return p[x];
   }
-  
+
   public Monster getMonster() {
       return m;
   }
@@ -184,7 +184,7 @@ public class Game {
   public void turn(){
     while(!win()){
       for (int i = 0; i < p.length; i++) {
-
+        System.out.println("C'est au tour de " + p[i].getPseudo());
       }
     }
   }
