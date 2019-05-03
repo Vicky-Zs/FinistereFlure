@@ -39,12 +39,12 @@ public class Game {
   {
       // initialisation des joueurs
       Scanner input = new Scanner(System.in);
-      for(int i = 0 ; i < nbPlayers ; i++)
-      {
-          System.out.println("\nVeuillez rentrer le pseudo n°" + (i+1) + " :");
-          String pseudo = input.nextLine();
-          this.p[i] = new Player(pseudo,i,this);
-      }
+      System.out.println("\nVeuillez rentrer le pseudo n°1 :");
+      String pseudo = input.nextLine();
+      this.p[0] = new Player(pseudo,0,this);
+      this.p[1] = new IA(1,this);
+      
+      
       // initialisation du monstre
       this.m = new Monster(this);
 

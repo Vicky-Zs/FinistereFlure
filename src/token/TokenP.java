@@ -65,6 +65,11 @@ public class TokenP extends Token {
             this.nbMove = patternB;
         }
     }
+    
+    public void turnOff()
+    {
+        this.nbMove = 0;
+    }
 
     // indique si le TokenP peut passer son tour
     public boolean canStay() {
@@ -157,7 +162,7 @@ public class TokenP extends Token {
             }
 
             // Gestion des murs : s'il y a un mur, le mouvement est impossible.
-            if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false || destinationX + destinationY == 4)
+            if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false /*|| destinationX + destinationY == 4*/)
             {
                 // Gestion des colisions : s'il y a un Token...
                 if (this.myGame.getMap(destinationX, destinationY).isTokenHere()) 
