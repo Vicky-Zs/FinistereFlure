@@ -65,7 +65,7 @@ public class TokenP extends Token {
             this.nbMove = patternB;
         }
     }
-    
+
     public void turnOff()
     {
         this.nbMove = 0;
@@ -131,7 +131,7 @@ public class TokenP extends Token {
     // déplace le TokenP de 1 case vers une direction donnée : indique s'il a réussit à se déplacer ou non
     private boolean moveONE(int direction) {
 
-        if (this.nbMove > 0) 
+        if (this.nbMove > 0)
         {
             // Coordonnées fictives de la prochaine case après le déplacement
             int destinationX = this.posX, destinationY = this.posY;
@@ -165,14 +165,14 @@ public class TokenP extends Token {
             if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false /*|| destinationX + destinationY == 4*/)
             {
                 // Gestion des colisions : s'il y a un Token...
-                if (this.myGame.getMap(destinationX, destinationY).isTokenHere()) 
+                if (this.myGame.getMap(destinationX, destinationY).isTokenHere())
                 {
                     // ...si ce Token est un bloc de pierre...
-                    if (this.find(destinationX, destinationY) instanceof TokenR) 
+                    if (this.find(destinationX, destinationY) instanceof TokenR)
                     {
                         TokenR t = (TokenR) super.find(destinationX, destinationY);
                         // ...si ce TokenR peut être poussé par un pion : ce TokenR doit bouger
-                        if (t.canBePushByPion(direction)) 
+                        if (t.canBePushByPion(direction))
                         {
                             // Token R poussé
                             t.move(direction, this);
@@ -182,16 +182,16 @@ public class TokenP extends Token {
                             this.setPosY(destinationY);
 
                             return true;
-                        } 
-                        else 
+                        }
+                        else
                         {
                             return false;
                         }
-                    } 
-                    else 
+                    }
+                    else
                     {
                         // ...si ce Token est un pion
-                        if (this.find(destinationX, destinationY) instanceof TokenP) 
+                        if (this.find(destinationX, destinationY) instanceof TokenP)
                         {
                             // ...s'il reste plus de 1 point de mouvement : le pion peut se déplacer
                             if (this.nbMove > 1) {
@@ -200,13 +200,13 @@ public class TokenP extends Token {
                                 this.setPosY(destinationY);
 
                                 return true;
-                            } 
-                            else 
+                            }
+                            else
                             {
                                 return false;
                             }
-                        } 
-                        else 
+                        }
+                        else
                         {    // ...si ce Token est alors un monstre : le pion ne peut pas se déplacer
                             return false;
                         }
@@ -229,7 +229,7 @@ public class TokenP extends Token {
         {
             return false;
         }
-        
+
     }
 
     /**
@@ -255,7 +255,7 @@ public class TokenP extends Token {
                 }
                 this.myGame.getMap(this.posX, this.posY).setTokenHere();
             } else { // Si c'est le tour du Monstre, cela veut dire d'après les règles, qu'il est en train de se faire pousser par un bloc de pierre, par le monstre
-                // Si le pion n'est pas bloqué par son déplacement : il bouge 
+                // Si le pion n'est pas bloqué par son déplacement : il bouge
                 // Sinon : il meurt
                 if (this.moveONE(direction)) {
                     boolean flag = true;
@@ -316,9 +316,17 @@ public class TokenP extends Token {
     public int getPatternB() {
         return patternB;
     }
-    
+
     @Override
     public String toString(){
-        return "Le pion " + "{" + this.patternA + "/" + this.patternB + "}" +" est à la position ["+this.posX+";"+this.posY+"]";
+        if (this.isWin()) {
+          return "Le pion " + "{" + this.patternA + "/" + this.patternB + "}" +" est il est sortie du donjon";
+        }
+        else if ((this.posX == -1) && (this.posY == -1)) {
+          return "Le pion " + "{" + this.patternA + "/" + this.patternB + "}" +" est il est à l'entrée du donjon";
+        }
+        else {
+            return "Le pion " + "{" + this.patternA + "/" + this.patternB + "}" +" est à la position ["+this.posX+";"+this.posY+"]";
+        }
     }
 }
