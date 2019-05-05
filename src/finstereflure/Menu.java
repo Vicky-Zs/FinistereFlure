@@ -58,7 +58,7 @@ public class Menu extends Game {
     int i;
     t.setNbMove(nbTurn%2==1);
     do {
-      i = getNbMove();
+      i = t.getNbMove();
       if ((t.getPosX() == -1) && (t.getPosY() == -1)) {
         t.move(0);
       }
