@@ -24,6 +24,9 @@ public class Main {
               System.out.print("Nombre non accepté");
           }
       }while ((in == 1) || (in == 2));
+      if (in == 1) {
+          
+      }
     }
 
 }
