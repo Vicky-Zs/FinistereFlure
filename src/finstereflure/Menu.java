@@ -27,7 +27,7 @@ public class Menu extends Game {
       for (Object o : p[i].getToken()){
         if (o instanceof TokenP){
           TokenP t = (TokenP) o;
-          if (!t.hasWin) {
+          if (!t.isWin()) {
             System.out.println(t);
           }
         }        
