@@ -36,8 +36,7 @@ public class Game {
   private Menu menu = new Menu();
 
   // TENTATIVE DE CORRECTION
-  public Game()
-  {
+  public Game(){
       // initialisation des joueurs
       Scanner input = new Scanner(System.in);
       System.out.println("\nVeuillez rentrer le pseudo n°1 :");

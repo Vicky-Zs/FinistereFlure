@@ -19,9 +19,9 @@ import token.*;
  */
 
 public class Menu extends Game {
-  private Scanner scan = new Scanner(System.in);
-  private int in;
   public void main(){
+    Scanner scan = new Scanner(System.in);
+    int in;
     for(int i = 0; i < p.length; i++) {
       System.out.println("C'est au tour de " + p[i].getPseudo());
       for (Object o : p[i].getToken()){
@@ -30,22 +30,43 @@ public class Menu extends Game {
           if (!t.isWin()) {
             System.out.println(t);
           }
-        }        
+        }
       }
       System.out.println("Veuillez choisir votre token (avec le nombre de déplacement)");
       in = scan.nextInt();
+      menuToken(takeToken(in));
     }
   }
 
-  private TokenP chooseToken(int i){
-    for (Token t : p[i].getToken()){
-      if (t.getPatternA() == i) {
-        return t;
-      }
-      else if (t.getPatternB() == i) {
-        return t;
+  private TokenP takeToken(int i){
+    for (Object o : p[i].getToken()){
+      if (o instanceof TokenP) {
+        TokenP t = (TokenP) o;
+        if (t.getPatternA() == i) {
+          return t;
+        }
+        else if (t.getPatternB() == i) {
+          return t;
+        }
       }
     }
+    return null;
   }
-  return null;
+
+  private void menuToken(TokenP t) {
+    Scanner scan = new Scanner(System.in);
+    int i;
+    t.setNbMove(nbTurn%2==1);
+    do {
+      i = getNbMove();
+      if ((t.getPosX() == -1) && (t.getPosY() == -1)) {
+        t.move(0);
+      }
+      else {
+        System.out.println("Dans quel direction voulez-vous bougez ? \n1 = Nord, 2 = Est, 3 = Sud, 4 = Ouest");
+        int in = scan.nextInt();
+        t.move(in-1);
+      }
+    }while (i!=0);
+  }
 }
