@@ -25,13 +25,17 @@ public class IA extends Player {
         this.nameIA = defineName();
     }*/
     
+    private int destination;
+    private TokenP caseSelectionne;
     private TokenP pionSelectionne;
-    private int nbRegles = 20;
+    private int nbRegles = 19;
     private LinkedList<Integer> lesReglesDuJeu;
+    // private Game myGame;
     
     
     public IA(int playerId, Game g) {
         super(defineName(), playerId, g);
+        // this.myGame = g;    // IA doit avoir directement accès au jeu : la liste de ses pions peut être vide
         this.lesReglesDuJeu = constructInitList();
     }
 
@@ -78,6 +82,19 @@ public class IA extends Player {
         
     }
     
+    
+    private boolean hasSelect()
+    {
+        return this.pionSelectionne == null;
+    }
+    
+    
+    private void select(TokenP t)
+    {
+        this.pionSelectionne = t;
+    }
+
+    
     // permet de construire une nouvelle liste à partir d'une ancienne (en retirant une règle)
     private LinkedList<Integer> constructNewList(LinkedList<Integer> list, int no) {
         // définition d'une nouvelle liste
@@ -115,5 +132,16 @@ public class IA extends Player {
             lesReglesDuJeu.add(i);
         }
         return lesReglesDuJeu;
+    }
+    
+    private void futurCaseTokenP(int direction)
+    {
+        if( this.pionSelectionne != null )
+        {
+            this.caseSelectionne = new TokenP(this.pionSelectionne.getGame() , this.pionSelectionne.getPosX() , this.pionSelectionne.getPosY(), this.pionSelectionne.getNbMove());
+            this.caseSelectionne.move(direction);
+            this.caseSelectionne.getGame().getMap(this.caseSelectionne.getPosX(), this.caseSelectionne.getPosY()).setNotTokenHere();
+            this.destination = direction;
+        }
     }
 }

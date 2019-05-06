@@ -39,6 +39,11 @@ public class TokenP extends Token {
         // setNbMove(true);
         // myGame.getTokenOutside().add(this);
     }
+    
+    public Game getGame()
+    {
+        return this.myGame;
+    }
 
     /*public TokenP(Game myGame) {
         super(myGame, -1, -1);
@@ -52,7 +57,91 @@ public class TokenP extends Token {
     public static int getVictime() {
         return victime;
     }
+    
+    public boolean isSave()
+    {
+        int xM = this.myGame.getMonster().getToken().getPosX();
+        int yM = this.myGame.getMonster().getToken().getPosY();
+        int xP = this.posX;
+        int yP = 10 - this.posY;
+        
+        int distanceExit = (int)( Math.sqrt(Math.pow(xP,2)+Math.pow(yP,2)) );
+        
+        return (xM != 0 && yM != 10) && !this.isAxisMonster() && this.nbMove > distanceExit;
+    }
 
+    public boolean isTrapped(int distance)
+    {
+        return (!this.isActif() && this.isAxisMonster() && !this.isBehind() && this.distanceM() == distance);
+    }
+    
+    public boolean isActif()
+    {
+        return this.nbMove > 0;
+    }
+    
+    public boolean isAxisMonster()
+    {
+        int xM = this.myGame.getMonster().getToken().getPosX();
+        int yM = this.myGame.getMonster().getToken().getPosY();
+        int xP = this.posX;
+        int yP = this.posY;
+        
+        return ( xM == xP || yM == yP );
+    }
+    
+    public boolean isBehind()
+    {
+        int orientation = this.myGame.getMonster().getToken().getOrientation();
+        int xM = this.myGame.getMonster().getToken().getPosX();
+        int yM = this.myGame.getMonster().getToken().getPosY();
+        int xP = this.posX;
+        int yP = this.posY;
+        
+        switch(orientation)
+        {
+            case 0:
+            {
+                return (yP < yM);
+            }
+        
+            case 1:
+            {
+                return (xP < xM);
+            }
+            
+            case 2:
+            {
+                return (yP > yM);
+            }
+            
+            case 3:
+            {
+                return (xP > xM);
+            }
+        
+            default:
+            {
+                return false;
+            }
+        }
+    }
+    
+    public boolean isClose()
+    {
+        return (this.distanceM() <= 5);
+    }
+    
+    public int distanceM()
+    {
+        int xM = this.myGame.getMonster().getToken().getPosX();
+        int yM = this.myGame.getMonster().getToken().getPosY();
+        int xP = this.posX;
+        int yP = this.posY;
+        
+        return (int)( Math.sqrt(Math.pow(Math.abs(xM-xP) , 2) + Math.pow( Math.abs(yM-yP) , 2)) );
+    }
+    
     /**
      * @param phase
      * @set the nbMove of the current TokenP from its dual pattern true for
@@ -80,24 +169,38 @@ public class TokenP extends Token {
     public boolean canMove(int direction, TokenP p) {
         TokenP t = new TokenP(p.myGame, p.posX, p.posY, p.getNbMove());
         boolean flag = t.moveONE(direction);
-        if ((flag) && (this.nbMove > 0)) {
-            if (this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) {
-                while ((this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) && (flag)) {
+        if ((flag) && (this.nbMove > 0)) 
+        {
+            if (this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) 
+            {
+                while ((this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) && (flag)) 
+                {
                     flag = t.moveONE(direction);
                 }
-                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()) {
+                
+                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()) 
+                {
                     return (this.nbMove > 1);
-                } else {
+                } 
+                else 
+                {
                     return true;
                 }
-            } else {
-                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()) {
+            } 
+            else 
+            {
+                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()) 
+                {
                     return (this.nbMove > 1);
-                } else {
+                } 
+                else 
+                {
                     return (this.nbMove > 0);
                 }
             }
-        } else {
+        } 
+        else 
+        {
             return false;
         }
     }
