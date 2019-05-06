@@ -16,7 +16,8 @@ public class Main {
       //Test.main();
       Scanner scan = new Scanner(System.in);
       int in;
-      
+      Game g = new Game();
+      g.iniMap();
       do {
           System.out.println("Veuillez entrer le nombre de Joueurs (1 ou 2)");
           in = scan.nextInt();
