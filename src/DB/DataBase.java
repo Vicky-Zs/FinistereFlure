@@ -9,10 +9,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DataBase implements Parametre {       
-        Connection con = null;
-        ResultSet res;
-        String demande;
+        private Connection con = null;
+        private ResultSet res;
+        private String demande;
+        private String comptePseudo;
+        private String compteMdp;
         
+    private String getPseudo(){
+        return this.comptePseudo;
+    }
+    
+    private String getPassword(){
+        return this.compteMdp;
+    }
         
     public static Connection openBDD(){
          Connection con = null;
@@ -72,29 +81,43 @@ public class DataBase implements Parametre {
              return res;
      }
      
-    public void creerCompte(Player p,Connection co){
-            try {
-                 boolean verif = false; // variables permettant de gerer le cas ou 2 personnes ont le meme pseudo
-                 String pseudo = p.getPseudo();
-                 String mail = p.getMail();
-                 String mdp = p.getPassword();
-                 
+    public void creerCompte(Connection co){
+                Scanner sc = new Scanner(System.in);
+                 System.out.println("Inserez un pseudo ");
+                String pseudo = new String();
+                pseudo = sc.nextLine();
+                pseudo="'"+pseudo+"'";
+                 System.out.println("Inserez un mot de passe ");
+                String mdp = new String();
+                mdp = sc.nextLine();
+                mdp="'"+mdp+"'"; 
+                System.out.println("Inserez une adresse mail ");
+                String mail = new String();
+                mail = sc.nextLine();
+                mail="'"+mail+"'"; 
+        try {
+                 boolean verif = false;
+                 // variables permettant de gerer le cas ou 2 personnes ont le meme pseudo
                  verif = verifCompte(pseudo,co);
-                 if(verif == true){
-                 Statement create = co.createStatement();
-                 create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
-                 }else{
-                    Statement create = co.createStatement();
-                   pseudo = pseudo+"'1'";
-                    create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+")");
+                 while(verif == true){
+                     System.out.println("Pseudo déjà existant");
+                    String newPseudo = new String();
+                    newPseudo = sc.nextLine();
+                    newPseudo="'"+newPseudo+"'";
+                    verif = verifCompte(newPseudo,co);
+                    pseudo=newPseudo;
                  }
+                 
+                Statement create = co.createStatement();
+                create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+",'0')");
+                 
              } catch (Exception e) {}
-        }
+     }
              
-    private boolean verifCompte(String pseudo,Connection co)throws SQLException{
+    public boolean verifCompte(String aVerif,Connection co)throws SQLException{
             boolean exist = false;
             Statement verif = co.createStatement();
-            ResultSet res = verif.executeQuery("SELECT COUNT(*) FROM compte WHERE Pseudo = "+pseudo);
+            ResultSet res = verif.executeQuery("SELECT COUNT(*) FROM compte WHERE Pseudo = "+aVerif);
             while(res.next()){
                 if(res.getInt("COUNT(*)") >=1){
                     exist = true;
@@ -103,46 +126,58 @@ public class DataBase implements Parametre {
             return exist;
     }
     
-    public void changerPseudo(Player p,Connection co)throws SQLException{
-        if(p.getConnected() == true){
+    public void changerPseudo(Connection co)throws SQLException{
+        /*Partie ou l'on gere le changement de pseudo*/
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Votre nouveau pseudo c'est ? ");
+        String pseudo = new String();
+        pseudo = sc.nextLine();
+        pseudo="'"+pseudo+"'";
+        /*Partie on va chercher le pseudo*/
+        String compte = this.comptePseudo;
+        /*Partie requete*/
+        Statement changePseudo = co.createStatement();
+        changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+compte);
+        changePseudo.executeUpdate("UPDATE game SET Pseudo ="+pseudo+"WHERE Pseudo ="+compte);
+    }
+        
+    public void changerMdp(Connection co) throws SQLException{
                 Scanner sc = new Scanner(System.in);
-                String pseudo = new String();
-                pseudo = sc.nextLine();
-            Statement changePseudo = co.createStatement();
-            changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());
-            changePseudo.executeUpdate("UPDATE compte SET Pseudo ="+pseudo+"WHERE Pseudo ="+p.getPseudo());}
-        else{
-            System.out.println("Vous devez être connecté pour changer de pseudo");
-        }
+                System.out.println("Votre nouveau mot de passe c'est ? ");
+                String mdp = new String();
+                mdp = sc.nextLine();
+                mdp="'"+mdp+"'";
+        Statement changeMDP = co.createStatement();
+        changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+this.comptePseudo);
     }
         
-    public void changerMdp(Player p,Connection co) throws SQLException{
-        if(p.getConnected() == true){
-            Scanner sc = new Scanner(System.in);
-            String mdp = new String();
-            mdp = sc.nextLine();
-            Statement changeMDP = co.createStatement();
-            changeMDP.executeUpdate("UPDATE compte SET Password ="+mdp+"WHERE Pseudo ="+p.getPseudo());        
-        }else{
-            System.out.println("Vous devez être connecté pour pouvoir changer de mot de passe");
-        }
-    }
-        
-    public void changerMail(Player p,Connection co)throws SQLException{
-        if(p.getConnected() == true){
-            Scanner sc = new Scanner(System.in);
-            String mail = new String();
-            mail = sc.nextLine();
-            Statement changeEmail = co.createStatement();
-            changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+p.getPseudo()); 
-        }else{
-            System.out.println("Vous n'êtes pas connecté pour acceder à ces infos");
-        }
+    public void changerMail(Connection co)throws SQLException{
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Votre nouvelle adrese mail c'est ? ");
+                String mail = new String();
+                mail = sc.nextLine();
+                mail="'"+mail+"'";
+        Statement changeEmail = co.createStatement();
+        changeEmail.executeUpdate("UPDATE compte SET Email ="+mail+"WHERE Pseudo ="+this.comptePseudo);   
     }
     
-        public boolean coUser(Player p,Connection co)throws SQLException{
+    public boolean coUser(Connection co)throws SQLException{
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Entrez votre pseudo : ");
+        String pseudo = new String();
+        pseudo = sc.nextLine();
+        pseudo="'"+pseudo+"'";
+        System.out.println(pseudo);
+        this.comptePseudo =pseudo;
+        
+        System.out.println("Entrez votre password : ");
+        String mdp = new String();
+        mdp = sc.nextLine();
+        this.compteMdp = mdp;
         // déjà regarder si le compte exist
         //boolean exist = this.verifCompte(pseudo, co);
+        
+        
         boolean exist = true;
         boolean connect = false;
         String keyWord = null;
@@ -151,14 +186,15 @@ public class DataBase implements Parametre {
         if(exist == true){
             //si existant regarder si il a selectionné le bon mot de passe 
             Statement isCo = co.createStatement();
-            ResultSet res = isCo.executeQuery("SELECT Password FROM `compte` WHERE Pseudo = "+p.getPseudo());
+            ResultSet res = isCo.executeQuery("SELECT Password FROM `compte` WHERE Pseudo = "+pseudo);
             while (res.next()) {
                 String em = res.getString("Password");
                 keyWord = em.replace("\n", ",");
             }
-            keyWord = "'"+keyWord+"'";
-            System.out.println(keyWord+" = "+p.getPassword());
-            if(p.getPassword() == null ? keyWord == null : p.getPassword().equals(keyWord)){
+            //keyWord =keyWord;
+            
+            System.out.println(keyWord+" = "+mdp);
+            if(mdp == null ? keyWord == null : mdp.equals(keyWord)){
                 connect = true;
             }
         }else{
