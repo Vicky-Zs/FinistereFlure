@@ -33,18 +33,18 @@ public class Game {
   //Permet de savoir si c'est au joueur ou non
   protected int nbTurn = 1;
   //Le nombre de tours
+  private Menu menu = new Menu();
 
   // TENTATIVE DE CORRECTION
-  public Game()
-  {
+  public Game(){
       // initialisation des joueurs
       Scanner input = new Scanner(System.in);
-      for(int i = 0 ; i < nbPlayers ; i++)
-      {
-          System.out.println("\nVeuillez rentrer le pseudo n°" + (i+1) + " :");
-          String pseudo = input.nextLine();
-          this.p[i] = new Player(pseudo,i,this);
-      }
+      System.out.println("\nVeuillez rentrer le pseudo n°1 :");
+      String pseudo = input.nextLine();
+      this.p[0] = new Player(pseudo,0,this);
+      this.p[1] = new IA(1,this);
+
+
       // initialisation du monstre
       this.m = new Monster(this);
 
@@ -182,10 +182,10 @@ public class Game {
 
   // Je suppose que c'est en travaux ^^'
   public void turn(){
+    int j;
     while(!win()){
-      for (int i = 0; i < p.length; i++) {
-        System.out.println("C'est au tour de " + p[i].getPseudo());
-      }
+      menu.main();
+      m.getToken().tour();
     }
   }
 }

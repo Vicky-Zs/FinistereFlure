@@ -49,6 +49,7 @@ public class TokenM extends Token {
 
 
     private boolean isInside(){
+        /*
         if( (this.posX >= 0 && this.posX <= 15) && (this.posY >= 0 && this.posY <= 6) )
         {
             return true;
@@ -64,8 +65,8 @@ public class TokenM extends Token {
         {
             return false;
         }
-        
-        // return ( (this.posX >= 0 && this.posX <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
+        */
+        return ( (this.posX >= 0 && this.posX <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
     }
     
     /**
