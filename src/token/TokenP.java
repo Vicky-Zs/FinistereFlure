@@ -370,7 +370,7 @@ public class TokenP extends Token {
      */
     public void die() {
         // on comptabilise sa mort
-        this.victime++;
+        victime++;
         this.myGame.getTokenOutside().add(this);
         this.myGame.getPlayer(this.playerId).getToken().remove(this);
 

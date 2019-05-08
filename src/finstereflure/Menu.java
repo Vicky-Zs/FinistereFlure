@@ -20,11 +20,11 @@ import token.*;
 
 public class Menu {
     private Game game;
-    
+
     public Menu(Game g){
         this.game = g;
     }
-    
+
     public void main(){
     Scanner scan = new Scanner(System.in);
     int in;
@@ -42,6 +42,7 @@ public class Menu {
       in = scan.nextInt();
       menuToken(takeToken(i, in));
     }
+    scan.close();
   }
 
   private TokenP takeToken(int i, int nbMove){
@@ -61,27 +62,33 @@ public class Menu {
 
   private void menuToken(TokenP t) {
     Scanner scan = new Scanner(System.in);
-    int i;
     t.setNbMove(game.getNbTurn()%2==1);
+    game.getMap(posX, posY).setNotTokenHere();
     do {
       if ((t.getPosX() == -1) && (t.getPosY() == -1)) {
         t.move(0);
       }
       else {
-        System.out.println("Dans quel direction voulez-vous bougez ? \n1 = Nord, 2 = Est, 3 = Sud, 4 = Ouest \n 0 = Fin du tour en cours");
+        System.out.println("Dans quel direction voulez-vous bougez ? \n1 = Nord, 2 = Est, 3 = Sud, 4 = Ouest \n0 = Fin du tour en cours");
         int in = scan.nextInt();
-        if (in == 0){
-            t.turnOff();
-        }
-        else if (in>0 && in<5){
-           t.move(in-1);
-           System.out.println(t);
-           System.out.println("Nombre de déplacement restant : "+t.getNbMove()); 
-        }
-        else{
-            System.out.println("Cette réponse n'est pas valide");
+        switch (in) {
+          case 0:
+          t.turnOff();
+          break;
+          case 1:
+          if (t.getPosY() < 10){
+            if(game.getMap(t.getPosX(), t.getPosY() + 1).isTokenHere()){
+              Token temp = t.find(t.getPosX(), t.getPosY() + 1);
+              if (temp instanceof TokenP){
+                //TODO:
+              }
+            }
+          }
+          break;
         }
       }
     }while (t.isActif());
+    scan.close();
+    game.getMap(posX, posY).setTokenHere();
   }
 }
