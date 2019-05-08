@@ -40,7 +40,7 @@ public class TokenP extends Token {
         // setNbMove(true);
         // myGame.getTokenOutside().add(this);
     }
-    
+
     public Game getGame()
     {
         return this.myGame;
@@ -58,21 +58,20 @@ public class TokenP extends Token {
     public static int getVictime() {
         return victime;
     }
-    
+
     // if the Monster's orientation is different from a given direction : return true
     public boolean pathNoMonster(int direction)
     {
         return direction != this.myGame.getMonster().getToken().getOrientation();
     }
-    
+
     // find a doomed TokenP
     public int findTokenP(int distance)
     {
         Iterator<TokenP> iterator;
-        
+
         // fouille dans la liste des pions de chaque joueur
-        for (int i = 0; i < this.myGame.nbPlayers; i++) 
-        {
+        for (int i = 0; i < this.myGame.nbPlayers; i++){
             iterator = this.myGame.getPlayer(i).getToken().iterator();
             if( !this.myGame.getPlayer(i).isEmpty() )
             {
@@ -89,104 +88,87 @@ public class TokenP extends Token {
                 }
             }
         }
-        
+
         return -1;
     }
-    
-    public boolean isSave()
-    {
+
+    public boolean isSave(){
         int xM = this.myGame.getMonster().getToken().getPosX();
         int yM = this.myGame.getMonster().getToken().getPosY();
         int xP = this.posX;
         int yP = 10 - this.posY;
-        
+
         int distanceExit = (int)( Math.sqrt(Math.pow(xP,2)+Math.pow(yP,2)) );
-        
+
         return (xM != 0 && yM != 10) && !this.isAxisMonster() && this.nbMove > distanceExit;
     }
 
-    public boolean isTrapped(int distance)
-    {
+    public boolean isTrapped(int distance){
         return (!this.isActif() && this.isMegaAxisMonster() && !this.isBehind() && this.distanceM() == distance);
     }
-    
-    public boolean isActif()
-    {
+
+    public boolean isActif(){
         return this.nbMove > 0;
     }
-    
-    public boolean isAxisMonster()
-    {
+
+    public boolean isAxisMonster(){
         int xM = this.myGame.getMonster().getToken().getPosX();
         int yM = this.myGame.getMonster().getToken().getPosY();
         int xP = this.posX;
         int yP = this.posY;
-        
+
         return ( xM == xP || yM == yP );
     }
-    
-    private boolean isMegaAxisMonster()
-    {
+
+    private boolean isMegaAxisMonster(){
         int xM = this.myGame.getMonster().getToken().getPosX();
         int yM = this.myGame.getMonster().getToken().getPosY();
         int xP = this.posX;
         int yP = this.posY;
-        
+
         return ( Math.abs(xM - xP) < 6 || Math.abs(yM - yP) < 6 );
     }
-    
-    public boolean isBehind()
-    {
+
+    public boolean isBehind(){
         int orientation = this.myGame.getMonster().getToken().getOrientation();
         int xM = this.myGame.getMonster().getToken().getPosX();
         int yM = this.myGame.getMonster().getToken().getPosY();
         int xP = this.posX;
         int yP = this.posY;
-        
-        switch(orientation)
-        {
-            case 0:
-            {
+
+        switch(orientation){
+            case 0:{
                 return (yP < yM);
             }
-        
-            case 1:
-            {
+            case 1:{
                 return (xP < xM);
             }
-            
-            case 2:
-            {
+            case 2:{
                 return (yP > yM);
             }
-            
-            case 3:
-            {
+            case 3:{
                 return (xP > xM);
             }
-        
             default:
             {
                 return false;
             }
         }
     }
-    
-    public boolean isClose()
-    {
+
+    public boolean isClose(){
         return (this.distanceM() <= 5);
     }
-    
-    public int distanceM()
-    {
+
+    public int distanceM(){
         int xM = this.myGame.getMonster().getToken().getPosX();
         int yM = this.myGame.getMonster().getToken().getPosY();
         int xP = this.posX;
         int yP = this.posY;
-        
+
         return (int)( Math.sqrt(Math.pow(Math.abs(xM-xP) , 2) + Math.pow( Math.abs(yM-yP) , 2)) );
     }
-    
+
     /**
      * @param phase
      * @set the nbMove of the current TokenP from its dual pattern true for
@@ -200,8 +182,7 @@ public class TokenP extends Token {
         }
     }
 
-    public void turnOff()
-    {
+    public void turnOff(){
         this.nbMove = 0;
     }
 
@@ -214,38 +195,28 @@ public class TokenP extends Token {
     public boolean canMove(int direction) {
         TokenP t = new TokenP(this.myGame, this.posX, this.posY, this.getNbMove());
         boolean flag = t.moveONE(direction);
-        if ((flag) && (this.nbMove > 0)) 
-        {
-            if (this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) 
-            {
-                while ((this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) && (flag)) 
-                {
+        if ((flag) && (this.nbMove > 0)){
+            if (this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()){
+                while ((this.myGame.getMap(t.getPosX(), t.getPosY()).isBloodspot()) && (flag)){
                     flag = t.moveONE(direction);
                 }
-                
-                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()) 
-                {
+                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()){
                     return (this.nbMove > 1);
-                } 
-                else 
-                {
+                }
+                else{
                     return true;
                 }
-            } 
-            else 
-            {
-                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()) 
-                {
+            }
+            else{
+                if (this.myGame.getMap(t.getPosX(), t.getPosY()).isTokenHere()){
                     return (this.nbMove > 1);
-                } 
-                else 
-                {
+                }
+                else{
                     return (this.nbMove > 0);
                 }
             }
-        } 
-        else 
-        {
+        }
+        else{
             return false;
         }
     }
@@ -278,9 +249,7 @@ public class TokenP extends Token {
 
     // déplace le TokenP de 1 case vers une direction donnée : indique s'il a réussit à se déplacer ou non
     private boolean moveONE(int direction) {
-
-        if (this.nbMove > 0)
-        {
+        if (this.nbMove > 0){
             // Coordonnées fictives de la prochaine case après le déplacement
             int destinationX = this.posX, destinationY = this.posY;
             switch (direction) {
@@ -310,8 +279,7 @@ public class TokenP extends Token {
             }
 
             // Gestion des murs : s'il y a un mur, le mouvement est impossible.
-            if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false /*|| destinationX + destinationY == 4*/)
-            {
+            if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false /*|| destinationX + destinationY == 4*/){
                 // Gestion des colisions : s'il y a un Token...
                 if (this.myGame.getMap(destinationX, destinationY).isTokenHere())
                 {
@@ -450,7 +418,7 @@ public class TokenP extends Token {
     {
         return (this.nbMove > 0) && (this.posX == 0) && (this.posY == 10);
     }
-    
+
     /**
      * @return the win
      */
