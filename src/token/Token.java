@@ -67,9 +67,8 @@ public abstract class Token {
             return false;
         }
     }*/
+    
     // donne le Token recherché ; Renvoie null sinon...
-    // Note : à améliorer pour être comme IsInside
-    // Ou bien : faire que ce soit Game qui puisse rendre le Token souhaité, en y rentrant que ses coordonnées X et Y (pourrait réduire les "accidents")
     /**
      * @param x
      * @param y

@@ -16,7 +16,7 @@ import map.*;
  */
 
 public class Player {
-  private HashSet<Token> token = new HashSet<>(); // encapsulation en TokenP apres
+  private HashSet<TokenP> token = new HashSet<>(); // encapsulation en TokenP apres
   protected String pseudo;
   private String adresseMail;
   private String password;
@@ -68,7 +68,7 @@ public class Player {
   public int getNbToken(){ // Modif: Private -> Protected
       // permet de recuperer le nombre de tokens encore en vie
       int cpt = 0;
-      for(Token t : token){
+      for(TokenP t : token){
           cpt++;
       }
       return cpt;
@@ -111,9 +111,9 @@ public class Player {
       return token;
   }
 
-  public Token getToken(int pattern) {
+  public TokenP getToken(int pattern) {
       
-      for (Token t : token) {
+      for (TokenP t : token) {
           if (t instanceof TokenP) {
               TokenP tP = (TokenP) t;
               if (tP.getPatternA() == pattern) {
