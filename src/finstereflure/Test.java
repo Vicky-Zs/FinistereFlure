@@ -16,7 +16,11 @@ import token.*;
  */
 
 public class Test extends Game {
-  public static void main() {
+
+    /**
+     *
+     */
+    public static void main() {
     Token temp;
     Game g = new Game();
     g.iniMap();

@@ -18,13 +18,19 @@ import token.*;
  * @author Cédric
  */
 
-public class Menu extends Game {
-  public void main(){
+public class Menu {
+    private Game game;
+    
+    public Menu(Game g){
+        this.game = g;
+    }
+    
+    public void main(){
     Scanner scan = new Scanner(System.in);
     int in;
-    for(int i = 0; i < p.length; i++) {
-      System.out.println("C'est au tour de " + p[i].getPseudo());
-      for (Object o : p[i].getToken()){
+    for(int i = 0; i < game.getPlayers().length; i++) {
+      System.out.println("C'est au tour de " + game.getPlayer(i).getPseudo());
+      for (Object o : game.getPlayer(i).getToken()){
         if (o instanceof TokenP){
           TokenP t = (TokenP) o;
           if (!t.isWin()) {
@@ -34,18 +40,18 @@ public class Menu extends Game {
       }
       System.out.println("Veuillez choisir votre token (avec le nombre de déplacement)");
       in = scan.nextInt();
-      menuToken(takeToken(in));
+      menuToken(takeToken(i, in));
     }
   }
 
-  private TokenP takeToken(int i){
-    for (Object o : p[i].getToken()){
+  private TokenP takeToken(int i, int nbMove){
+    for (Object o : game.getPlayer(i).getToken()){
       if (o instanceof TokenP) {
         TokenP t = (TokenP) o;
-        if (t.getPatternA() == i) {
+        if (t.getPatternA() == nbMove) {
           return t;
         }
-        else if (t.getPatternB() == i) {
+        else if (t.getPatternB() == nbMove) {
           return t;
         }
       }
@@ -56,7 +62,7 @@ public class Menu extends Game {
   private void menuToken(TokenP t) {
     Scanner scan = new Scanner(System.in);
     int i;
-    t.setNbMove(nbTurn%2==1);
+    t.setNbMove(game.getNbTurn()%2==1);
     do {
       i = t.getNbMove();
       if ((t.getPosX() == -1) && (t.getPosY() == -1)) {
@@ -66,6 +72,8 @@ public class Menu extends Game {
         System.out.println("Dans quel direction voulez-vous bougez ? \n1 = Nord, 2 = Est, 3 = Sud, 4 = Ouest");
         int in = scan.nextInt();
         t.move(in-1);
+        System.out.println(t);
+        System.out.println(t.getNbMove());
       }
     }while (i!=0);
   }

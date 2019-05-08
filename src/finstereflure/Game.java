@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
+ * Game est la classe principal sur jeu pour le déroulement de la partie
  * @author Cédric
  */
 
@@ -33,24 +33,47 @@ public class Game {
   //Permet de savoir si c'est au joueur ou non
   protected int nbTurn = 1;
   //Le nombre de tours
-  private Menu menu = new Menu();
-
-  // TENTATIVE DE CORRECTION
+  private Menu menu = new Menu(this);
+  //Classe pour lancer les différents menus
+  
+  /**
+   * 
+   * Contructeur de la classe Game
+   * Initialisation des joueurs
+   */
   public Game(){
-      // initialisation des joueurs
+      // Initialisation des joueurs
       Scanner input = new Scanner(System.in);
-      System.out.println("\nVeuillez rentrer le pseudo n°1 :");
+      String temp;
+      System.out.println("\nVeuillez rentrer le pseudo du 1er joueur :");
       String pseudo = input.nextLine();
       this.p[0] = new Player(pseudo,0,this);
-      this.p[1] = new IA(1,this);
-
-
-      // initialisation du monstre
+      int i = 1;
+      do {
+        System.out.println("Est-ce qu'il y a un deuxième joueur ? \"Oui\" ou \"Non\"");
+        temp = input.nextLine();
+        if (null != temp) switch (temp) {
+              case "Oui":
+                  System.out.println("\nVeuillez rentrer le pseudo du 2e joueur :");
+                  pseudo = input.nextLine();
+                  this.p[1] = new Player(pseudo,2,this);
+                  i = 0;
+                  break;
+              case "Non":
+                  this.p[1] = new IA(1,this);
+                  i = 0;
+                  break;
+              default:
+                  System.out.println("Cette réponse n'est pas valide.");
+                  break;
+          }
+      }while (i != 0);
+      // Initialisation du monstre
       this.m = new Monster(this);
 
-      // vérification de l'initialisation
+      // Vérification de l'initialisation
       System.out.println("\nListe des joueurs :");
-      for(int i = 0 ; i < nbPlayers ; i++)
+      for(i = 0 ; i < nbPlayers ; i++)
       {
           System.out.println("Joueur "+ (i+1) + "\t" + this.p[i].getPseudo());
       }
@@ -69,7 +92,10 @@ public class Game {
   public Cell getMap(int x, int y) {
       return this.map[x][y];
   }
-
+  
+  public Player[] getPlayers() {
+      return p;
+  }
   /**
    * Returns Players
    * @return
