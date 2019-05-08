@@ -60,35 +60,28 @@ public class TokenP extends Token {
     }
 
     // if the Monster's orientation is different from a given direction : return true
-    public boolean pathNoMonster(int direction)
-    {
+    public boolean pathNoMonster(int direction){
         return direction != this.myGame.getMonster().getToken().getOrientation();
     }
 
     // find a doomed TokenP
-    public int findTokenP(int distance)
-    {
+    public int findTokenP(int distance){
         Iterator<TokenP> iterator;
 
         // fouille dans la liste des pions de chaque joueur
         for (int i = 0; i < this.myGame.nbPlayers; i++){
             iterator = this.myGame.getPlayer(i).getToken().iterator();
-            if( !this.myGame.getPlayer(i).isEmpty() )
-            {
-                while (iterator.hasNext())
-                {
+            if( !this.myGame.getPlayer(i).isEmpty() ){
+                while (iterator.hasNext()){
                     TokenP p = iterator.next();
-                    if( !p.isOut() &&  !p.isWin() )
-                    {
-                        if( p.distanceM() == distance && p.isTrapped(distance))
-                        {
+                    if( !p.isOut() &&  !p.isWin() ){
+                        if( p.distanceM() == distance && p.isTrapped(distance)){
                             return p.getPlayerId();
                         }
                     }
                 }
             }
         }
-
         return -1;
     }
 
@@ -97,9 +90,7 @@ public class TokenP extends Token {
         int yM = this.myGame.getMonster().getToken().getPosY();
         int xP = this.posX;
         int yP = 10 - this.posY;
-
         int distanceExit = (int)( Math.sqrt(Math.pow(xP,2)+Math.pow(yP,2)) );
-
         return (xM != 0 && yM != 10) && !this.isAxisMonster() && this.nbMove > distanceExit;
     }
 
@@ -281,34 +272,26 @@ public class TokenP extends Token {
             // Gestion des murs : s'il y a un mur, le mouvement est impossible.
             if (this.myGame.getMap()[this.posX][this.posY].getWall(direction) == false /*|| destinationX + destinationY == 4*/){
                 // Gestion des colisions : s'il y a un Token...
-                if (this.myGame.getMap(destinationX, destinationY).isTokenHere())
-                {
+                if (this.myGame.getMap(destinationX, destinationY).isTokenHere()){
                     // ...si ce Token est un bloc de pierre...
-                    if (this.find(destinationX, destinationY) instanceof TokenR)
-                    {
+                    if (this.find(destinationX, destinationY) instanceof TokenR){
                         TokenR t = (TokenR) super.find(destinationX, destinationY);
                         // ...si ce TokenR peut être poussé par un pion : ce TokenR doit bouger
-                        if (t.canBePushByPion(direction))
-                        {
+                        if (t.canBePushByPion(direction)){
                             // Token R poussé
                             t.move(direction, this);
-
                             // Déplacement
                             this.setPosX(destinationX);
                             this.setPosY(destinationY);
-
                             return true;
                         }
-                        else
-                        {
+                        else{
                             return false;
                         }
                     }
-                    else
-                    {
+                    else{
                         // ...si ce Token est un pion
-                        if (this.find(destinationX, destinationY) instanceof TokenP)
-                        {
+                        if (this.find(destinationX, destinationY) instanceof TokenP){
                             // ...s'il reste plus de 1 point de mouvement : le pion peut se déplacer
                             if (this.nbMove > 1) {
                                 // Déplacement
@@ -317,35 +300,29 @@ public class TokenP extends Token {
 
                                 return true;
                             }
-                            else
-                            {
+                            else{
                                 return false;
                             }
                         }
-                        else
-                        {    // ...si ce Token est alors un monstre : le pion ne peut pas se déplacer
+                        else{    // ...si ce Token est alors un monstre : le pion ne peut pas se déplacer
                             return false;
                         }
                     }
                 }
-                else    // s'il n'y a ni mur, ni Token : le pion se déplace librement
-                {
+                else{    // s'il n'y a ni mur, ni Token : le pion se déplace librement
                     // Déplacement
                     this.setPosX(destinationX);
                     this.setPosY(destinationY);
                     return true;
                 }
             }
-            else
-            {
+            else{
                 return false;
             }
         }
-        else
-        {
+        else{
             return false;
         }
-
     }
 
     /**

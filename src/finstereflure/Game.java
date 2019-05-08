@@ -43,6 +43,8 @@ public class Game {
    */
   public Game(){
       // Initialisation des joueurs
+      iniMap();
+      iniDecorations();
       Scanner input = new Scanner(System.in);
       String temp;
       System.out.println("\nVeuillez rentrer le pseudo du 1er joueur :");
@@ -70,15 +72,13 @@ public class Game {
       }while (i != 0);
       // Initialisation du monstre
       this.m = new Monster(this);
-
       // Vérification de l'initialisation
       System.out.println("\nListe des joueurs :");
-      for(i = 0 ; i < nbPlayers ; i++)
-      {
+      for(i = 0 ; i < nbPlayers ; i++){
           System.out.println("Joueur "+ (i+1) + "\t" + this.p[i].getPseudo());
       }
-
       System.out.println(this.m + "\n");
+      turn();
   }
 
   /**
@@ -208,7 +208,6 @@ public class Game {
 
   // Je suppose que c'est en travaux ^^'
   public void turn(){
-    int j;
     while(!win()){
       menu.main();
       m.getToken().tour();

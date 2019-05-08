@@ -64,17 +64,24 @@ public class Menu {
     int i;
     t.setNbMove(game.getNbTurn()%2==1);
     do {
-      i = t.getNbMove();
       if ((t.getPosX() == -1) && (t.getPosY() == -1)) {
         t.move(0);
       }
       else {
-        System.out.println("Dans quel direction voulez-vous bougez ? \n1 = Nord, 2 = Est, 3 = Sud, 4 = Ouest");
+        System.out.println("Dans quel direction voulez-vous bougez ? \n1 = Nord, 2 = Est, 3 = Sud, 4 = Ouest \n 0 = Fin du tour en cours");
         int in = scan.nextInt();
-        t.move(in-1);
-        System.out.println(t);
-        System.out.println(t.getNbMove());
+        if (in == 0){
+            t.turnOff();
+        }
+        else if (in>0 && in<5){
+           t.move(in-1);
+           System.out.println(t);
+           System.out.println("Nombre de déplacement restant : "+t.getNbMove()); 
+        }
+        else{
+            System.out.println("Cette réponse n'est pas valide");
+        }
       }
-    }while (i!=0);
+    }while (t.isActif());
   }
 }
