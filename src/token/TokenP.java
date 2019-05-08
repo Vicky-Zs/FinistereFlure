@@ -221,7 +221,7 @@ public class TokenP extends Token {
             this.out = false;
             this.setPosX(15);
             this.setPosY(0);
-            this.myGame.getMap()[this.posX][this.posY].setTokenHere();
+            //this.myGame.getMap()[this.posX][this.posY].setTokenHere();
         }
     }
 

@@ -29,7 +29,7 @@ public class Menu {
     Scanner scan = new Scanner(System.in);
     int in;
     for(int i = 0; i < game.getPlayers().length; i++) {
-      System.out.println("C'est au tour de " + game.getPlayer(i).getPseudo());
+      System.out.println(i + "\nC'est au tour de " + game.getPlayer(i).getPseudo());
       for (Object o : game.getPlayer(i).getToken()){
         if (o instanceof TokenP){
           TokenP t = (TokenP) o;
