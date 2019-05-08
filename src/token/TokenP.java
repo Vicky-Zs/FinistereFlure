@@ -8,6 +8,7 @@ package token;
 import map.*;
 import finstereflure.*;
 import character.*;
+import java.util.Iterator;
 
 /**
  *
@@ -20,11 +21,11 @@ public class TokenP extends Token {
     private static int victime = 0;
 
     public TokenP(Game myGame, int patterneA, int playerId) {
-        super(myGame, -1, -1); //Covention: -1/-1 = en dehors de la carte
-        this.playerId = playerId;   // permet de savoir si le pion appartient au Joueur 1 ou 2
+        super(myGame, -1, -1);      // Convention: -1/-1 = en dehors de la carte
+        this.playerId = playerId;   // permet de savoir si le pion appartient au Joueur 0 ou 1
         this.patternA = patterneA;
-        this.patternB = Math.abs(7 - patterneA); //Retourne la valeur absolue
-        this.out = true; // Peut-être inutile puisque l'on a la liste Outside
+        this.patternB = Math.abs(7 - patterneA);    //Retourne la valeur absolue
+        this.out = true;            // Peut-être inutile puisque l'on a la liste Outside
         this.win = false;
         setNbMove(true);
         myGame.getTokenOutside().add(this);
@@ -58,6 +59,40 @@ public class TokenP extends Token {
         return victime;
     }
     
+    // if the Monster's orientation is different from a given direction : return true
+    public boolean pathNoMonster(int direction)
+    {
+        return direction != this.myGame.getMonster().getToken().getOrientation();
+    }
+    
+    // find a doomed TokenP
+    public int findTokenP(int distance)
+    {
+        Iterator<TokenP> iterator;
+        
+        // fouille dans la liste des pions de chaque joueur
+        for (int i = 0; i < this.myGame.nbPlayers; i++) 
+        {
+            iterator = this.myGame.getPlayer(i).getToken().iterator();
+            if( !this.myGame.getPlayer(i).isEmpty() )
+            {
+                while (iterator.hasNext())
+                {
+                    TokenP p = iterator.next();
+                    if( !p.isOut() &&  !p.isWin() )
+                    {
+                        if( p.distanceM() == distance && p.isTrapped(distance))
+                        {
+                            return p.getPlayerId();
+                        }
+                    }
+                }
+            }
+        }
+        
+        return -1;
+    }
+    
     public boolean isSave()
     {
         int xM = this.myGame.getMonster().getToken().getPosX();
@@ -72,7 +107,7 @@ public class TokenP extends Token {
 
     public boolean isTrapped(int distance)
     {
-        return (!this.isActif() && this.isAxisMonster() && !this.isBehind() && this.distanceM() == distance);
+        return (!this.isActif() && this.isMegaAxisMonster() && !this.isBehind() && this.distanceM() == distance);
     }
     
     public boolean isActif()
@@ -88,6 +123,16 @@ public class TokenP extends Token {
         int yP = this.posY;
         
         return ( xM == xP || yM == yP );
+    }
+    
+    private boolean isMegaAxisMonster()
+    {
+        int xM = this.myGame.getMonster().getToken().getPosX();
+        int yM = this.myGame.getMonster().getToken().getPosY();
+        int xP = this.posX;
+        int yP = this.posY;
+        
+        return ( Math.abs(xM - xP) < 6 || Math.abs(yM - yP) < 6 );
     }
     
     public boolean isBehind()
@@ -166,8 +211,8 @@ public class TokenP extends Token {
     }
 
     // Indique si le TokenP peut se dépacer d'une case, vers une direction donnée
-    public boolean canMove(int direction, TokenP p) {
-        TokenP t = new TokenP(p.myGame, p.posX, p.posY, p.getNbMove());
+    public boolean canMove(int direction) {
+        TokenP t = new TokenP(this.myGame, this.posX, this.posY, this.getNbMove());
         boolean flag = t.moveONE(direction);
         if ((flag) && (this.nbMove > 0)) 
         {
@@ -345,11 +390,11 @@ public class TokenP extends Token {
         if (this.isOut()) {
             this.inGame();
         } // si les conditions de victoires n'ont pas été remplis : le pion bouge
-        else if (((this.nbMove > 0) && (this.posX == 0) && (this.posY == 10) && direction == 0) == false) {
+        else if (( this.winningCondition() && direction == 0) == false) {
             this.myGame.getMap(this.posX, this.posY).setNotTokenHere();
             // Si c'est le tour des joueurs
             if (this.myGame.isTurnPlayers()) {
-                if (this.canMove(direction, this)) {
+                if (this.canMove(direction)) {
                     boolean flag = this.moveONE(direction);
                     while ((this.myGame.getMap(this.posX, this.posY).isBloodspot()) && (flag)) {
                         flag = this.moveONE(direction);
@@ -401,6 +446,11 @@ public class TokenP extends Token {
         return out;
     }
 
+    public boolean winningCondition()
+    {
+        return (this.nbMove > 0) && (this.posX == 0) && (this.posY == 10);
+    }
+    
     /**
      * @return the win
      */
