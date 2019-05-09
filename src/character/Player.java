@@ -14,11 +14,15 @@ import java.util.Scanner;
 public class Player {
   private HashSet<TokenP> token = new HashSet<>(); // encapsulation en TokenP apres
   protected String pseudo;
-  private String adresseMail;
+  private String mail;
   private String password;
   private boolean connected = false;
-  private int partieJouee = 0;
-
+  /**
+   * Constructeur de la classe Player
+   * @param pseudo   [Pseudo du joueur]
+   * @param playerId [Automatique]
+   * @param g        [Permet de récuperer les infos du jeu]
+   */
   public Player(String pseudo, int playerId, Game g){
     this.pseudo = pseudo;
     this.token.add(new TokenP(g, 1, playerId));
@@ -26,25 +30,36 @@ public class Player {
     this.token.add(new TokenP(g, 4, playerId));
     this.token.add(new TokenP(g, 5, playerId));
     if(!(this instanceof IA)){
-      this.adresseMail = mail();
+      this.mail = mail();
       this.password = password();
     }
   }
-  private String mail(){
+  /**
+   * Permet d'enregister un mail
+   * @return [mail]
+   */
+  private void mail(){
     Scanner sc = new Scanner(System.in);
     System.out.println("Veuillez votre adressse mail :");
-    String pseudo = sc.nextLine();
-    System.out.println("Voici votre adresse mail  : " + adresseMail);
+    String mail = sc.nextLine();
+    System.out.println("Voici votre adresse mail  : " + mail);
     sc.close();
-    return pseudo;
   }
+  /**
+   * Permet d'enregister un mot de passe
+   * @return [mot de passe]
+   */
   private String password(){
     Scanner sc = new Scanner(System.in);
     System.out.println("Veuillez votre mot de passe :");
-    String pseudo = sc.nextLine();
+    String password = sc.nextLine();
     sc.close();
-    return pseudo;
+    return password;
   }
+  /**
+   * Permet de savoir le nombre de token
+   * @return [nombre de token du joueur]
+   */
   public int getNbToken(){
     // permet de recuperer le nombre de tokens encore en vie
     int cpt = 0;
@@ -53,34 +68,75 @@ public class Player {
     }
     return cpt;
   }
+  /**
+   * Permet de récuperer le mail d'un joueur
+   * @return [mail]
+   */
   public String getMail(){
-    return adresseMail;
+    return mail;
   }
+  /**
+   * Permet de récuperer le nombre de partie jouée
+   * @return [nombre de partie jouée]
+   */
   public int getGame(){
     return partieJouee=0;
   }
+  /**
+   * Permet de récupérer le Pseudo d'un joueur
+   * @return [Pseudo joueur]
+   */
   public String getPseudo(){
     return pseudo;
   }
+  /**
+   * Permet de récupérer le mot de passe d'un joueur
+   * @return [Mot de passe joueur]
+   */
   public String getPassword(){
     return password;
   }
+  /**
+   * Permet de savoir si vous êtes connecté
+   * @return [boolean Connexion]
+   */
   public boolean getConnected(){
     return connected;
   }
+  /**
+   * Permet de modifier le boolean de la Connexion
+   * @param isCo [Connexion]
+   */
   public void setConnected(boolean isCo){
     this.connected = isCo;
   }
+  /**
+   * Réécriture de la méthode toString
+   * @return [Phrase]
+   */
   @Override
   public String toString(){
     return this.pseudo +" tu as encore "+getNbToken()+" tokens.";
   }
+  /**
+   * Permet de savoir s'il reste des Tokens dans la liste du joueur
+   * @return [Boolean Vide]
+   */
   public boolean isEmpty() {
     return token.isEmpty();
   }
+  /**
+   * Permet de récupérer la liste des tokens d'un joueur
+   * @return [liste token joueur]
+   */
   public HashSet getToken() {
     return token;
   }
+  /**
+   * Permet de récupérer un token particulier
+   * @param  pattern [Pattern A ou B]
+   * @return         [Token avec le pattern A ou B]
+   */
   public TokenP getToken(int pattern) {
     for (TokenP t : token) {
       if (t instanceof TokenP) {
