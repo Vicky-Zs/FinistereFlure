@@ -9,7 +9,10 @@ import map.*;
 import token.*;
 
 public class Main {
-  // public static final Game g = new Game();
+  /**
+   * Permet de lancer le jeu
+   * @param args
+   */
   public static void main(String[] args){
     //Test.main();
     Game g = new Game();
