@@ -8,19 +8,38 @@ import token.*;
  */
 public class Monster {
   private TokenM myTokenM;
-  // Mise à jour du token (en espérant que ça marche)
+  /**
+   * Default constructor
+   * @param g [Lien pour récupérer les infos du jeu]
+   */
   public Monster(Game g){
     this.myTokenM = new TokenM(g);
   }
+  /**
+   * Permet de récupérer la position X
+   * @return [Position X]
+   */
   private int getPositionX(){
     return this.myTokenM.getPosX();
   }
+  /**
+   * Permet de récupérer la position Y
+   * @return [Position Y]
+   */
   private int getPositionY(){
     return this.myTokenM.getPosY();
   }
+  /**
+   * Permet de récupérer le token du monstre
+   * @return [Token Monstre]
+   */
   public TokenM getToken(){
     return this.myTokenM;
   }
+  /**
+   * Réécriture de la méthode toString
+   * @return [Phrase]
+   */
   @Override
   public String toString(){
     String orientation;
