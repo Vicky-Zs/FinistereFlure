@@ -15,37 +15,35 @@ import token.*;
  */
 
 public class Menu {
-    private Game game;
-
-    /*
-    * Default constructor
-    */
-    public Menu(Game g){
-        this.game = g;
-    }
-
-    /**
-     * Menu général
-     */
-    public void main(){
-    Scanner scan = new Scanner(System.in);
-    int in;
-    for(int i = 0; i < game.getPlayers().length; i++) {
-      System.out.println(i + "\nC'est au tour de " + game.getPlayer(i).getPseudo());
-      for (Object o : game.getPlayer(i).getToken()){
-        if (o instanceof TokenP){
-          TokenP t = (TokenP) o;
-          if (!t.isWin()) {
-            System.out.println(t);
-          }
+  private Game game;
+  /*
+  * Default constructor
+  */
+  public Menu(Game g){
+    this.game = g;
+  }
+  /**
+   * Menu général
+   */
+  public void main(){
+  Scanner scan = new Scanner(System.in);
+  int in;
+  for(int i = 0; i < game.getPlayers().length; i++) {
+    System.out.println(i + "\nC'est au tour de " + game.getPlayer(i).getPseudo());
+    for (Object o : game.getPlayer(i).getToken()){
+      if (o instanceof TokenP){
+        TokenP t = (TokenP) o;
+        if (!t.isWin()) {
+          System.out.println(t);
         }
       }
-      System.out.println("Veuillez choisir votre token "
-      + "(avec le nombre de déplacement)");
-      in = scan.nextInt();
-      menuToken(takeToken(i, in));
     }
-    scan.close();
+    System.out.println("Veuillez choisir votre token "
+    + "(avec le nombre de déplacement)");
+    in = scan.nextInt();
+    menuToken(takeToken(i, in));
+    }
+  scan.close();
   }
 
   /**
