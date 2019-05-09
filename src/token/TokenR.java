@@ -23,53 +23,36 @@ public class TokenR extends Token {
     private boolean moveByMonster(int direction){
 
         // si le bloc de pierre poussé par le monstre, recontre un mur : le bloc de Pierre doit être détruit
-        if( this.myGame.getMap()[this.posX][this.posY].getWall(direction) )
-        {
+        if(this.myGame.getMap()[this.posX][this.posY].getWall(direction)){
             this.myGame.getTokenR().remove(this.myGame.getTokenR().indexOf(this));
         }
-        else
-        {
+        else{
             // Coordonnées fictives de la prochaine case après le déplacement
             int destinationX = 0, destinationY = 0;
-
             switch (direction) {
-
-                case 0: {
-                    destinationX = this.posX;
-                    destinationY = this.posY + 1;
-                    break;
-                }
-
-                case 1: {
-                    destinationX = this.posX + 1;
-                    destinationY = this.posY;
-                    break;
-                }
-
-                case 2: {
-                    destinationX = this.posX;
-                    destinationY = this.posY - 1;
-                    break;
-                }
-
-                case 3: {
-                    destinationX = this.posX - 1;
-                    destinationY = this.posY;
-
-                    break;
-                }
-
-                default: {
-                    return false;
-                }
+              case 0:
+              destinationX = this.posX;
+              destinationY = this.posY + 1;
+              break;
+              case 1:
+              destinationX = this.posX + 1;
+              destinationY = this.posY;
+              break;
+              case 2:
+              destinationX = this.posX;
+              destinationY = this.posY - 1;
+              break;
+              case 3:
+              destinationX = this.posX - 1;
+              destinationY = this.posY;
+              break;
+              default:
+              return false;
             }
-
             // si la prochaine case est occupé par un Token : ce dernier doit bouger
-            if( this.myGame.getMap()[destinationX][destinationY].isTokenHere() )
-            {
+            if(this.myGame.getMap()[destinationX][destinationY].isTokenHere()){
                 this.find(destinationX, destinationY).move(direction);
             }
-
             // dans tous les cas, le bloc de pierre doit bouger
             this.setPosX(destinationX);
             this.setPosY(destinationY);
