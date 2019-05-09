@@ -17,6 +17,10 @@ public class TokenM extends Token {
   private int orientation;
   private ArrayList<Integer> nbMoves = new ArrayList<>();    // présence de doublons
   private boolean firstTurn = true;
+  /**
+   * Constructeur par défaut
+   * @param myGame [Permet de récupérer les infos du jeu]
+   */
   public TokenM (Game myGame) {
     super(myGame, 0, 10);
     this.orientation = 1;
@@ -29,7 +33,13 @@ public class TokenM extends Token {
     this.nbMoves.add(8);
     this.nbMoves.add(10);
   }
-
+  /**
+   * Constructeur pour les tests de déplacement
+   * @param myGame    [Permet de récupérer les infos du jeu]
+   * @param x         [Position X]
+   * @param y         [Position Y]
+   * @param direction [Direction (0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest)]
+   */
   public TokenM (Game myGame, int x, int y, int direction) {
     super(myGame , x , y);
     this.orientation = direction;
@@ -42,7 +52,10 @@ public class TokenM extends Token {
     this.nbMoves.add(8);
     this.nbMoves.add(10);
   }
-
+  /**
+   * Permet de vérifier si le token est à l'intérieur de la map
+   * @return [Vrai = intérieur de la map, Faux = extérieur de la map]
+   */
   private boolean isInside(){
     return ( (this.posX >= 0 && this.posX <= 15) && (this.getPosY() >= 0 && this.getPosY() <= 10) ) && ( this.posX + this.posY <= 21) ;
   }
@@ -148,7 +161,10 @@ public class TokenM extends Token {
       System.out.println("--------------------------------------------");
   }
 
-
+  /**
+   * Permet de savoir si le montre voit un pion joueur au nord
+   * @return [Retourne 50 si le monstre ne voit rien, 0 s'il a vu un token joueur]
+   */
   private int lookUp() {
     int result = 0;
     int x = this.posX;
@@ -175,6 +191,10 @@ public class TokenM extends Token {
       return 50;
     }
   }
+  /**
+   * Permet de savoir si le montre voit un pion joueur au sud
+   * @return [Retourne 50 si le monstre ne voit rien, 0 s'il a vu un token joueur]
+   */
   private int lookDown() {
     int result = 0;
     int x = this.posX;
@@ -201,7 +221,10 @@ public class TokenM extends Token {
       return 50;
     }
   }
-
+  /**
+   * Permet de savoir si le montre voit un pion joueur a l'ouest
+   * @return [Retourne 50 si le monstre ne voit rien, 0 s'il a vu un token joueur]
+   */
 private int lookLeft() {
   int result = 0;
   int x = this.posX - 1;
@@ -227,6 +250,10 @@ private int lookLeft() {
       return 50;
     }
   }
+  /**
+   * Permet de savoir si le montre voit un pion joueur à l'est
+   * @return [Retourne 50 si le monstre ne voit rien, 0 s'il a vu un token joueur]
+   */
   private int lookRight() {
     int result = 0;
     int x = this.posX + 1;
@@ -253,6 +280,10 @@ private int lookLeft() {
     }
   }
   // 0 = Nord, 1 = Est (droite / right), 2 = Sud, 3 = Ouest (gauche / left)
+  /**
+   * Permet de savoir si le montre voit un pion joueur en fonction de son orientation
+   * @return [Direction du monstre]
+   */
   private int look() {
     int up = 50, down = 50, left = 50, right = 50;
     switch(this.getOrientation()) {
