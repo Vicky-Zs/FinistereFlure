@@ -14,296 +14,292 @@ import token.*;
  */
 
 public class IA extends Player {
-    private int destination = -1;
-    private TokenP caseSelectionne;
-    private TokenP pionSelectionne;
-    private int nbRegles = 20;
+  private int destination = -1;
+  private TokenP caseSelectionne;
+  private TokenP pionSelectionne;
+  private int nbRegles = 20;
 
-    /**
-     * Constructeur de l'IA
-     *
-     * @param playerId [Numéro du joueur]
-     * @param g        [Permet de récupérer des infos du jeu]
-     */
-    public IA(int playerId, Game g) {
-        super(defineName(), playerId, g);
+  /**
+   * Constructeur de l'IA
+   *
+   * @param playerId [Numéro du joueur]
+   * @param g        [Permet de récupérer des infos du jeu]
+   */
+  public IA(int playerId, Game g) {
+    super(defineName(), playerId, g);
+  }
+  /**
+   * Permet de sélectionner un nombre aléatoir
+   *
+   * @return [Pseudo]
+   */
+  public static String defineName(){ // Modification en Static
+    LinkedList<String> nomIA = new LinkedList<>();
+    String name;
+    nomIA.add("HAL 9000");
+    nomIA.add("Deep Blue");
+    nomIA.add("Erasme");
+    nomIA.add("Skynet");
+    nomIA.add("Omnius");
+    nomIA.add("Multivac");
+    nomIA.add("Marvin");
+    nomIA.add("ED 209");
+    nomIA.add("R2D2");
+    for(int i = 0;i<nomIA.size();i++){ // Permet de mélanger les noms
+      Collections.shuffle(nomIA);
     }
-    /**
-     * Permet de sélectionner un nombre aléatoir
-     *
-     * @return [Pseudo]
-     */
-    public static String defineName(){ // Modification en Static
-        LinkedList<String> nomIA = new LinkedList<>();
-        String name;
-        nomIA.add("HAL 9000");
-        nomIA.add("Deep Blue");
-        nomIA.add("Erasme");
-        nomIA.add("Skynet");
-        nomIA.add("Omnius");
-        nomIA.add("Multivac");
-        nomIA.add("Marvin");
-        nomIA.add("ED 209");
-        nomIA.add("R2D2");
-        for(int i = 0;i<nomIA.size();i++){ // Permet de mélanger les noms
-            Collections.shuffle(nomIA);
+    name = nomIA.getFirst();
+    return name;
+  }
+  /**
+   *
+   *
+   * @return [description]
+   */
+  @Override
+  public String toString(){
+    return super.pseudo +", il vous reste "+super.getNbToken()+" encore en vie";
+  }
+
+  /**
+   *
+   *
+   */
+  public void tourIA(){
+    this.turn(constructInitList());
+  }
+
+  // commençement de l'intelligence artificielle
+  private void turn(LinkedList<Integer> list){
+    // Parcours une seule fois, les règles dans l'ordre croissant de leur numéro
+    // Rule n°0 --> rule n°5 : selection of TokenPs
+    for( int p = 1 ; p < 7 ; p++){
+      if((this.getToken(p) != null) && (!this.hasSelect())){
+        if(this.getToken(p).isActif() && !this.getToken(p).isWin()){
+          this.select(this.getToken(p));
+          this.turn(this.constructNewList(list, (p-1)));
         }
-        name = nomIA.getFirst();
-        return name;
+      }
     }
-    /**
-     *
-     *
-     * @return [description]
-     */
-    @Override
-    public String toString(){
-        return super.pseudo +", il vous reste "+super.getNbToken()+" encore en vie";
+    // Rule n°6 : when a TokenP is near to exit, it exit
+    if(this.hasSelect()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (this.pionSelectionne.winningCondition())){
+        this.pionSelectionne.move(0);
+        this.pionSelectionne = null;
+        this.caseSelectionne = null;
+        this.destination = -1;
+      }
     }
-
-    /**
-     *
-     *
-     */
-    public void tourIA(){
-        this.turn(constructInitList());
+    // Rule n°7 : when a TokenP is out, it can start to the boardgame
+    if(this.hasSelect()){
+      if((this.pionSelectionne.isActif()) && (this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.hasDestination())){
+        this.destination = 3;
+        this.futurCaseTokenP(destination);
+        this.turn( this.constructNewList(list,7));
+      }
     }
-
-    // commençement de l'intelligence artificielle
-    private void turn(LinkedList<Integer> list){
-        // Parcours une seule fois, les règles dans l'ordre croissant de leur numéro
-        // Rule n°0 --> rule n°5 : selection of TokenPs
-        for( int p = 1 ; p < 7 ; p++){
-            if((this.getToken(p) != null) && (!this.hasSelect())){
-                if(this.getToken(p).isActif() && !this.getToken(p).isWin()){
-                    this.select(this.getToken(p));
-                    this.tour( this.constructNewList(list, (p-1) ));
-                }
-            }
-        }
-        // Rule n°6 : when a TokenP is near to exit, it exit
-        if(this.hasSelect()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (this.pionSelectionne.winningCondition())){
-                this.pionSelectionne.move(0);
-                this.pionSelectionne = null;
-                this.caseSelectionne = null;
-                this.destination = -1;
-            }
-        }
-        // Rule n°7 : when a TokenP is out, it can start to the boardgame
-        if(this.hasSelect()){
-            if((this.pionSelectionne.isActif()) && (this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.hasDestination())){
-                this.destination = 3;
-                this.futurCaseTokenP(destination);
-                this.tour( this.constructNewList(list,7) );
-            }
-        }
-
-        // Rule n°8 : if a TokenP can move on the North, notice it
-        if(this.hasSelect()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
-            && (this.pionSelectionne.canMove(0))){
-                this.destination = 0;
-                this.futurCaseTokenP(destination);
-                this.tour( this.constructNewList(list) );
-            }
-        }
-        // Rule n°9 : if a TokenP can move on the West, notice it
-        if(this.hasSelect()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
-            && (this.pionSelectionne.canMove(3))){
-                this.destination = 3;
-                this.futurCaseTokenP(destination);
-                this.tour( this.constructNewList(list) );
-            }
-        }
-        // Rule n°10 : if a TokenP can move on the Sud, notice it
-        if(this.hasSelect()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
-            && (this.pionSelectionne.canMove(2))){
-                this.destination = 2;
-                this.futurCaseTokenP(destination);
-                this.tour( this.constructNewList(list) );
-            }
-        }
-        // Rule n°11 : if a TokenP can move on the East, notice it
-        if(this.hasSelect()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
-            && this.pionSelectionne.canMove(1)){
-                this.destination = 1;
-                this.futurCaseTokenP(destination);
-                this.tour(this.constructNewList(list));
-            }
-        }
-
-        // Rule n°12 : if a TokenP can finnaly just stay, notice it
-        if(this.hasSelect()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
-            && (this.pionSelectionne.canStay()) && (!this.pionSelectionne.isClose())
-            && (!this.pionSelectionne.isAxisMonster())){
-                this.pionSelectionne.turnOff();
-                this.pionSelectionne = null;
-                this.caseSelectionne = null;
-                this.destination = -1;
-            }
-        }
-        // Rule n°13 : if a TokenP is really close from exit without to be endanger, it goes
-        if(this.hasSelect() && this.hasDestination()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin())
-            && (this.hasDestination()) && (this.pionSelectionne.isSave())){
-                this.pionSelectionne.move(destination);
-                this.caseSelectionne = null;
-                this.destination = -1;
-                this.tour( this.constructNewList(list) );
-            }
-        }
-        // Rule n°14 : if there is an endanger TokenP, move to brain the monster (dependent from the presence of an ennemy or not)
-        if(this.hasSelect() && this.hasDestination()){
-            if((this.caseSelectionne.isTrapped(this.caseSelectionne.distanceM()))
-            && (this.caseSelectionne.findTokenP(this.caseSelectionne.distanceM()) != -1)){
-                // Rule n°14.1 : if the endanger TokenP isn't an ennemy, save it
-                if(this.caseSelectionne.findTokenP(this.caseSelectionne.distanceM()) == 1){
-                    this.pionSelectionne.move(destination);
-                    this.pionSelectionne.turnOff();
-                    this.pionSelectionne = null;
-                    this.caseSelectionne = null;
-                    this.destination = -1;
-                    this.tour( this.constructNewList(list) );
-                }
-                else{// Rule n°14.2 : if the endanger TokenP is an ennemy, doom it
-                    if(this.pionSelectionne.distanceM() < this.caseSelectionne.distanceM()){
-                        this.pionSelectionne.move(destination);
-                        this.caseSelectionne = null;
-                        this.destination = -1;
-                        this.tour(this.constructNewList(list));
-                    }
-                }
-            }
-        }
-        // Rule n°15 : if a TokenP could go in the axe of the monster, without make it endanger, it can go
-        if((this.hasSelect()) && (this.hasDestination())){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (this.caseSelectionne.isAxisMonster())
-            && (this.caseSelectionne.isActif())){
-                this.pionSelectionne.move(destination);
-                this.caseSelectionne = null;
-                this.destination = -1;
-                this.tour(this.constructNewList(list));
-            }
-        }
-        // Rule n°16 : if a TokenP could go behind the monster without make it endanger, it can go
-        if((this.hasSelect()) && (this.hasDestination())){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.caseSelectionne.isAxisMonster())
-            && (this.caseSelectionne.isBehind()) && (this.caseSelectionne.pathNoMonster(destination))){
-                this.pionSelectionne.move(destination);
-                this.caseSelectionne = null;
-                this.destination = -1;
-                this.tour(this.constructNewList(list));
-            }
-        }
-        // Rule n°17 : if a TokenP is in front of the Monster, it doesn't go more closer him
-        if((this.hasSelect()) && (this.hasDestination())){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (!this.caseSelectionne.isClose())
-            && (!this.caseSelectionne.isAxisMonster()) && (!this.caseSelectionne.isBehind())
-            && (this.pionSelectionne.distanceM() >= this.caseSelectionne.distanceM())){
-                this.pionSelectionne.move(destination);
-                this.caseSelectionne = null;
-                this.destination = -1;
-                this.tour(this.constructNewList(list));
-            }
-        }
-        // Rule n°18 : if a TokenP is close from the monster with low movements, it can't go more closer him
-        if(this.hasSelect() && this.hasDestination()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (this.caseSelectionne.isClose())
-            && (!this.caseSelectionne.isAxisMonster())
-            && (this.pionSelectionne.distanceM() >= this.caseSelectionne.distanceM())){
-                this.pionSelectionne.move(destination);
-                this.caseSelectionne = null;
-                this.destination = -1;
-                this.tour(this.constructNewList(list));
-            }
-        }
-        // Rule n°18 : if a TokenP is close from the monster with high movements, it can go more closer him
-        if(this.hasSelect() && this.hasDestination()){
-            if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
-            && (!this.pionSelectionne.isWin()) && (this.caseSelectionne.isClose())
-            && (!this.caseSelectionne.isAxisMonster())
-            && (this.pionSelectionne.distanceM() < this.caseSelectionne.distanceM())
-            && (this.caseSelectionne.isActif())){
-                this.pionSelectionne.move(destination);
-                this.caseSelectionne = null;
-                this.destination = -1;
-                this.tour(this.constructNewList(list));
-            }
-        }
+    // Rule n°8 : if a TokenP can move on the North, notice it
+    if(this.hasSelect()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
+      && (this.pionSelectionne.canMove(0))){
+        this.destination = 0;
+        this.futurCaseTokenP(destination);
+        this.turn( this.constructNewList(list) );
+      }
     }
-
-    private boolean hasSelect(){
-        return this.pionSelectionne != null;
+    // Rule n°9 : if a TokenP can move on the West, notice it
+    if(this.hasSelect()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
+      && (this.pionSelectionne.canMove(3))){
+        this.destination = 3;
+        this.futurCaseTokenP(destination);
+        this.turn( this.constructNewList(list) );
+      }
     }
-
-
-    private void select(TokenP t){
-        this.pionSelectionne = t;
+    // Rule n°10 : if a TokenP can move on the Sud, notice it
+    if(this.hasSelect()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
+      && (this.pionSelectionne.canMove(2))){
+        this.destination = 2;
+        this.futurCaseTokenP(destination);
+        this.turn( this.constructNewList(list) );
+      }
     }
-
-
-    // Permet de construire une nouvelle liste à partir d'une ancienne (en retirant une règle)
-    private LinkedList<Integer> constructNewList(LinkedList<Integer> list, int no) {
-        // Définition d'une nouvelle liste
-        LinkedList<Integer> lesReglesDuJeu = new LinkedList<>();
-        // Recopie de la liste en paramètre sur la nouvelle liste : elles ne pointent donc pas sur une même adresse mémoire
-        for (int i = 0; i < list.size(); i++){
-            if (list.get(i) != no){  // on recopie la liste sauf pour une règle en particulier
-                lesReglesDuJeu.add(list.get(i));
-            }
+    // Rule n°11 : if a TokenP can move on the East, notice it
+    if(this.hasSelect()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
+      && this.pionSelectionne.canMove(1)){
+        this.destination = 1;
+        this.futurCaseTokenP(destination);
+        this.tour(this.constructNewList(list));
+      }
+    }
+    // Rule n°12 : if a TokenP can finnaly just stay, notice it
+    if(this.hasSelect()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.hasDestination())
+      && (this.pionSelectionne.canStay()) && (!this.pionSelectionne.isClose())
+      && (!this.pionSelectionne.isAxisMonster())){
+        this.pionSelectionne.turnOff();
+        this.pionSelectionne = null;
+        this.caseSelectionne = null;
+        this.destination = -1;
+      }
+    }
+    // Rule n°13 : if a TokenP is really close from exit without to be endanger, it goes
+    if(this.hasSelect() && this.hasDestination()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin())
+      && (this.hasDestination()) && (this.pionSelectionne.isSave())){
+        this.pionSelectionne.move(destination);
+        this.caseSelectionne = null;
+        this.destination = -1;
+        this.tour( this.constructNewList(list) );
+      }
+    }
+    // Rule n°14 : if there is an endanger TokenP, move to brain the monster (dependent from the presence of an ennemy or not)
+    if(this.hasSelect() && this.hasDestination()){
+      if((this.caseSelectionne.isTrapped(this.caseSelectionne.distanceM()))
+      && (this.caseSelectionne.findTokenP(this.caseSelectionne.distanceM()) != -1)){
+        // Rule n°14.1 : if the endanger TokenP isn't an ennemy, save it
+        if(this.caseSelectionne.findTokenP(this.caseSelectionne.distanceM()) == 1){
+          this.pionSelectionne.move(destination);
+          this.pionSelectionne.turnOff();
+          this.pionSelectionne = null;
+          this.caseSelectionne = null;
+          this.destination = -1;
+          this.tour( this.constructNewList(list) );
         }
-        return lesReglesDuJeu;
-    }
-
-    // Permet de construire une nouvelle liste à partir d'une ancienne (sans retirer de règles)
-    private LinkedList<Integer> constructNewList(LinkedList<Integer> list) {
-        // Définition d'une nouvelle liste
-        LinkedList<Integer> lesReglesDuJeu = new LinkedList<>();
-        // recopie de la liste en paramètre sur la nouvelle liste : elles ne pointent donc pas sur une même adresse mémoire
-        for (int i = 0; i < list.size(); i++){
-            lesReglesDuJeu.add( list.get(i) );
+        else{// Rule n°14.2 : if the endanger TokenP is an ennemy, doom it
+          if(this.pionSelectionne.distanceM() < this.caseSelectionne.distanceM()){
+            this.pionSelectionne.move(destination);
+            this.caseSelectionne = null;
+            this.destination = -1;
+            this.tour(this.constructNewList(list));
+          }
         }
-        return lesReglesDuJeu;
+      }
     }
+    // Rule n°15 : if a TokenP could go in the axe of the monster, without make it endanger, it can go
+    if((this.hasSelect()) && (this.hasDestination())){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (this.caseSelectionne.isAxisMonster())
+      && (this.caseSelectionne.isActif())){
+        this.pionSelectionne.move(destination);
+        this.caseSelectionne = null;
+        this.destination = -1;
+        this.tour(this.constructNewList(list));
+      }
+    }
+    // Rule n°16 : if a TokenP could go behind the monster without make it endanger, it can go
+    if((this.hasSelect()) && (this.hasDestination())){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.caseSelectionne.isAxisMonster())
+      && (this.caseSelectionne.isBehind()) && (this.caseSelectionne.pathNoMonster(destination))){
+        this.pionSelectionne.move(destination);
+        this.caseSelectionne = null;
+        this.destination = -1;
+        this.tour(this.constructNewList(list));
+      }
+    }
+    // Rule n°17 : if a TokenP is in front of the Monster, it doesn't go more closer him
+    if((this.hasSelect()) && (this.hasDestination())){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (!this.caseSelectionne.isClose())
+      && (!this.caseSelectionne.isAxisMonster()) && (!this.caseSelectionne.isBehind())
+      && (this.pionSelectionne.distanceM() >= this.caseSelectionne.distanceM())){
+        this.pionSelectionne.move(destination);
+        this.caseSelectionne = null;
+        this.destination = -1;
+        this.tour(this.constructNewList(list));
+      }
+    }
+    // Rule n°18 : if a TokenP is close from the monster with low movements, it can't go more closer him
+    if(this.hasSelect() && this.hasDestination()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (this.caseSelectionne.isClose())
+      && (!this.caseSelectionne.isAxisMonster())
+      && (this.pionSelectionne.distanceM() >= this.caseSelectionne.distanceM())){
+        this.pionSelectionne.move(destination);
+        this.caseSelectionne = null;
+        this.destination = -1;
+        this.tour(this.constructNewList(list));
+      }
+    }
+    // Rule n°18 : if a TokenP is close from the monster with high movements, it can go more closer him
+    if(this.hasSelect() && this.hasDestination()){
+      if((this.pionSelectionne.isActif()) && (!this.pionSelectionne.isOut())
+      && (!this.pionSelectionne.isWin()) && (this.caseSelectionne.isClose())
+      && (!this.caseSelectionne.isAxisMonster())
+      && (this.pionSelectionne.distanceM() < this.caseSelectionne.distanceM())
+      && (this.caseSelectionne.isActif())){
+        this.pionSelectionne.move(destination);
+        this.caseSelectionne = null;
+        this.destination = -1;
+        this.tour(this.constructNewList(list));
+      }
+    }
+  }
 
-    // Permet de construire la liste des règles initiale
-    public LinkedList<Integer> constructInitList() {
-        // Initialisation
-        LinkedList<Integer> lesReglesDuJeu = new LinkedList<>();
-        for (int i = 0; i < this.nbRegles; i++) {
-            lesReglesDuJeu.add(i);
-        }
-        return lesReglesDuJeu;
-    }
+  private boolean hasSelect(){
+    return this.pionSelectionne != null;
+  }
 
-    // Create a false TokenP from another TokenP : it simulate the original after a movement
-    private void futurCaseTokenP(int direction){
-        if(this.pionSelectionne != null){
-            this.caseSelectionne = new TokenP(this.pionSelectionne.getGame() , this.pionSelectionne.getPosX() , this.pionSelectionne.getPosY(), this.pionSelectionne.getNbMove());
-            this.caseSelectionne.move(direction);
-            this.caseSelectionne.getGame().getMap(this.caseSelectionne.getPosX(), this.caseSelectionne.getPosY()).setNotTokenHere();
-            this.destination = direction;
-        }
-    }
+  private void select(TokenP t){
+    this.pionSelectionne = t;
+  }
 
-    private boolean hasDestination(){
-        return this.caseSelectionne != null && this.destination >= 0;
+  // Permet de construire une nouvelle liste à partir d'une ancienne (en retirant une règle)
+  private LinkedList<Integer> constructNewList(LinkedList<Integer> list, int no) {
+    // Définition d'une nouvelle liste
+    LinkedList<Integer> lesReglesDuJeu = new LinkedList<>();
+    // Recopie de la liste en paramètre sur la nouvelle liste : elles ne pointent donc pas sur une même adresse mémoire
+    for (int i = 0; i < list.size(); i++){
+      if (list.get(i) != no){  // on recopie la liste sauf pour une règle en particulier
+        lesReglesDuJeu.add(list.get(i));
+      }
     }
+      return lesReglesDuJeu;
+  }
+
+  // Permet de construire une nouvelle liste à partir d'une ancienne (sans retirer de règles)
+  private LinkedList<Integer> constructNewList(LinkedList<Integer> list) {
+    // Définition d'une nouvelle liste
+    LinkedList<Integer> lesReglesDuJeu = new LinkedList<>();
+    // recopie de la liste en paramètre sur la nouvelle liste : elles ne pointent donc pas sur une même adresse mémoire
+    for (int i = 0; i < list.size(); i++){
+      lesReglesDuJeu.add( list.get(i) );
+    }
+    return lesReglesDuJeu;
+  }
+
+  // Permet de construire la liste des règles initiale
+  public LinkedList<Integer> constructInitList() {
+    // Initialisation
+    LinkedList<Integer> lesReglesDuJeu = new LinkedList<>();
+    for (int i = 0; i < this.nbRegles; i++) {
+      lesReglesDuJeu.add(i);
+    }
+    return lesReglesDuJeu;
+  }
+
+  // Create a false TokenP from another TokenP : it simulate the original after a movement
+  private void futurCaseTokenP(int direction){
+    if(this.pionSelectionne != null){
+      this.caseSelectionne = new TokenP(this.pionSelectionne.getGame() , this.pionSelectionne.getPosX() , this.pionSelectionne.getPosY(), this.pionSelectionne.getNbMove());
+      this.caseSelectionne.move(direction);
+      this.caseSelectionne.getGame().getMap(this.caseSelectionne.getPosX(), this.caseSelectionne.getPosY()).setNotTokenHere();
+      this.destination = direction;
+    }
+  }
+
+  private boolean hasDestination(){
+    return this.caseSelectionne != null && this.destination >= 0;
+  }
 }
