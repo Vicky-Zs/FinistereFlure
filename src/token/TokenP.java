@@ -101,16 +101,12 @@ public class TokenP extends Token {
     switch(orientation){
       case 0:
       return (yP < yM);
-      break;
       case 1:
       return (xP < xM);
-      break;
       case 2:
       return (yP > yM);
-      break;
       case 3:
       return (xP > xM);
-      break;
       default:
       return false;
     }

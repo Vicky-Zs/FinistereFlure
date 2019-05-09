@@ -63,8 +63,6 @@ public class Test extends Game {
         }
       }
     }
-    if(flag) System.out.print(" X");
-    System.out.println("\n\t\tSang = " + g.getMap(i, j).isBloodspot());
   }
   System.out.println("___________________________________________");
   if (temp instanceof TokenP){

@@ -76,7 +76,7 @@ public class Menu {
   private void menuToken(TokenP t) {
     Scanner scan = new Scanner(System.in);
     t.setNbMove(game.getNbTurn()%2==1);
-    game.getMap(posX, posY).setNotTokenHere();
+    game.getMap(t.getPosX(), t.getPosY()).setNotTokenHere();
     do {
       if ((t.getPosX() == -1) && (t.getPosY() == -1)) {
         t.move(0);
@@ -199,6 +199,6 @@ public class Menu {
       }
     }while (t.isActif());
     scan.close();
-    game.getMap(posX, posY).setTokenHere();
+    game.getMap(t.getPosX(), t.getPosY()).setTokenHere();
   }
 }

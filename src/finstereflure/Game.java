@@ -103,6 +103,10 @@ public class Game {
   public Player getPlayer(int x) {
     return p[x];
   }
+  
+  public int getNbPlayer(){
+    return p.length;
+  }
 
   public Monster getMonster() {
     return m;

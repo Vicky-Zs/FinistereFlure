@@ -26,7 +26,7 @@ public class Player {
     this.token.add(new TokenP(g, 4, playerId));
     this.token.add(new TokenP(g, 5, playerId));
     if(!(this instanceof IA)){
-      this.mail = mail();
+      this.adresseMail = mail();
       this.password = password();
     }
   }

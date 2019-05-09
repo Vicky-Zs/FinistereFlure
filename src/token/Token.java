@@ -58,7 +58,7 @@ public abstract class Token {
     // postulat : chaque player a une LISTE de pions
     Iterator<Token> iterator;
     // fouille dans la liste des pions de chaque joueur
-    for (int i = 0; i < this.myGame.getNbPlayers(); i++) {
+    for (int i = 0; i < this.myGame.getNbPlayer(); i++) {
       iterator = myGame.getPlayer(i).getToken().iterator();
       if(!myGame.getPlayer(i).isEmpty()){
         while (iterator.hasNext()){
