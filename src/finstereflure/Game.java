@@ -204,8 +204,7 @@ public class Game {
   public String winner(int playerId){
     return p[playerId].getPseudo();
   }
-
-  // Je suppose que c'est en travaux ^^'
+  
   public void turn(){
     while(!win()){
       menu.main();
