@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package map;
-
 import character.*;
 import finstereflure.*;
 import token.*;
@@ -22,7 +21,6 @@ public class Cell {
   //Permet de savoir où se trouve un mur
   //(0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest)
 
-
 	/**
 	* Default empty Cell constructor
 	*/
@@ -30,37 +28,36 @@ public class Cell {
 		this.bloodspot = false;
 		this.tokenHere = false;
 		this.wall[0] = false;
-                this.wall[1] = false;
-                this.wall[2] = false;
-                this.wall[3] = false;
-                //Mur en ligne droite
-                if (y == 0) {
-                    this.wall[2] = true;
-                }
-                if (x == 0) {
-                    this.wall[3] = true;
-                }
-                if ((x==15) && (y<7)){
-                    this.wall[1] = true;
-                }
-                if ((x<12) && (y==10)){
-                    this.wall[0] = true;
-                }
-                //Mur en Diagonal
-                if (x+y == 3){
-                    this.wall[0] = true;
-                    this.wall[1] = true;
-                }
-                if (x+y == 4) {
-                    this.wall[2] = true;
-                    this.wall[3] = true;                    
-                }
-                if (x+y == 21) {
-                    this.wall[0] = true;
-                    this.wall[1] = true;
-                }
+    this.wall[1] = false;
+    this.wall[2] = false;
+    this.wall[3] = false;
+    //Mur en ligne droite
+    if (y == 0) {
+      this.wall[2] = true;
+    }
+    if (x == 0) {
+      this.wall[3] = true;
+    }
+    if ((x==15) && (y<7)){
+      this.wall[1] = true;
+    }
+    if ((x<12) && (y==10)){
+      this.wall[0] = true;
+    }
+    //Mur en Diagonal
+    if (x+y == 3){
+      this.wall[0] = true;
+      this.wall[1] = true;
+    }
+    if (x+y == 4) {
+      this.wall[2] = true;
+      this.wall[3] = true;
+    }
+    if (x+y == 21) {
+      this.wall[0] = true;
+      this.wall[1] = true;
+    }
 	}
-
 
 	/**
 	* Returns value of bloodspot
@@ -87,7 +84,7 @@ public class Cell {
 	* @return
 	*/
 	public boolean isTokenHere() {
-            return tokenHere;
+    return tokenHere;
 	}
 
 	/**
