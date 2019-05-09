@@ -8,7 +8,6 @@ package finstereflure;
 import character.*;
 import map.*;
 import token.*;
-// import static finstereflure.Main.g;
 
 /**
  *
@@ -17,7 +16,7 @@ import token.*;
 
 public class Test extends Game {
   /**
-   *
+   * Permet les tests du jeu
    */
   public static void main() {
   Token temp;
