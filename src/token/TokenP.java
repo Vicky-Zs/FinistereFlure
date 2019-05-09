@@ -18,6 +18,12 @@ public class TokenP extends Token {
   private boolean out, win;
   private int patternA, patternB, playerId;
   private static int victime = 0;
+  /**
+   * Constructeur par défaut du token joueur
+   * @param myGame    [Permet de récupérer les informations de la partie]
+   * @param patterneA [Nombre de déplacement (phase clair)]
+   * @param playerId  [Attribution du numéro du joueur]
+   */
   public TokenP(Game myGame, int patterneA, int playerId) {
     super(myGame, -1, -1);      // Convention: -1/-1 = en dehors de la carte
     this.playerId = playerId;   // permet de savoir si le pion appartient au Joueur 0 ou 1
@@ -28,7 +34,13 @@ public class TokenP extends Token {
     setNbMove(true);
     myGame.getTokenOutside().add(this);
   }
-
+  /**
+   * Constructeur pour les tests
+   * @param myGame [Permet de récupérer les informations de la partie]
+   * @param posX   [Position X]
+   * @param posY   [Position Y]
+   * @param nbMove [Nombre de mouvement restant]
+   */
   public TokenP(Game myGame, int posX, int posY, int nbMove) {
     super(myGame, posX, posY); //Constructeur pour tester les cases
     this.nbMove = nbMove;
@@ -38,13 +50,25 @@ public class TokenP extends Token {
     setNbMove(true);
     myGame.getTokenOutside().add(this);
   }
+  /**
+   * Récupère le jeu
+   * @return [Jeu en cours]
+   */
   public Game getGame(){
     return this.myGame;
   }
+  /**
+   * Récupère le nombre de victime
+   * @return [description]
+   */
   public static int getVictime() {
     return victime;
   }
-  // if the Monster's orientation is different from a given direction : return true
+  /**
+   * if the Monster's orientation is different from a given direction : return true
+   * @param  direction [0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest]
+   * @return           []
+   */
   public boolean pathNoMonster(int direction){
     return direction != this.myGame.getMonster().getToken().getOrientation();
   }
@@ -52,7 +76,7 @@ public class TokenP extends Token {
   public int findTokenP(int distance){
     Iterator<TokenP> iterator;
     // fouille dans la liste des pions de chaque joueur
-    for (int i = 0; i < this.myGame.nbPlayers; i++){
+    for (int i = 0; i < this.myGame.getNbPlayer(); i++){
       iterator = this.myGame.getPlayer(i).getToken().iterator();
       if( !this.myGame.getPlayer(i).isEmpty() ){
         while (iterator.hasNext()){
@@ -67,7 +91,10 @@ public class TokenP extends Token {
     }
     return -1;
   }
-
+  /**
+   *
+   * @return []
+   */
   public boolean isSave(){
     int xM = this.myGame.getMonster().getToken().getPosX();
     int yM = this.myGame.getMonster().getToken().getPosY();
@@ -76,15 +103,25 @@ public class TokenP extends Token {
     int distanceExit = (int)( Math.sqrt(Math.pow(xP,2)+Math.pow(yP,2)) );
     return (xM != 0 && yM != 10) && !this.isAxisMonster() && this.nbMove > distanceExit;
   }
-
+  /**
+   *
+   * @param  distance [0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest]
+   * @return          []
+   */
   public boolean isTrapped(int distance){
     return (!this.isActif() && this.isAxisMonster() && !this.isBehind() && this.distanceM() == distance);
   }
-
+  /**
+   * Permet de savoir s'il reste des déplacements à un pion
+   * @return [description]
+   */
   public boolean isActif(){
     return this.nbMove > 0;
   }
-
+   /**
+    *
+    * @return [description]
+    */
   public boolean isAxisMonster(){
     int xM = this.myGame.getMonster().getToken().getPosX();
     int yM = this.myGame.getMonster().getToken().getPosY();
@@ -92,6 +129,10 @@ public class TokenP extends Token {
     int yP = this.posY;
     return ( xM == xP || yM == yP );
   }
+  /**
+   *
+   * @return [description]
+   */
   public boolean isBehind(){
     int orientation = this.myGame.getMonster().getToken().getOrientation();
     int xM = this.myGame.getMonster().getToken().getPosX();
@@ -111,11 +152,17 @@ public class TokenP extends Token {
       return false;
     }
   }
-
+  /**
+   * Permet de savoir s'il est proche ou pas d'un montre
+   * @return
+   */
   public boolean isClose(){
     return (this.distanceM() <= 5);
   }
-
+  /**
+   * Permet de savoir la distance qui sépare un pion joueur du monstre
+   * @return [nombre de cases]
+   */
   public int distanceM(){
     int xM = this.myGame.getMonster().getToken().getPosX();
     int yM = this.myGame.getMonster().getToken().getPosY();
@@ -136,12 +183,18 @@ public class TokenP extends Token {
       this.nbMove = patternB;
     }
   }
-
+  /**
+   * Permet de modifier le nombre de mouvements pour passer le tour
+   */
   public void turnOff(){
     this.nbMove = 0;
   }
 
-  // indique si le TokenP peut passer son tour
+  //
+  /**
+   * indique si le TokenP peut passer son tour
+   * @return [Vrai = Oui, Faux = Non]
+   */
   public boolean canStay() {
     return (this.myGame.getMap()[this.getPosX()][this.getPosY()].isTokenHere() == false);
   }
@@ -201,8 +254,11 @@ public class TokenP extends Token {
     this.setPosX(-1);
     this.setPosY(-1);
   }
-
-  // déplace le TokenP de 1 case vers une direction donnée : indique s'il a réussit à se déplacer ou non
+  /**
+   * déplace le TokenP de 1 case vers une direction donnée : indique s'il a réussi à se déplacer ou non
+   * @param  direction [0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest]
+   * @return           [Vrai = a réussi à se déplacer]
+   */
   private boolean moveONE(int direction) {
     if (this.nbMove > 0){
     // Coordonnées fictives de la prochaine case après le déplacement
@@ -367,7 +423,10 @@ public class TokenP extends Token {
   public int getPatternB() {
     return patternB;
   }
-
+   /**
+    * Réécriture de la méthode toString
+    * @return [Phrase]
+    */
   @Override
   public String toString(){
     if (this.isWin()) {
