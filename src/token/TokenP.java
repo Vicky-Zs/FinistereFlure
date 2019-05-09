@@ -95,7 +95,7 @@ public class TokenP extends Token {
     }
 
     public boolean isTrapped(int distance){
-        return (!this.isActif() && this.isMegaAxisMonster() && !this.isBehind() && this.distanceM() == distance);
+        return (!this.isActif() && this.isAxisMonster() && !this.isBehind() && this.distanceM() == distance);
     }
 
     public boolean isActif(){
@@ -110,7 +110,7 @@ public class TokenP extends Token {
 
         return ( xM == xP || yM == yP );
     }
-
+    /*
     private boolean isMegaAxisMonster(){
         int xM = this.myGame.getMonster().getToken().getPosX();
         int yM = this.myGame.getMonster().getToken().getPosY();
@@ -119,7 +119,7 @@ public class TokenP extends Token {
 
         return ( Math.abs(xM - xP) < 6 || Math.abs(yM - yP) < 6 );
     }
-
+    */
     public boolean isBehind(){
         int orientation = this.myGame.getMonster().getToken().getOrientation();
         int xM = this.myGame.getMonster().getToken().getPosX();
