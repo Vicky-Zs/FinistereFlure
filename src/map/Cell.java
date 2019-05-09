@@ -22,9 +22,9 @@ public class Cell {
   //(0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest)
 
 	/**
-	* Default empty Cell constructor
+	* Default Cell constructor
 	*/
-	public Cell(int x, int y) { //TODO: Ne pas créer les 6 cases en dehors de la map
+	public Cell(int x, int y) {
 		this.bloodspot = false;
 		this.tokenHere = false;
 		this.wall[0] = false;
