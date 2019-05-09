@@ -68,13 +68,14 @@ public class Cell {
 	}
 
 	/**
-	* Sets new value of bloodspot
-	* @param
+	* Déclare que c'est un case avec du sang
 	*/
 	public void setBloodspot() {
 		this.bloodspot = true;
 	}
-
+  /**
+	* Déclare que c'est un case avec du sang
+	*/
 	public void setNotBloodspot() {
 		this.bloodspot = false;
 	}
@@ -89,7 +90,6 @@ public class Cell {
 
 	/**
 	* Sets true for tokenHere
-	* @param
 	*/
 	public void setTokenHere() {
 		this.tokenHere = true;
@@ -97,15 +97,15 @@ public class Cell {
 
 	/**
 	* Sets false for tokenHere
-	* @param
 	*/
 	public void setNotTokenHere() {
 		this.tokenHere = false;
 	}
 
 	/**
-	* Returns value of n
-	* @return
+	* Permet de savoir s'il y a un mur dans une direction
+	* @param [0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest]
+	* @return [true = mur, false = pas mur]
 	*/
 	public boolean getWall(int i) {
 		if ((i>-1) && (i<5)){
