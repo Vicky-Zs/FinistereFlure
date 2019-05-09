@@ -35,49 +35,49 @@ public class Game {
   //Le nombre de tours
   private Menu menu = new Menu(this);
   //Classe pour lancer les différents menus
-  
+
   /**
-   * 
+   *
    * Contructeur de la classe Game
    * Initialisation des joueurs
    */
   public Game(){
-      // Initialisation des joueurs
-      iniMap();
-      iniDecorations();
-      Scanner input = new Scanner(System.in);
-      String temp;
-      System.out.println("\nVeuillez rentrer le pseudo du 1er joueur :");
-      String pseudo = input.nextLine();
-      this.p[0] = new Player(pseudo,0,this);
-      int i = 1;
-      do {
-        System.out.println("Est-ce qu'il y a un deuxième joueur ? \"Oui\" ou \"Non\"");
-        temp = input.nextLine();
-        if (null != temp) switch (temp) {
-              case "Oui":
-                  System.out.println("\nVeuillez rentrer le pseudo du 2e joueur :");
-                  pseudo = input.nextLine();
-                  this.p[1] = new Player(pseudo,2,this);
-                  i = 0;
-                  break;
-              case "Non":
-                  this.p[1] = new IA(1,this);
-                  i = 0;
-                  break;
-              default:
-                  System.out.println("Cette réponse n'est pas valide.");
-                  break;
-          }
-      }while (i != 0);
-      // Initialisation du monstre
-      this.m = new Monster(this);
-      // Vérification de l'initialisation
-      System.out.println("\nListe des joueurs :");
-      for(i = 0 ; i < nbPlayers ; i++){
-          System.out.println("Joueur "+ (i+1) + "\t" + this.p[i].getPseudo());
-      }
-      System.out.println(this.m + "\n");
+    // Initialisation des joueurs
+    iniMap();
+    iniDecorations();
+    Scanner input = new Scanner(System.in);
+    String temp;
+    System.out.println("\nVeuillez rentrer le pseudo du 1er joueur :");
+    String pseudo = input.nextLine();
+    this.p[0] = new Player(pseudo,0,this);
+    int i = 1;
+    do {
+      System.out.println("Est-ce qu'il y a un deuxième joueur ? \"Oui\" ou \"Non\"");
+      temp = input.nextLine();
+      if (null != temp) switch (temp) {
+        case "Oui":
+        System.out.println("\nVeuillez rentrer le pseudo du 2e joueur :");
+        pseudo = input.nextLine();
+        this.p[1] = new Player(pseudo,2,this);
+        i = 0;
+        break;
+        case "Non":
+        this.p[1] = new IA(1,this);
+        i = 0;
+        break;
+        default:
+        System.out.println("Cette réponse n'est pas valide.");
+        break;
+        }
+    }while (i != 0);
+    // Initialisation du monstre
+    this.m = new Monster(this);
+    // Vérification de l'initialisation
+    System.out.println("\nListe des joueurs :");
+    for(i = 0 ; i < nbPlayers ; i++){
+      System.out.println("Joueur "+ (i+1) + "\t" + this.p[i].getPseudo());
+    }
+    System.out.println(this.m + "\n");
       turn();
   }
 
@@ -86,26 +86,26 @@ public class Game {
    * @return
    */
   public Cell[][] getMap() {
-      return this.map;
+    return this.map;
   }
 
   public Cell getMap(int x, int y) {
-      return this.map[x][y];
+    return this.map[x][y];
   }
-  
+
   public Player[] getPlayers() {
-      return p;
+    return p;
   }
   /**
    * Returns Players
    * @return
    */
   public Player getPlayer(int x) {
-      return p[x];
+    return p[x];
   }
 
   public Monster getMonster() {
-      return m;
+    return m;
   }
 
   public ArrayList<Token> getTokenOutside() {
@@ -121,11 +121,11 @@ public class Game {
   }
 
   public boolean isTurnPlayers() {
-      return turnPlayers;
+    return turnPlayers;
   }
 
   public void setTurnPlayers(boolean b) {
-      this.turnPlayers = b;
+    this.turnPlayers = b;
   }
 
   /**
@@ -133,11 +133,11 @@ public class Game {
    * @return
    */
   public int getNbTurn() {
-      return this.nbTurn;
+    return this.nbTurn;
   }
 
   public void newTurn() {
-      nbTurn ++;
+    nbTurn ++;
   }
 
   public void iniMap(){
@@ -146,7 +146,6 @@ public class Game {
         map[i][j] = new Cell(i, j);
       }
     }
-
     System.out.println("La map a été initialisé");
   }
 
