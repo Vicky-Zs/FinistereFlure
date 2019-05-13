@@ -128,6 +128,7 @@ public class DataBase implements Parametre {
         Statement create = co.createStatement();
         create.executeUpdate("INSERT INTO compte"+" VALUES ("+pseudo+","+mail+","+mdp+",'0')");
       } catch (Exception e) {}}
+    
     public boolean verifCompte(String aVerif,Connection co)throws SQLException{
       boolean exist = false;
       Statement verif = co.createStatement();
@@ -137,7 +138,7 @@ public class DataBase implements Parametre {
           exist = true;
         }
       }
-      sc.close();
+      //sc.close();
       return exist;
     }
     /**
