@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package map;
-
 import character.*;
 import finstereflure.*;
 import token.*;
@@ -22,45 +21,43 @@ public class Cell {
   //Permet de savoir où se trouve un mur
   //(0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest)
 
-
 	/**
-	* Default empty Cell constructor
+	* Default Cell constructor
 	*/
-	public Cell(int x, int y) { //TODO: Ne pas créer les 6 cases en dehors de la map
+	public Cell(int x, int y) {
 		this.bloodspot = false;
 		this.tokenHere = false;
 		this.wall[0] = false;
-                this.wall[1] = false;
-                this.wall[2] = false;
-                this.wall[3] = false;
-                //Mur en ligne droite
-                if (y == 0) {
-                    this.wall[2] = true;
-                }
-                if (x == 0) {
-                    this.wall[3] = true;
-                }
-                if ((x==15) && (y<7)){
-                    this.wall[1] = true;
-                }
-                if ((x<12) && (y==10)){
-                    this.wall[0] = true;
-                }
-                //Mur en Diagonal
-                if (x+y == 3){
-                    this.wall[0] = true;
-                    this.wall[1] = true;
-                }
-                if (x+y == 4) {
-                    this.wall[2] = true;
-                    this.wall[3] = true;                    
-                }
-                if (x+y == 21) {
-                    this.wall[0] = true;
-                    this.wall[1] = true;
-                }
+    this.wall[1] = false;
+    this.wall[2] = false;
+    this.wall[3] = false;
+    //Mur en ligne droite
+    if (y == 0) {
+      this.wall[2] = true;
+    }
+    if (x == 0) {
+      this.wall[3] = true;
+    }
+    if ((x==15) && (y<7)){
+      this.wall[1] = true;
+    }
+    if ((x<12) && (y==10)){
+      this.wall[0] = true;
+    }
+    //Mur en Diagonal
+    if (x+y == 3){
+      this.wall[0] = true;
+      this.wall[1] = true;
+    }
+    if (x+y == 4) {
+      this.wall[2] = true;
+      this.wall[3] = true;
+    }
+    if (x+y == 21) {
+      this.wall[0] = true;
+      this.wall[1] = true;
+    }
 	}
-
 
 	/**
 	* Returns value of bloodspot
@@ -71,13 +68,14 @@ public class Cell {
 	}
 
 	/**
-	* Sets new value of bloodspot
-	* @param
+	* Déclare que c'est un case avec du sang
 	*/
 	public void setBloodspot() {
 		this.bloodspot = true;
 	}
-
+  /**
+	* Déclare que c'est un case avec du sang
+	*/
 	public void setNotBloodspot() {
 		this.bloodspot = false;
 	}
@@ -87,12 +85,11 @@ public class Cell {
 	* @return
 	*/
 	public boolean isTokenHere() {
-            return tokenHere;
+    return tokenHere;
 	}
 
 	/**
 	* Sets true for tokenHere
-	* @param
 	*/
 	public void setTokenHere() {
 		this.tokenHere = true;
@@ -100,15 +97,15 @@ public class Cell {
 
 	/**
 	* Sets false for tokenHere
-	* @param
 	*/
 	public void setNotTokenHere() {
 		this.tokenHere = false;
 	}
 
 	/**
-	* Returns value of n
-	* @return
+	* Permet de savoir s'il y a un mur dans une direction
+	* @param [0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest]
+	* @return [true = mur, false = pas mur]
 	*/
 	public boolean getWall(int i) {
 		if ((i>-1) && (i<5)){
